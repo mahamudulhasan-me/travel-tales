@@ -1,4 +1,28 @@
 "use strict";
-const course = "Next Level Web Development";
-console.log(course);
-const myArray = ["hey", "bro"];
+// Typescript basic data type
+// non primitive data type
+// sting
+const myName = "Mahmudul";
+//number
+const myAge = 25;
+//boolean
+const isStudent = true;
+// undefined
+const isMarried = undefined;
+//null
+const result = null;
+let anyType;
+anyType = 5;
+anyType = "string";
+anyType = "last assign in any type";
+console.log(anyType);
+// primitive data type
+// array
+const friends = ["friend1", "friend2"];
+friends.push("friend3");
+// friends.push(25);
+const restOfRoll = [12, 13, 15];
+// tuple
+const friendRoll = ["Mahmudul", 12];
+friendRoll.push(12);
+console.log(friendRoll);
