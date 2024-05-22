@@ -7,6 +7,11 @@ const VariantSchema = new Schema<IVariant>({
     required: true,
     message: "Product type is required",
   },
+  value: {
+    type: String,
+    required: true,
+    message: "Product value is required",
+  },
 });
 
 const InventorySchema = new Schema<IInventory>({
