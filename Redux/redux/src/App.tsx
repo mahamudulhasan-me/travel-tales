@@ -4,12 +4,16 @@ import {
   INCREMENT,
   INCREMENTBYCOUNT,
 } from "./redux/features/counter/counterSlice";
+import { fetchPosts } from "./redux/features/post/postSlice";
 import { useAppDispatch, useAppSelector } from "./redux/hook";
 
-function App() {
+async function App() {
   const count = useAppSelector((state) => state.counter.value);
   const dispatch = useAppDispatch();
   const numberOfBoxes = Math.floor(count / 5);
+
+  const posts = await dispatch(fetchPosts());
+  console.log(posts);
   return (
     <div className="w-screen h-screen flex flex-col items-center justify-center space-y-5">
       <div className="flex items-center gap-10 text-lg border border-green-400 rounded-md p-12 bg-rose-100">
