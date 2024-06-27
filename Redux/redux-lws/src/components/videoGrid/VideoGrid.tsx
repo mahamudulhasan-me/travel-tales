@@ -1,6 +1,14 @@
+import { useEffect } from "react";
+import { fetchVideos } from "../../redux/features/videos/videosSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import VideoGridItem from "./VideoGridItem";
 
 const VideoGrid = () => {
+  const dispatch = useAppDispatch();
+  const videos = useAppSelector((state) => state.videos);
+  useEffect(() => {
+    dispatch(fetchVideos());
+  }, [dispatch]);
   return (
     <>
       {/* <!-- Video Grid --> */}
