@@ -2,8 +2,29 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { AsyncThunk, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getVideos } from "./videosAPI";
+export interface IVideo {
+  id: number;
+  title: string;
+  description: string;
+  author: string;
+  avatar: string;
+  date: string;
+  duration: string;
+  views: string;
+  link: string;
+  thumbnail: string;
+  tags: string[];
+  likes: number;
+  unlikes: number;
+}
+export interface IInitialState {
+  videos: IVideo[];
+  isLoading: boolean;
+  isError: boolean;
+  error: string;
+}
 
-const initialState = {
+const initialState: IInitialState = {
   videos: [],
   isLoading: false,
   isError: false,
