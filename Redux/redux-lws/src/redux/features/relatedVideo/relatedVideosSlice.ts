@@ -1,22 +1,10 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { AsyncThunk, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getVideos } from "./videosAPI";
-export interface IVideo {
-  id: number;
-  title: string;
-  description: string;
-  author: string;
-  avatar: string;
-  date: string;
-  duration: string;
-  views: string;
-  link: string;
-  thumbnail: string;
-  tags: string[];
-  likes: number;
-  unlikes: number;
-}
+import { IVideo } from "../video/videoSlice";
+import { getRelatedVideos } from "./relatedVideosAPI";
+
 export interface IInitialState {
   videos: IVideo[];
   isLoading: boolean;
@@ -30,30 +18,33 @@ const initialState: IInitialState = {
   isError: false,
   error: "",
 };
+// Define the type for the thunk
+//@ts-ignore
+type FetchVideoThunk = AsyncThunk<any, string, unknown>;
 
-export const fetchVideos: AsyncThunk<any, void, {}> = createAsyncThunk(
-  "videos/fetchVideos",
-  async () => {
-    const videos = await getVideos();
+export const fetchRelatedVideos: FetchVideoThunk = createAsyncThunk(
+  "relatedVideos/fetchRelatedVideos",
+  async (query: string) => {
+    const videos = await getRelatedVideos(query);
     return videos;
   }
 );
 
-const videosSlice = createSlice({
-  name: "videos",
+const relatedVideosSlice = createSlice({
+  name: "relatedVideos",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchVideos.pending, (state) => {
+      .addCase(fetchRelatedVideos.pending, (state) => {
         state.isError = false;
         state.isLoading = true;
       })
-      .addCase(fetchVideos.fulfilled, (state, action) => {
+      .addCase(fetchRelatedVideos.fulfilled, (state, action) => {
         state.isLoading = false;
         state.videos = action.payload;
       })
-      .addCase(fetchVideos.rejected, (state, action) => {
+      .addCase(fetchRelatedVideos.rejected, (state, action) => {
         state.isLoading = false;
         state.videos = [];
         state.isError = true;
@@ -62,4 +53,4 @@ const videosSlice = createSlice({
   },
 });
 
-export default videosSlice.reducer;
+export default relatedVideosSlice.reducer;
