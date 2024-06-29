@@ -9,7 +9,7 @@ const VDescription = ({ video }: { video: IVideo }) => {
       <div>
         <div className="pb-4 flex items-center justify-between border-b">
           <div className="flex flex-col items-start">
-            <h1 className="text-lg font-semibold tracking-tight text-slate-800">
+            <h1 className="text-lg text-left font-semibold tracking-tight text-slate-800">
               {title}
             </h1>
             <h2 className="text-sm text-left leading-[1.7142857] text-slate-600 w-full">

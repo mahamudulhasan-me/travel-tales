@@ -1,7 +1,14 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { AsyncThunk, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {
+  AsyncThunk,
+  SerializedError,
+  createAsyncThunk,
+  createSlice,
+} from "@reduxjs/toolkit";
 import { getVideos } from "./videosAPI";
+
 export interface IVideo {
   id: number;
   title: string;
@@ -17,6 +24,7 @@ export interface IVideo {
   likes: number;
   unlikes: number;
 }
+
 export interface IInitialState {
   videos: IVideo[];
   isLoading: boolean;
@@ -31,10 +39,17 @@ const initialState: IInitialState = {
   error: "",
 };
 
-export const fetchVideos: AsyncThunk<any, void, {}> = createAsyncThunk(
+// Define the type for the thunk
+type FetchVideosThunk = AsyncThunk<
+  IVideo[],
+  { tags: string[]; search: string },
+  {}
+>;
+
+export const fetchVideos: FetchVideosThunk = createAsyncThunk(
   "videos/fetchVideos",
-  async () => {
-    const videos = await getVideos();
+  async ({ tags, search }: { tags: string[]; search: string }) => {
+    const videos = await getVideos(tags, search);
     return videos;
   }
 );
@@ -57,7 +72,8 @@ const videosSlice = createSlice({
         state.isLoading = false;
         state.videos = [];
         state.isError = true;
-        state.error = action?.error.message || "Something Went Wrong";
+        state.error =
+          (action.error as SerializedError).message || "Something Went Wrong";
       });
   },
 });

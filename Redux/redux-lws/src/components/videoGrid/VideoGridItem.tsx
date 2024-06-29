@@ -23,12 +23,12 @@ const VideoGridItem: React.FC<VideoGridItemProps> = ({ video }) => {
           </div>
 
           <div className="flex flex-row items-start mt-2 gap-2">
-            <Link to={`video/${id}`} className="shrink-0">
+            <Link to={"#"} className="shrink-0">
               <img src={avatar} className="rounded-full h-6 w-6" alt={author} />
             </Link>
 
             <div className="flex flex-col items-start">
-              <Link to={`video/${id}`}>
+              <Link to={`videos/${id}`}>
                 <p className="text-slate-900 text-sm text-left font-semibold">
                   {title}
                 </p>
