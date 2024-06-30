@@ -1,5 +1,7 @@
 import { Filter } from "lucide-react";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { filterTask } from "../../redux/features/todo/todoSlice";
 import { Button } from "../ui/button";
 import {
   DropdownMenu,
@@ -12,7 +14,13 @@ import {
 } from "../ui/dropdown-menu";
 
 const TodoFilter = () => {
-  const [position, setPosition] = useState("bottom");
+  const dispatch = useDispatch();
+  const [filterValue, setFilterValue] = useState<string>("All");
+
+  const handleFilterChange = (value: string) => {
+    setFilterValue(value);
+    dispatch(filterTask(value));
+  };
 
   return (
     <DropdownMenu>
@@ -24,10 +32,14 @@ const TodoFilter = () => {
       <DropdownMenuContent className="w-40">
         <DropdownMenuLabel>Filter By Priority</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
-          <DropdownMenuRadioItem value="top">High</DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="bottom">Medium</DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="right">Low</DropdownMenuRadioItem>
+        <DropdownMenuRadioGroup
+          value={filterValue}
+          onValueChange={handleFilterChange}
+        >
+          <DropdownMenuRadioItem value="All">All</DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="High">High</DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="Medium">Medium</DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="Low">Low</DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>
     </DropdownMenu>

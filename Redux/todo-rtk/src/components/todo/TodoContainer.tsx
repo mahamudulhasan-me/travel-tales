@@ -4,7 +4,7 @@ import TodoCard from "./TodoCard";
 import TodoFilter from "./TodoFilter";
 
 const TodoContainer = () => {
-  const { todos } = useAppSelector((state) => state.todo);
+  const { filteredTodos } = useAppSelector((state) => state.todo);
 
   return (
     <div className="w-4/5 mx-auto">
@@ -12,10 +12,14 @@ const TodoContainer = () => {
         <TodoAddModal />
         <TodoFilter />
       </div>
-      <div className="bg-primary-gradient   rounded-lg shadow-xl border border-slate-600 p-3 space-y-3">
-        {todos.map((todo) => (
-          <TodoCard key={todo.id} todo={todo} />
-        ))}
+      <div className="bg-primary-gradient rounded-lg shadow-xl border border-slate-600 p-3 space-y-3">
+        {filteredTodos.length > 0 ? (
+          filteredTodos.map((todo) => <TodoCard key={todo.id} todo={todo} />)
+        ) : (
+          <p className="text-center text-red-600">
+            No tasks available for the selected priority.
+          </p>
+        )}
       </div>
     </div>
   );
