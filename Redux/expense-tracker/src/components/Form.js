@@ -56,10 +56,11 @@ export default function Form() {
       amount: Number(amount),
       type,
     };
-    console.log(transaction);
+
     dispatch(updateTransaction({ id: editing?.id, data: transaction }));
     reset();
     e.target.reset();
+    setEditMode(false);
   };
 
   const handleCancelUpdate = () => {
