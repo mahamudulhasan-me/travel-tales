@@ -1,10 +1,20 @@
-import { useAppSelector } from "../../redux/hooks";
+import { useGetTasksQuery } from "../../redux/api/api";
+import { ITodo } from "../../redux/features/todo/todoSlice";
 import TodoAddModal from "./TodoAddModal";
 import TodoCard from "./TodoCard";
 import TodoFilter from "./TodoFilter";
 
 const TodoContainer = () => {
-  const { filteredTodos } = useAppSelector((state) => state.todo);
+  const { data: tasks, isLoading, isError } = useGetTasksQuery({});
+  let content = null;
+
+  if (isLoading) content = <p>Loading...</p>;
+  if (isError) content = <p>Error</p>;
+  if (!isLoading && !isError && tasks) {
+    content = tasks.map((todo: ITodo) => (
+      <TodoCard key={todo.id} todo={todo} />
+    ));
+  }
 
   return (
     <div className="w-4/5 mx-auto">
@@ -13,13 +23,7 @@ const TodoContainer = () => {
         <TodoFilter />
       </div>
       <div className="bg-primary-gradient rounded-lg shadow-xl border border-slate-600 p-3 space-y-3">
-        {filteredTodos.length > 0 ? (
-          filteredTodos.map((todo) => <TodoCard key={todo.id} todo={todo} />)
-        ) : (
-          <p className="text-center text-red-600">
-            No tasks available for the selected priority.
-          </p>
-        )}
+        {content}
       </div>
     </div>
   );
