@@ -1,6 +1,15 @@
+import { setSearchKeyword } from "../../redux/features/books/booksSlice";
+import { useAppDispatch } from "../../redux/hook";
+
 const Search = () => {
+  const dispatch = useAppDispatch();
+  const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const value = (event.target as HTMLFormElement).search.value;
+    dispatch(setSearchKeyword(value));
+  };
   return (
-    <form className="flex items-center">
+    <form className="flex items-center" onSubmit={handleSearch}>
       <div className="group relative rounded-md bg-white">
         <svg
           width="20"
@@ -19,6 +28,7 @@ const Search = () => {
           placeholder="Filter books..."
           className="search"
           id="lws-search"
+          name="search"
         />
       </div>
     </form>
