@@ -1,6 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IBook } from "../../../types/TBook";
-import store from "../../store";
 
 const apiSlice = createApi({
   reducerPath: "api",
@@ -59,8 +58,5 @@ export const {
   useEditBookMutation,
   useDeleteBookMutation,
 } = apiSlice;
-
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
 
 export default apiSlice;
