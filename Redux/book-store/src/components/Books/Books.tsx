@@ -11,16 +11,19 @@ const Books = () => {
   console.log(bookType, searchKey);
 
   let content = null;
+
   if (isLoading) content = <p>Loading...</p>;
+
   if (!isLoading && isError)
     content = <Error message="There is an error occurred!" />;
 
-  if (!isLoading && !isError && books.length === 0) {
+  if (!isLoading && !isError && books?.length === 0) {
     content = <p>Books not found!</p>;
   }
-  if (!isLoading && !isError && books.length) {
+  if (!isLoading && !isError && books?.length) {
     content = books
-      .filter((book) => (bookType === "featured" ? book.featured : book))
+      .filter((book: IBook) => (bookType === "featured" ? book.featured : true))
+      .filter((book: IBook) => book?.name?.toLowerCase()?.includes(searchKey))
       .map((book: IBook) => <Book book={book} />);
   }
   return (

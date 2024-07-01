@@ -1,24 +1,21 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { IBook } from "../../../types/TBook";
+import store from "../../store";
 
 const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:9000",
   }),
-
   tagTypes: ["Books", "Book"],
-
   endpoints: (builder) => ({
-    getBooks: builder.query({
-      query: () => {
-        return {
-          url: `/books`,
-          method: "GET",
-        };
-      },
+    getBooks: builder.query<IBook[], void>({
+      query: () => ({
+        url: `/books`,
+        method: "GET",
+      }),
       providesTags: ["Books"],
     }),
-
     getBook: builder.query({
       query: (id) => ({
         url: `/books/${id}`,
@@ -26,7 +23,6 @@ const apiSlice = createApi({
       }),
       providesTags: (_result, _error, arg) => [{ type: "Book", id: arg }],
     }),
-
     addBook: builder.mutation({
       query: (data) => ({
         url: "/books",
@@ -35,14 +31,12 @@ const apiSlice = createApi({
       }),
       invalidatesTags: ["Books"],
     }),
-
     editBook: builder.mutation({
       query: ({ id, data }) => ({
         url: `/books/${id}`,
         method: "PATCH",
         body: data,
       }),
-
       invalidatesTags: (_result, _error, arg) => [
         "Books",
         { type: "Book", id: arg.id },
@@ -65,5 +59,8 @@ export const {
   useEditBookMutation,
   useDeleteBookMutation,
 } = apiSlice;
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 
 export default apiSlice;
