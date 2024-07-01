@@ -4,6 +4,7 @@ import editImage from "../../assets/edit.svg";
 
 export default function Description({ video }) {
   const { id, title, date, description } = video;
+
   return (
     <div>
       <h1 className="text-lg font-semibold tracking-tight text-slate-800">
