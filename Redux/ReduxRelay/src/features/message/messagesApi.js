@@ -1,11 +1,14 @@
-import { createSlice } from "@reduxjs/toolkit";
+import apiSlice from "../api/apiSlice";
 
-const initialState = {};
-const messagesApi = createSlice({
-  name: "messages",
-  initialState,
-  reducers: {},
+export const messagesApi = apiSlice.injectEndpoints({
+  endpoints: (builder) => ({
+    getMessages: builder.query({
+      query: (id) => ({
+        url: `/messages?conversationId=${id}&_sort=timestamp&_order=desc&&page=1&_limit=5`,
+        method: "GET",
+      }),
+    }),
+  }),
 });
 
-export const {} = messagesApi.actions;
-export const messagesReducer = messagesApi.reducer;
+export const { useGetMessagesQuery } = messagesApi;
