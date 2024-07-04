@@ -9,12 +9,12 @@ const Login = () => {
     useLoginMutation();
   const { handleSubmit, register } = useForm();
 
-  const handleLogin = (data) => {
-    console.log(data);
+  const handleLogin = async (data) => {
     const userInfo = {
       id: data.id,
       password: data.password,
     };
+
     loginMutation(userInfo);
   };
 
@@ -106,6 +106,7 @@ const Login = () => {
               className="input_field"
               id="password"
               required
+              defaultValue={"Mdun@626456"}
               {...register("password")}
             />
           </div>
