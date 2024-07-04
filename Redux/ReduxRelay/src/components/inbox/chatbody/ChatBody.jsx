@@ -18,21 +18,15 @@ const ChatBody = () => {
   } else if (!isLoading && !isError && messages.length === 0) {
     content = <div>No Messages Found</div>;
   } else {
-    content = <Messages messages={messages} />;
-  }
-  return (
-    <div className="w-full lg:col-span-2 lg:block">
+    content = (
       <div className="w-full grid conversation-row-grid">
-        <ChatHead
-          avatar="https://cdn.pixabay.com/photo/2018/01/15/07/51/woman-3083383__340.jpg"
-          name="Akash Ahmed"
-        />
-        <>{content}</>
+        <ChatHead messages={messages[0]} />
+        <Messages messages={messages} />
         <Options />
-        {/* <Blank /> */}
       </div>
-    </div>
-  );
+    );
+  }
+  return <div className="w-full lg:col-span-2 lg:block">{content}</div>;
 };
 
 export default ChatBody;
