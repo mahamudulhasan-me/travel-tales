@@ -9,7 +9,7 @@ const Login = () => {
     useLoginMutation();
   const { handleSubmit, register } = useForm();
 
-  const handleLogin = async (data) => {
+  const handleLogin = async (data: any) => {
     const userInfo = {
       id: data.id,
       password: data.password,
