@@ -1,29 +1,52 @@
-import { Spin } from "antd";
-import { useForm } from "react-hook-form";
+import { Button } from "antd";
+import { useEffect } from "react";
+import { FieldValues, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import logo from "../assets/images/logo.png";
-import MyAlert from "../components/ui/alert/Alert";
 import { useLoginMutation } from "../redux/features/auth/authApi";
+import { useAppSelector } from "../redux/hooks";
+import { userSelector } from "../redux/store";
 import "../styles/Login.css";
+import Toast from "../utils/Toast";
+
+export interface IUser {
+  userId: string;
+  role: string;
+  iat: number;
+  exp: number;
+}
 const Login = () => {
   const [loginMutation, { isLoading, isError, error, isSuccess }] =
     useLoginMutation();
   const { handleSubmit, register } = useForm();
+  const user: IUser = useAppSelector(userSelector);
+  const navigate = useNavigate();
 
-  const handleLogin = async (data: any) => {
+  const handleLogin = async (data: FieldValues) => {
     const userInfo = {
       id: data.id,
       password: data.password,
     };
-
     loginMutation(userInfo);
   };
 
+  useEffect(() => {
+    if (isSuccess && user?.role) {
+      navigate(`/${user?.role}`);
+      Toast.fire({
+        icon: "success",
+        title: "Signed in successfully",
+      });
+    } else if (isError) {
+      Toast.fire({
+        icon: "error",
+        title: `${(error as any).data.message}`,
+      });
+    }
+  }, [isSuccess, navigate, user, isError, error]);
+
   return (
     <>
-      {isError && (
-        <MyAlert message={(error as any)?.data?.message} type="error" />
-      )}
-      {isSuccess && <MyAlert message={"Login Successful"} type="success" />}
       <div className="w-screen h-screen flex items-center justify-center">
         <form className="form_container" onSubmit={handleSubmit(handleLogin)}>
           <div className="logo_container">
@@ -110,16 +133,16 @@ const Login = () => {
               {...register("password")}
             />
           </div>
-          <button
+          <Button
+            type="primary"
             disabled={isLoading}
+            loading={isLoading}
             title="Sign In"
-            type="submit"
+            htmlType="submit"
             className="sign-in_btn"
           >
-            <span>
-              {isLoading ? <Spin style={{ color: "white" }} /> : "Sign In"}
-            </span>
-          </button>
+            Sign In
+          </Button>
 
           <div className="separator">
             <hr className="line" />

@@ -7,6 +7,7 @@ import {
   REHYDRATE,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import { IUser } from "../pages/Login";
 import baseApi from "./api/baseApi";
 import { authReducer } from "./features/auth/authSlice";
 
@@ -38,4 +39,4 @@ export type AppDispatch = typeof store.dispatch;
 
 export const accessTokenSelector = (state: RootState) => state.auth.token;
 
-export const userSelector = (state: RootState) => state.auth.user;
+export const userSelector = (state: RootState) => state.auth.user as IUser;
