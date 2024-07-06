@@ -15,6 +15,18 @@ const baseQuery = fetchBaseQuery({
 
 const baseQueryWithRefreshToken = async (arg, api, extraOptions) => {
   const result = await baseQuery(arg, api, extraOptions);
+  console.log({ arg });
+
+  // if (result?.error?.status === 401) {
+  //   const refreshResult = await baseQuery("/auth/refresh", api, extraOptions);
+  //   if (refreshResult?.data) {
+  //     api.dispatch(userLoggedIn(refreshResult.data));
+  //     return baseQuery(arg, api, extraOptions);
+  //   }
+  // }
+  console.log(result);
+
+  return result;
 };
 
 const baseApi = createApi({
