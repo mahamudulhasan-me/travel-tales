@@ -1,4 +1,13 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import {
+  BaseQueryApi,
+  BaseQueryFn,
+  createApi,
+  DefinitionType,
+  FetchArgs,
+  fetchBaseQuery,
+} from "@reduxjs/toolkit/query/react";
+import { jwtDecode } from "jwt-decode";
+import { userLoggedIn, userLoggedOut } from "../features/auth/authSlice";
 import { RootState } from "../store";
 
 const baseQuery = fetchBaseQuery({
@@ -13,18 +22,36 @@ const baseQuery = fetchBaseQuery({
   },
 });
 
-const baseQueryWithRefreshToken = async (arg, api, extraOptions) => {
-  const result = await baseQuery(arg, api, extraOptions);
-  console.log({ arg });
+const baseQueryWithRefreshToken: BaseQueryFn<
+  FetchArgs,
+  BaseQueryApi,
+  DefinitionType
+> = async (arg, api, extraOptions): Promise<any> => {
+  let result = await baseQuery(arg, api, extraOptions);
 
-  // if (result?.error?.status === 401) {
-  //   const refreshResult = await baseQuery("/auth/refresh", api, extraOptions);
-  //   if (refreshResult?.data) {
-  //     api.dispatch(userLoggedIn(refreshResult.data));
-  //     return baseQuery(arg, api, extraOptions);
-  //   }
-  // }
-  console.log(result);
+  if (result?.error?.status === 401) {
+    const res = await fetch("http://localhost:5000/api/v1/auth/refresh-token", {
+      method: "POST",
+      credentials: "include",
+    });
+
+    const { data } = await res.json();
+
+    if (data?.accessToken) {
+      const decodedUserInfo = jwtDecode(data?.accessToken);
+
+      api.dispatch(
+        userLoggedIn({
+          user: decodedUserInfo,
+          token: data?.accessToken,
+        })
+      );
+
+      result = await baseQuery(arg, api, extraOptions);
+    } else {
+      api.dispatch(userLoggedOut());
+    }
+  }
 
   return result;
 };
