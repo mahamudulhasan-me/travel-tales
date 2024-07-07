@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { conversationsApi } from "../../features/conversation/conversationsApi";
+import {
+  conversationsApi,
+  useCreateConversationMutation,
+  useUpdateConversationMutation,
+} from "../../features/conversation/conversationsApi";
 import { useGetUserQuery } from "../../features/user/usersApi";
 import isValidateEmail from "../../utils/isValidEmail";
 import Error from "../ui/Error";
@@ -10,13 +14,16 @@ export default function Modal({ open, control }) {
   const [message, setMessage] = useState("");
   const [userCheck, setUserCheck] = useState(false);
   const [conversation, setConversation] = useState(undefined);
-  const { email: myEmail } = useSelector((state) => state.auth.user);
+  const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const { email: myEmail } = user || {};
 
   const { data: participant } = useGetUserQuery(to, {
     skip: !userCheck,
   });
 
+  const [updateConversation] = useUpdateConversationMutation();
+  const [createConversation] = useCreateConversationMutation();
   const debounceHandler = (fn, delay) => {
     let timeoutId;
     return (...args) => {
@@ -26,7 +33,7 @@ export default function Modal({ open, control }) {
       }, delay);
     };
   };
-  console.log(userCheck);
+
   const doSearch = (value) => {
     if (isValidateEmail(value)) {
       setUserCheck(true);
@@ -53,9 +60,26 @@ export default function Modal({ open, control }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("submitted");
+    if (conversation.length > 0) {
+      updateConversation({
+        id: conversation[0].id,
+        data: {
+          message,
+          participant: `${myEmail}-${participant[0].email}`,
+          users: [user, participant[0]],
+          timestamp: new Date().getTime(),
+        },
+      });
+    } else if (conversation.length === 0) {
+      createConversation({
+        message,
+        participant: `${myEmail}-${participant[0].email}`,
+        users: [user, participant[0]],
+        timestamp: new Date().getTime(),
+      });
+    }
   };
-
+  console.log(conversation);
   return (
     open && (
       <>
