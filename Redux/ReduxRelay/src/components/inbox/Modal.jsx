@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { conversationsApi } from "../../features/conversation/conversationsApi";
 import { useGetUserQuery } from "../../features/user/usersApi";
 import isValidateEmail from "../../utils/isValidEmail";
 import Error from "../ui/Error";
@@ -7,8 +9,11 @@ export default function Modal({ open, control }) {
   const [to, setTo] = useState("");
   const [message, setMessage] = useState("");
   const [userCheck, setUserCheck] = useState(false);
+  const [conversation, setConversation] = useState(undefined);
+  const { email: myEmail } = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
 
-  const { data: participant, isLoading } = useGetUserQuery(to, {
+  const { data: participant } = useGetUserQuery(to, {
     skip: !userCheck,
   });
 
@@ -31,6 +36,26 @@ export default function Modal({ open, control }) {
 
   const handleEmailSearch = debounceHandler(doSearch, 500);
 
+  useEffect(() => {
+    if (participant?.length > 0 && participant[0].email !== myEmail) {
+      dispatch(
+        conversationsApi.endpoints.getConversation.initiate({
+          userEmail: myEmail,
+          partnerEmail: to,
+        })
+      )
+        .unwrap()
+        .then((data) => setConversation(data));
+    } else {
+      setConversation(undefined);
+    }
+  }, [participant]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("submitted");
+  };
+
   return (
     open && (
       <>
@@ -42,7 +67,7 @@ export default function Modal({ open, control }) {
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
             Send message
           </h2>
-          <form className="mt-8 space-y-6" method="POST">
+          <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
             <div className="rounded-md shadow-sm -space-y-px">
               <div>
                 <label htmlFor="to" className="sr-only">
@@ -78,7 +103,10 @@ export default function Modal({ open, control }) {
 
             <div>
               <button
-                disabled={isLoading}
+                disabled={
+                  conversation === undefined ||
+                  (participant?.length > 0 && participant[0].email === myEmail)
+                }
                 type="submit"
                 className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-violet-600 hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500"
               >
@@ -88,6 +116,9 @@ export default function Modal({ open, control }) {
 
             {participant?.length === 0 && (
               <Error message="This user does not exist" />
+            )}
+            {participant?.length > 0 && participant[0].email === myEmail && (
+              <Error message="You can not send message yourself!" />
             )}
           </form>
         </div>
