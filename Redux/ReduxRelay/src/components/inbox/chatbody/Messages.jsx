@@ -11,10 +11,10 @@ export default function Messages({ messages }) {
           .sort((a, b) => a.timestamp - b.timestamp)
           .map((message) => {
             const { sender } = message || {};
-            const justify = sender.email !== user.email ? "end" : "start";
+            const justify = sender.email !== user.email ? "start" : "end";
             return (
               <Message
-                key={message._id}
+                key={message.id}
                 justify={justify}
                 message={message.message}
               />

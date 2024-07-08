@@ -22,8 +22,10 @@ export default function Modal({ open, control }) {
     skip: !userCheck,
   });
 
-  const [updateConversation] = useUpdateConversationMutation();
-  const [createConversation] = useCreateConversationMutation();
+  const [createConversation, { isSuccess: isCreateConversationSuccess }] =
+    useCreateConversationMutation();
+  const [updateConversation, { isSuccess: isUpdateConversationSuccess }] =
+    useUpdateConversationMutation();
   const debounceHandler = (fn, delay) => {
     let timeoutId;
     return (...args) => {
@@ -44,6 +46,12 @@ export default function Modal({ open, control }) {
   const handleEmailSearch = debounceHandler(doSearch, 500);
 
   useEffect(() => {
+    if (isCreateConversationSuccess || isUpdateConversationSuccess) {
+      control();
+    }
+  }, [isCreateConversationSuccess, isUpdateConversationSuccess]);
+
+  useEffect(() => {
     if (participant?.length > 0 && participant[0].email !== myEmail) {
       dispatch(
         conversationsApi.endpoints.getConversation.initiate({
@@ -60,26 +68,30 @@ export default function Modal({ open, control }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (conversation.length > 0) {
+    if (conversation?.length > 0) {
       updateConversation({
         id: conversation[0].id,
+        sender: myEmail,
         data: {
           message,
-          participant: `${myEmail}-${participant[0].email}`,
+          participants: `${myEmail}-${participant[0].email}`,
           users: [user, participant[0]],
           timestamp: new Date().getTime(),
         },
       });
-    } else if (conversation.length === 0) {
+    } else if (conversation?.length === 0) {
       createConversation({
-        message,
-        participant: `${myEmail}-${participant[0].email}`,
-        users: [user, participant[0]],
-        timestamp: new Date().getTime(),
+        sender: myEmail,
+        data: {
+          message,
+          participants: `${myEmail}-${participant[0].email}`,
+          users: [user, participant[0]],
+          timestamp: new Date().getTime(),
+        },
       });
     }
   };
-  console.log(conversation);
+
   return (
     open && (
       <>

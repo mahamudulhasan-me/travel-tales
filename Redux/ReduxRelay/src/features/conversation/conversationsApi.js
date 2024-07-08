@@ -1,4 +1,5 @@
 import apiSlice from "../api/apiSlice";
+import { messagesApi } from "../message/messagesApi";
 
 export const conversationsApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -16,7 +17,7 @@ export const conversationsApi = apiSlice.injectEndpoints({
     }),
 
     createConversation: builder.mutation({
-      query: (data) => ({
+      query: ({ sender, data }) => ({
         url: "/conversations",
         method: "POST",
         body: data,
@@ -24,11 +25,29 @@ export const conversationsApi = apiSlice.injectEndpoints({
     }),
 
     updateConversation: builder.mutation({
-      query: ({ id, data }) => ({
+      query: ({ id, sender, data }) => ({
         url: `/conversations/${id}`,
         method: "PATCH",
         body: data,
       }),
+      async onQueryStarted(args, { queryFulfilled, dispatch }) {
+        const { data: conversation } = await queryFulfilled;
+        if (conversation?.id) {
+          const users = args.data.users;
+          const sender = users.find((user) => user.email === args.sender);
+          const receiver = users.find((user) => user.email !== args.sender);
+
+          dispatch(
+            messagesApi.endpoints.addMessage.initiate({
+              conversationId: conversation.id,
+              sender,
+              receiver,
+              message: args.data.message,
+              timestamp: args.data.timestamp,
+            })
+          );
+        }
+      },
     }),
   }),
 });
