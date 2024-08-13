@@ -10,7 +10,7 @@ const Logout = () => {
       onClick={() => dispatch(userLoggedOut())}
       type="primary"
       icon={<LogoutOutlined />}
-      className="mt-10 w-full"
+      className="mt-10 l absolute bottom-5 w-4/5 left-4"
     >
       Logout
     </Button>

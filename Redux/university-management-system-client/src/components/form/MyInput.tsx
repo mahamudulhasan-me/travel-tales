@@ -1,4 +1,4 @@
-import { Input } from "antd";
+import { Form, Input } from "antd";
 import { Controller } from "react-hook-form";
 
 interface IMyInputProps {
@@ -6,14 +6,18 @@ interface IMyInputProps {
   type: string;
   label?: string;
 }
-const MyInput = ({ name, type }: IMyInputProps) => {
+const MyInput = ({ name, type, label }: IMyInputProps) => {
   return (
-    <div>
+    <>
       <Controller
         name={name}
-        render={({ field }) => <Input {...field} type={type} id={name} />}
+        render={({ field }) => (
+          <Form.Item label={label}>
+            <Input {...field} type={type} id={name} />
+          </Form.Item>
+        )}
       />
-    </div>
+    </>
   );
 };
 

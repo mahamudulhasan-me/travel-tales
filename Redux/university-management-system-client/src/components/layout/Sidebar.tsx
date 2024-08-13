@@ -35,6 +35,7 @@ const Sidebar = () => {
   return (
     <Sider
       breakpoint="lg"
+      style={{ height: "100vh", width: "10px" }}
       collapsedWidth="0"
       onBreakpoint={(broken) => {
         console.log(broken);
@@ -42,7 +43,6 @@ const Sidebar = () => {
       onCollapse={(collapsed, type) => {
         console.log(collapsed, type);
       }}
-      className="flex flex-col items-center justify-start h-screen pt-10  bg-slate-800"
     >
       <h1 className="text-3xl text-center text-slate-200 py-3 font-semibold">
         PH Uni
