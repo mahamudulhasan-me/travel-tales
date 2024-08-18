@@ -1,22 +1,27 @@
 import { Form, Select } from "antd";
+import { Controller } from "react-hook-form";
 
-const handleChange = (value: string) => {
-  console.log(`selected ${value}`);
-};
+interface IMySelectProps {
+  name: string;
+  label: string;
+  options: { value: string | number; label: string | number }[];
+}
 
-const MySelect = ({ label }: { label: string }) => (
-  <Form.Item label={label}>
-    <Select
-      defaultValue="lucy"
-      style={{ width: "100%" }}
-      onChange={handleChange}
-      options={[
-        { value: "jack", label: "Jack" },
-        { value: "lucy", label: "Lucy" },
-        { value: "disabled", label: "Disabled" },
-      ]}
-    />
-  </Form.Item>
+const MySelect = ({ name, label, options }: IMySelectProps) => (
+  <Controller
+    name={name}
+    render={({ field, fieldState: { error } }) => (
+      <Form.Item label={label}>
+        <Select
+          // defaultValue={options[0]?.value}
+          style={{ width: "100%" }}
+          {...field}
+          options={options}
+        />
+        {error && <p className="text-rose-600 mt-0.5">{error?.message}</p>}
+      </Form.Item>
+    )}
+  />
 );
 
 export default MySelect;

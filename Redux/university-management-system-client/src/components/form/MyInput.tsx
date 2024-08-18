@@ -11,9 +11,10 @@ const MyInput = ({ name, type, label }: IMyInputProps) => {
     <>
       <Controller
         name={name}
-        render={({ field }) => (
+        render={({ field, formState: { errors } }) => (
           <Form.Item label={label}>
             <Input {...field} type={type} id={name} />
+            {errors && <p className="text-red-500">{"errors?.message"}</p>}
           </Form.Item>
         )}
       />

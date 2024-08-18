@@ -1,13 +1,24 @@
 import { PlusOutlined } from "@ant-design/icons";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Modal } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
+import { monthOptions } from "../../assets/constants/global";
+import {
+  semesterNameOptions,
+  yearOptions,
+} from "../../assets/constants/semester";
+import { useCreateAcademicSemesterMutation } from "../../redux/features/admin/academicManagement.api";
+import { zAcademicSemesterSchema } from "../../schemas/semester.schema";
+import { IError } from "../../types/global";
+import Toast from "../../utils/Toast";
 import MyForm from "../form/MyForm";
-import MyInput from "../form/MyInput";
 import MySelect from "../form/MySelect";
 
 const CreateAcademicSemesterModal: React.FC = () => {
   const [open, setOpen] = useState(false);
+  const [createAcademicSemester, { isError, isLoading, isSuccess, error }] =
+    useCreateAcademicSemesterMutation();
 
   const showModal = () => {
     setOpen(true);
@@ -17,11 +28,42 @@ const CreateAcademicSemesterModal: React.FC = () => {
     setOpen(false);
   };
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data);
-    // Handle form submission logic here
-    handleCancel();
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const { name, year, startMonth, endMonth } = data;
+    const nameByCode = semesterNameOptions[Number(data.name) - 1].label;
+    const semesterInfo = {
+      name: nameByCode,
+      code: name,
+      year,
+      startMonth,
+      endMonth,
+    };
+    try {
+      await createAcademicSemester(semesterInfo);
+    } catch (error) {
+      Toast.fire({
+        icon: "error",
+        title: "Something went wrong",
+      });
+    }
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      handleCancel();
+      Toast.fire({
+        icon: "success",
+        title: "Academic semester created successfully",
+      });
+    }
+
+    if (isError) {
+      Toast.fire({
+        icon: "error",
+        title: `${(error as IError).data.message}` || "Something went wrong",
+      });
+    }
+  }, [isSuccess, isError, error]);
 
   return (
     <>
@@ -34,13 +76,24 @@ const CreateAcademicSemesterModal: React.FC = () => {
         onCancel={handleCancel}
         footer={null} // We will handle the footer buttons manually
       >
-        <MyForm onSubmit={onSubmit}>
-          <MySelect label="Name" />
-          <MyInput name="year" type="text" label="Name" />
+        <MyForm
+          onSubmit={onSubmit}
+          resolver={zodResolver(zAcademicSemesterSchema)}
+        >
+          <MySelect label="Name" name="name" options={semesterNameOptions} />
+          <MySelect label="Year" name="year" options={yearOptions} />
+          <MySelect
+            label="Start Month"
+            name="startMonth"
+            options={monthOptions}
+          />
+          <MySelect label="End Month" name="endMonth" options={monthOptions} />
+
+          {/* <MyInput name="year" type="text" label="Name" /> */}
 
           <footer className="flex justify-end gap-2 mt-2">
             <Button onClick={handleCancel}>Cancel</Button>
-            <Button htmlType="submit" type="primary">
+            <Button htmlType="submit" type="primary" loading={isLoading}>
               Submit
             </Button>
           </footer>
