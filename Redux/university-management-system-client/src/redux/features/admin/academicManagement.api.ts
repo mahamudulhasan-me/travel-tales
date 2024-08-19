@@ -1,13 +1,23 @@
+import { IQueryParams } from "../../../types";
 import baseApi from "../../api/baseApi";
 
 const academicManagementApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // get academic semesters
     getAcademicSemesters: builder.query({
-      query: () => ({
-        url: "/academic-semesters",
-        method: "GET",
-      }),
+      query: (args) => {
+        const params = new URLSearchParams();
+        if (args) {
+          args.forEach((item: IQueryParams) =>
+            params.append(item.name, item.value as string)
+          );
+        }
+        return {
+          url: "/academic-semesters",
+          method: "GET",
+          params,
+        };
+      },
     }),
     // create a academic semester
     createAcademicSemester: builder.mutation({

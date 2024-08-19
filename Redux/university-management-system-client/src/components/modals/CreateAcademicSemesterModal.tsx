@@ -10,7 +10,7 @@ import {
 } from "../../assets/constants/semester";
 import { useCreateAcademicSemesterMutation } from "../../redux/features/admin/academicManagement.api";
 import { zAcademicSemesterSchema } from "../../schemas/semester.schema";
-import { IError } from "../../types/global";
+import { IError } from "../../types/global.type";
 import Toast from "../../utils/Toast";
 import MyForm from "../form/MyForm";
 import MySelect from "../form/MySelect";
