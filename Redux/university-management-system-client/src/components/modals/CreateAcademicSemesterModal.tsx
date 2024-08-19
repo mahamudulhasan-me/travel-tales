@@ -9,6 +9,8 @@ import {
   yearOptions,
 } from "../../assets/constants/semester";
 import { useCreateAcademicSemesterMutation } from "../../redux/features/admin/academicManagement.api";
+import { useAppDispatch } from "../../redux/hooks";
+import { isSubmitted } from "../../redux/utils/utils";
 import { zAcademicSemesterSchema } from "../../schemas/semester.schema";
 import { IError } from "../../types/global.type";
 import Toast from "../../utils/Toast";
@@ -17,6 +19,8 @@ import MySelect from "../form/MySelect";
 
 const CreateAcademicSemesterModal: React.FC = () => {
   const [open, setOpen] = useState(false);
+
+  const dispatch = useAppDispatch();
   const [createAcademicSemester, { isError, isLoading, isSuccess, error }] =
     useCreateAcademicSemesterMutation();
 
@@ -39,6 +43,7 @@ const CreateAcademicSemesterModal: React.FC = () => {
       endMonth,
     };
     try {
+      dispatch(isSubmitted(false));
       await createAcademicSemester(semesterInfo);
     } catch (error) {
       Toast.fire({
@@ -53,8 +58,9 @@ const CreateAcademicSemesterModal: React.FC = () => {
       handleCancel();
       Toast.fire({
         icon: "success",
-        title: "Academic semester created successfully",
+        title: "Semester created successfully",
       });
+      dispatch(isSubmitted(true));
     }
 
     if (isError) {
@@ -63,7 +69,7 @@ const CreateAcademicSemesterModal: React.FC = () => {
         title: `${(error as IError).data.message}` || "Something went wrong",
       });
     }
-  }, [isSuccess, isError, error]);
+  }, [isSuccess, isError, error, dispatch]);
 
   return (
     <>
