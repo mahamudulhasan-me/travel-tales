@@ -103,6 +103,7 @@ const AcademicSemesterTable: React.FC = () => {
 
   return (
     <Table
+      className="h-full"
       columns={columns}
       onChange={onChange}
       dataSource={data?.data}

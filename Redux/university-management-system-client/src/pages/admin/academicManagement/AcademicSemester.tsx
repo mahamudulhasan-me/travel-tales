@@ -3,9 +3,9 @@ import AcademicSemesterTable from "../../../components/tables/AcademicSemesterTa
 
 const AcademicSemester = () => {
   return (
-    <div>
-      <div className="flex justify-between items-center mb-5  rounded-md  bg-gray-200 p-1">
-        <h5 className="text-2xl pl-1">Academic semester</h5>
+    <div className="h-screen overflow-auto p-10">
+      <div className="flex justify-between items-center mb-5  rounded-md  bg-gray-200">
+        <h5 className="text-2xl">Academic semester</h5>
         <CreateAcademicSemesterModal />
       </div>
       <AcademicSemesterTable />
