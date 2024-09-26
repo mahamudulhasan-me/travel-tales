@@ -11,7 +11,7 @@ const RecentPosts = async () => {
   return (
     <Container>
       <h1 className={title()}>Recent Posts </h1>
-      {posts?.map((post) => <div key={post.id}>{post.title}</div>)}
+      <>{posts?.map((post) => <div key={post.id}>{post.title}</div>)}</>
     </Container>
   );
 };
