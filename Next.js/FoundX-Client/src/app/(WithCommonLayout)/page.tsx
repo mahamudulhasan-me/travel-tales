@@ -1,9 +1,11 @@
-import { title } from "@/src/components/primitives";
+import HeroLanding from "@/src/components/home/HeroLanding";
+import RecentPosts from "@/src/components/home/RecentPosts";
 
 const page = () => {
   return (
     <div>
-      <h1 className={title()}>About</h1>
+      <HeroLanding />
+      <RecentPosts />
     </div>
   );
 };
