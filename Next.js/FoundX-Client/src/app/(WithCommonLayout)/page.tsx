@@ -1,15 +1,11 @@
-import { Suspense } from "react";
+import { title } from "@/src/components/primitives";
 
-import HeroLanding from "@/src/components/home/HeroLanding";
-import RecentPosts from "@/src/components/home/RecentPosts";
-
-export default function Home() {
+const page = () => {
   return (
-    <section>
-      <HeroLanding />
-      <Suspense fallback="Loading...">
-        <RecentPosts />
-      </Suspense>
-    </section>
+    <div>
+      <h1 className={title()}>About</h1>
+    </div>
   );
-}
+};
+
+export default page;
