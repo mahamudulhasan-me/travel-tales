@@ -19,7 +19,7 @@ const navItems = [
 ];
 const Navbar = () => {
   return (
-    <nav className="bg-white py-2 shadow-[rgba(50,_50,_105,_0.15)_0px_2px_5px_0px,_rgba(0,_0,_0,_0.05)_0px_1px_1px_0px]">
+    <nav className="bg-white  shadow-[rgba(50,_50,_105,_0.15)_0px_2px_5px_0px,_rgba(0,_0,_0,_0.05)_0px_1px_1px_0px]">
       <div className="container mx-auto px-5 flex items-center justify-between">
         <aside className="flex items-center justify-start gap-x-2">
           <div className="flex items-center">
@@ -46,17 +46,17 @@ const Navbar = () => {
               <SignInFormModal />
             </li>
 
-            <li className="size-10 rounded-sm flex justify-center items-center bg-gray-200 cursor-pointer ">
-              <MessageSquareText size={20} strokeWidth={1} />
+            <li className="size-9 rounded-sm flex justify-center items-center bg-gray-200 cursor-pointer ">
+              <MessageSquareText size={18} strokeWidth={1} />
             </li>
-            <li className="size-10 rounded-sm flex justify-center items-center bg-gray-200 cursor-pointer ">
-              <Settings size={20} strokeWidth={1} />
+            <li className="size-9 rounded-sm flex justify-center items-center bg-gray-200 cursor-pointer ">
+              <Settings size={18} strokeWidth={1} />
             </li>
-            <li className="size-10 rounded-sm flex justify-center items-center bg-gray-200 cursor-pointer relative">
-              <Bell strokeWidth={1} size={20} />
+            <li className="size-9 rounded-sm flex justify-center items-center bg-gray-200 cursor-pointer relative">
+              <Bell strokeWidth={1} size={18} />
               <span className="absolute top-0 right-0 inline-block w-2 h-2 transition-all duration-500 ease-in-out bg-red-700 rounded"></span>
             </li>
-            <li className="size-10 rounded-sm flex justify-center items-center bg-gray-200 cursor-pointer">
+            <li className="size-9 rounded-sm flex justify-center items-center bg-gray-200 cursor-pointer">
               <>
                 <Image
                   src={"/icons/people.png"}
