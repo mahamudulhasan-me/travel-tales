@@ -1,4 +1,4 @@
-import BtnSignIn from "@/components/ui/buttons/BtnSignIn";
+import { SignInFormModal } from "@/app/_authentication/SignInFormModal";
 import Image from "next/image";
 import Link from "next/link";
 const navItems = [
@@ -40,7 +40,7 @@ const Navbar = () => {
               </li>
             ))}
             <li>
-              <BtnSignIn />
+              <SignInFormModal />
             </li>
           </ul>
         </aside>
