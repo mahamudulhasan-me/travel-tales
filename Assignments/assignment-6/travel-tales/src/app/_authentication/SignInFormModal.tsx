@@ -35,23 +35,28 @@ export function SignInFormModal({ explore }: { explore?: boolean }) {
           </DialogTitle>
           {showSignUpForm ? (
             <DialogDescription className="text-center text-gray-700">
-              Already have an account?{" "}
-              <span
-                className="text-primary cursor-pointer"
-                onClick={() => setShowSignUpForm(!showSignUpForm)}
-              >
-                Sign in here.
-              </span>
+              <Label>
+                Already have an account?{" "}
+                <span
+                  className="text-primary cursor-pointer"
+                  onClick={() => setShowSignUpForm(!showSignUpForm)}
+                >
+                  Sign in here.
+                </span>
+              </Label>
             </DialogDescription>
           ) : (
             <DialogDescription className="text-center text-gray-700">
-              Don&apos;t have an account?{" "}
-              <span
-                className="text-primary cursor-pointer"
-                onClick={() => setShowSignUpForm(!showSignUpForm)}
-              >
-                Click here to sign up.
-              </span>
+              <Label>
+                {" "}
+                Don&apos;t have an account?{" "}
+                <span
+                  className="text-primary cursor-pointer"
+                  onClick={() => setShowSignUpForm(!showSignUpForm)}
+                >
+                  Click here to sign up.
+                </span>
+              </Label>
             </DialogDescription>
           )}
         </DialogHeader>

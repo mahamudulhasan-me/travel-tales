@@ -1,6 +1,6 @@
 import Banner from "@/components/home/Banner";
 
 export default function Home() {
-  const login = true;
+  const login = false;
   return login && <Banner />;
 }

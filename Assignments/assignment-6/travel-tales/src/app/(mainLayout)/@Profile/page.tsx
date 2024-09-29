@@ -1,5 +1,7 @@
 const page = () => {
-  return <div>this is profile</div>;
+  return (
+    <div className="bg-white common-shadow rounded-md">this is profile</div>
+  );
 };
 
 export default page;
