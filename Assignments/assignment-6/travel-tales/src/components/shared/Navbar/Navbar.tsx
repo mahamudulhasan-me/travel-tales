@@ -19,10 +19,10 @@ const navItems = [
 ];
 const Navbar = () => {
   return (
-    <nav className="bg-white sticky top-0 shadow-[rgba(50,_50,_105,_0.15)_0px_2px_5px_0px,_rgba(0,_0,_0,_0.05)_0px_1px_1px_0px]">
+    <nav className="bg-white z-50 sticky top-0 shadow-[rgba(50,_50,_105,_0.15)_0px_2px_5px_0px,_rgba(0,_0,_0,_0.05)_0px_1px_1px_0px]">
       <div className="container mx-auto px-5 flex items-center justify-between">
         <aside className="flex items-center justify-start gap-x-2">
-          <div className="flex items-center">
+          <Link href={"/"} className="flex items-center">
             <Image
               src={"/images/logo.png"}
               width={56}
@@ -30,7 +30,7 @@ const Navbar = () => {
               alt="Travel tales logo"
             />
             <h2 className="uppercase font-semibold text-xl">Travel Tales</h2>
-          </div>
+          </Link>
           <GlobalSearch />
         </aside>
         <aside>

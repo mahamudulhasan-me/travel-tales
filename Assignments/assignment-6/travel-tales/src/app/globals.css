@@ -35,6 +35,41 @@ body {
     0px 0px 0px 1px rgba(25, 28, 33, 0.08);
 }
 
+.container-mini {
+  width: 80%;
+  margin: 0 auto; /* Center align */
+}
+
+@media (min-width: 640px) {
+  .container-mini {
+    max-width: 512px; /* 80% of 640px */
+  }
+}
+
+@media (min-width: 768px) {
+  .container-mini {
+    max-width: 614px; /* 80% of 768px */
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-mini {
+    max-width: 819px; /* 80% of 1024px */
+  }
+}
+
+@media (min-width: 1280px) {
+  .container-mini {
+    max-width: 1024px; /* 80% of 1280px */
+  }
+}
+
+@media (min-width: 1536px) {
+  .container-mini {
+    max-width: 1229px; /* 80% of 1536px */
+  }
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

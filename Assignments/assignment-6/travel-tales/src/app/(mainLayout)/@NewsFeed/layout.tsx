@@ -11,6 +11,7 @@ const NewsFeedLayout = ({
     <div className="">
       {PostWriting}
       {Post}
+      {Post}
     </div>
   );
 };
