@@ -5,12 +5,12 @@ import {
   DialogContainer,
   DialogContent,
   DialogImage,
-  DialogSubtitle,
   DialogTitle,
   DialogTrigger,
 } from "@/components/core/Dialog";
 import { ScrollArea } from "@/components/website/scroll-area";
 import { Image, Smile, SquarePlus, Video } from "lucide-react";
+import PostTextArea from "./PostTextArea";
 
 export default function DialogBasicTwo() {
   return (
@@ -37,7 +37,7 @@ export default function DialogBasicTwo() {
             }}
           />
           <div className="w-full flex items-center justify-between">
-            <DialogTitle className="text-[10px] font-medium text-black sm:text-xs">
+            <DialogTitle className="text-[10px] cursor-text font-medium text-black sm:text-xs">
               Share your thoughts...
             </DialogTitle>
             {/* <DialogSubtitle className="text-[10px] text-gray-600 sm:text-xs">
@@ -63,10 +63,10 @@ export default function DialogBasicTwo() {
           style={{
             borderRadius: "12px",
           }}
-          className="relative h-auto w-[500px] border border-gray-100 bg-white"
+          className="p-5 relative h-auto bg-white"
         >
-          <ScrollArea className="h-[90vh]" type="scroll">
-            <div className="relative p-6">
+          <ScrollArea className="h-[80vh]" type="scroll">
+            {/* <div className="relative p-6">
               <div className="flex justify-center py-10">
                 <DialogImage
                   src="images/avator.jpg"
@@ -113,7 +113,8 @@ export default function DialogBasicTwo() {
                   </p>
                 </div>
               </div>
-            </div>
+            </div> */}
+            <PostTextArea />
           </ScrollArea>
           <DialogClose className="text-zinc-500" />
         </DialogContent>
