@@ -19,7 +19,7 @@ const navItems = [
 ];
 const Navbar = () => {
   return (
-    <nav className="bg-white  shadow-[rgba(50,_50,_105,_0.15)_0px_2px_5px_0px,_rgba(0,_0,_0,_0.05)_0px_1px_1px_0px]">
+    <nav className="bg-white sticky top-0 shadow-[rgba(50,_50,_105,_0.15)_0px_2px_5px_0px,_rgba(0,_0,_0,_0.05)_0px_1px_1px_0px]">
       <div className="container mx-auto px-5 flex items-center justify-between">
         <aside className="flex items-center justify-start gap-x-2">
           <div className="flex items-center">
@@ -34,9 +34,9 @@ const Navbar = () => {
           <GlobalSearch />
         </aside>
         <aside>
-          <ul className="flex items-center gap-x-2">
+          <ul className="flex items-center gap-x-3">
             {navItems.map((navItem) => (
-              <li key={navItem.id} className="mr-4">
+              <li key={navItem.id} className="font-semibold">
                 <Link href={navItem.path} className="">
                   {navItem.title}
                 </Link>
