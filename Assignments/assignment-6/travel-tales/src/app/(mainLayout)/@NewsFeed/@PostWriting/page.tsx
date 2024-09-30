@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 import {
   Dialog,
   DialogClose,
@@ -9,6 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/core/Dialog";
 import { ScrollArea } from "@/components/website/scroll-area";
+import { Image, Smile, SquarePlus, Video } from "lucide-react";
 
 export default function DialogBasicTwo() {
   return (
@@ -23,9 +25,9 @@ export default function DialogBasicTwo() {
         style={{
           borderRadius: "4px",
         }}
-        className="border border-gray-200/60 bg-white"
+        className="bg-white rounded-md common-shadow"
       >
-        <div className="flex items-center space-x-3 p-3 rounded-md common-shadow">
+        <div className="flex items-center space-x-3 p-3 ">
           <DialogImage
             src="images/avator.jpg"
             alt="What I Talk About When I Talk About Running - book cover"
@@ -34,13 +36,25 @@ export default function DialogBasicTwo() {
               borderRadius: "4px",
             }}
           />
-          <div className="flex flex-col items-start justify-center space-y-0">
+          <div className="w-full flex items-center justify-between">
             <DialogTitle className="text-[10px] font-medium text-black sm:text-xs">
               Share your thoughts...
             </DialogTitle>
             {/* <DialogSubtitle className="text-[10px] text-gray-600 sm:text-xs">
               Haruki Murakami
             </DialogSubtitle> */}
+            <SquarePlus color="#007bff" />
+          </div>
+        </div>
+        <div className="p-3 flex items-center gap-x-3">
+          <div className="flex items-center gap-x-1 text-sm bg-gray-100 py-1 px-2 w-fit rounded-md">
+            <Image size={18} color="#007bff" /> Photo
+          </div>
+          <div className="flex items-center gap-x-1 text-sm bg-gray-100 p-1 w-fit rounded-md">
+            <Video size={18} color="#007bff" /> Video
+          </div>
+          <div className="flex items-center gap-x-1 text-sm bg-gray-100 p-1 w-fit rounded-md">
+            <Smile size={18} color="#007bff" /> Feelings/Activity
           </div>
         </div>
       </DialogTrigger>
