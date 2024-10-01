@@ -36,8 +36,8 @@ const PostCard = () => {
       <div>
         <p className="text-sm text-gray-700 mt-3">
           {" "}
-          I'm thrilled to share that I've completed a graduate certificate
-          course in project management with the president's honor roll.
+          Im thrilled to share that Ive completed a graduate certificate course
+          in project management with the presidents honor roll.
         </p>
         <Image
           src="/images/post.jpg"

@@ -19,7 +19,7 @@ const page = () => {
         height={200}
         className="rounded-t-md w-full h-52 object-center object-cover"
       />
-      <div className="p-5 flex items-center justify-between -mt-16 ">
+      <div className="px-5 py-3 flex items-center justify-between -mt-[3.5rem] ">
         <figure className="flex items-center gap-x-5">
           <Image
             src={"/images/avator.jpg"}
@@ -35,7 +35,7 @@ const page = () => {
             <p className=" text-gray-500">250 connections</p>
           </div>
         </figure>
-        <div className="flex items-center gap-4 mt-8">
+        <div className="flex items-center gap-4 mt-6">
           <button className="flex items-center gap-x-2 bg-rose-100 text-rose-600 font-medium px-4 py-2 rounded-md text-sm">
             <UserPen size={20} /> Edit Profile
           </button>

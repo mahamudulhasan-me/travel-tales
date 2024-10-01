@@ -57,14 +57,16 @@ const Navbar = () => {
               <span className="absolute top-0 right-0 inline-block w-2 h-2 transition-all duration-500 ease-in-out bg-red-700 rounded"></span>
             </li>
             <li className="size-9 rounded-sm flex justify-center items-center bg-gray-200 cursor-pointer">
-              <>
+              {/* <ProfileMenubar/> */}
+              <Link href="/profile">
                 <Image
-                  src={"/icons/people.png"}
+                  src={"/images/avator.jpg"}
                   width={40}
                   height={40}
                   alt="avatar"
+                  className="rounded-sm"
                 />
-              </>
+              </Link>
             </li>
           </ul>
         </aside>
