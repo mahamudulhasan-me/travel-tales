@@ -12,16 +12,43 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
+import { useUserSignIn } from "@/hooks/authHooks";
 import { Eye, EyeOff } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import SignUpForm from "./SignUpForm";
+type Inputs = {
+  email: string;
+  password: string;
+};
 
 export function SignInFormModal({ explore }: { explore?: boolean }) {
   const [showModal, setShowModal] = useState(false);
-  const [showSignUpForm, setShowSignUpForm] = useState(true);
+  const [showSignUpForm, setShowSignUpForm] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
   const togglePassword = () => setShowPassword((prev) => !prev);
+
+  const { mutate: handleUserSignIn, data } = useUserSignIn();
+  console.log("from login", data);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
+  } = useForm<Inputs>();
+
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    // Example: set an error if email is invalid
+    if (!data.email.includes("@")) {
+      setError("email", {
+        type: "manual",
+        message: "Please enter a valid email.",
+      });
+    }
+    handleUserSignIn(data);
+  };
 
   return (
     <Dialog open={showModal} onOpenChange={setShowModal}>
@@ -48,7 +75,6 @@ export function SignInFormModal({ explore }: { explore?: boolean }) {
           ) : (
             <DialogDescription className="text-center text-gray-700">
               <Label>
-                {" "}
                 Don&apos;t have an account?{" "}
                 <span
                   className="text-primary cursor-pointer"
@@ -63,17 +89,32 @@ export function SignInFormModal({ explore }: { explore?: boolean }) {
         {showSignUpForm ? (
           <SignUpForm />
         ) : (
-          <form action="" className="flex flex-col gap-4 mt-5">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col gap-4 mt-5"
+          >
             <input
               placeholder="mahamudulhasan.org@gmail.com"
               className="input-style"
               type="email"
+              {...register("email", { required: "Email is required" })}
             />
+            {errors.email && (
+              <p className="text-red-500">{errors.email.message}</p>
+            )}
+
             <div className="relative">
               <input
                 placeholder="Enter password"
                 className="input-style w-full"
                 type={showPassword ? "text" : "password"}
+                {...register("password", {
+                  required: "Password is required",
+                  minLength: {
+                    value: 6,
+                    message: "Password must be at least 6 characters",
+                  },
+                })}
               />
               {showPassword ? (
                 <EyeOff
@@ -87,6 +128,10 @@ export function SignInFormModal({ explore }: { explore?: boolean }) {
                 />
               )}
             </div>
+            {errors.password && (
+              <p className="text-red-500">{errors.password.message}</p>
+            )}
+
             <div className="flex justify-between items-center text-gray-700">
               <div className="flex items-center space-x-2">
                 <Checkbox id="terms" />
@@ -96,14 +141,18 @@ export function SignInFormModal({ explore }: { explore?: boolean }) {
                 Forget password?
               </Label>
             </div>
+
+            <DialogFooter className="mt-5">
+              <button
+                type="submit"
+                className="w-full bg-primary text-white py-3 rounded-md font-semibold"
+              >
+                Login
+              </button>
+            </DialogFooter>
           </form>
         )}
 
-        <DialogFooter className="mt-5">
-          <button className="w-full bg-primary text-white py-3 rounded-md font-semibold">
-            Login
-          </button>
-        </DialogFooter>
         <div className="space-y-4">
           <button className="border border-gray-300 w-full py-3 rounded-md flex items-center gap-2 justify-center hover:bg-gray-100 transition-colors">
             <Image
@@ -125,7 +174,7 @@ export function SignInFormModal({ explore }: { explore?: boolean }) {
           </button>
         </div>
         <p className="text-center text-gray-700 text-sm">
-          &copy; 2024.All rights reserved
+          &copy; 2024. All rights reserved
         </p>
       </DialogContent>
     </Dialog>

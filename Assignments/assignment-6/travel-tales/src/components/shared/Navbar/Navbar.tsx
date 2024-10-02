@@ -42,7 +42,7 @@ const Navbar = () => {
                 </Link>
               </li>
             ))}
-            <li className="hidden">
+            <li>
               <SignInFormModal />
             </li>
 
