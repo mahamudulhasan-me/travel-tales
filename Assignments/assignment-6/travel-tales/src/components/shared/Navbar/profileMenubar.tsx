@@ -21,7 +21,7 @@ export function ProfileMenubar() {
         {/* Main Profile trigger with avatar */}
         <MenubarTrigger className="">
           <Image
-            src="/images/avator.jpg"
+            src="/icons/avatar.png"
             width={40}
             height={40}
             alt="avatar"

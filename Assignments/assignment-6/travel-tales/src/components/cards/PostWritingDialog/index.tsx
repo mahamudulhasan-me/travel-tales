@@ -7,7 +7,6 @@ import {
   DialogImage,
   DialogTitle,
   DialogTrigger,
-  useDialog,
 } from "@/components/core/Dialog";
 import { ScrollArea } from "@/components/website/scroll-area";
 import { Image, Smile, SquarePlus, Video } from "lucide-react";

@@ -12,7 +12,7 @@ const WhoToFollow = () => {
         <div className="flex justify-between items-center">
           <aside className="flex items-center gap-x-3">
             <Image
-              src={"/images/avator.jpg"}
+              src={"/icons/avatar.png"}
               width={60}
               height={60}
               alt="avatar"
@@ -30,7 +30,7 @@ const WhoToFollow = () => {
         <div className="flex justify-between items-center">
           <aside className="flex items-center gap-x-3">
             <Image
-              src={"/images/avator.jpg"}
+              src={"/icons/avatar.png"}
               width={60}
               height={60}
               alt="avatar"
@@ -48,7 +48,7 @@ const WhoToFollow = () => {
         <div className="flex justify-between items-center">
           <aside className="flex items-center gap-x-3">
             <Image
-              src={"/images/avator.jpg"}
+              src={"/icons/avatar.png"}
               width={60}
               height={60}
               alt="avatar"
@@ -66,7 +66,7 @@ const WhoToFollow = () => {
         <div className="flex justify-between items-center">
           <aside className="flex items-center gap-x-3">
             <Image
-              src={"/images/avator.jpg"}
+              src={"/icons/avatar.png"}
               width={60}
               height={60}
               alt="avatar"

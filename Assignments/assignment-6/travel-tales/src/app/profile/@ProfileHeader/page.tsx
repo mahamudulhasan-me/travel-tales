@@ -22,7 +22,7 @@ const page = () => {
       <div className="px-5 py-3 flex items-center justify-between -mt-[3.5rem] ">
         <figure className="flex items-center gap-x-5">
           <Image
-            src={"/images/avator.jpg"}
+            src={"/icons/avatar.png"}
             alt="avator"
             width={120}
             height={120}

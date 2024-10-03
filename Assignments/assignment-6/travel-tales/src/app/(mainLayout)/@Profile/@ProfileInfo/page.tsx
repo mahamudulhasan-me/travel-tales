@@ -19,7 +19,7 @@ const ProfileInfo = () => {
       <figure className="size-16 mx-auto -mt-6  rounded-sm flex justify-center items-center bg-white  cursor-pointer z-20">
         <>
           <Image
-            src={"/images/avator.jpg"}
+            src={"/icons/avatar.png"}
             width={60}
             height={60}
             alt="avatar"

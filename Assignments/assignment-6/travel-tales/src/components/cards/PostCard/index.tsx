@@ -1,3 +1,4 @@
+import { IPost } from "@/type/post";
 import {
   ArrowBigDown,
   ArrowBigUp,
@@ -5,17 +6,18 @@ import {
   MessageSquare,
   Send,
 } from "lucide-react";
+import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
 import { ThreeDotPopover } from "./ThreeDotPopover";
-
-const PostCard = () => {
+const PostCard = ({ post }: { post: IPost }) => {
+  const { content, images, author, vote, createdAt } = post;
   return (
     <div className="bg-white common-shadow rounded-md my-4 p-5">
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-x-2">
           <Image
-            src={"/images/avator.jpg"}
+            src={author?.profilePhoto || "/icons/avatar.png"}
             width={60}
             height={60}
             alt="avatar"
@@ -23,9 +25,11 @@ const PostCard = () => {
           />
           <div>
             <h5 className="flex items-center gap-x-1">
-              <span className="font-semibold">Mahamudul Hasan</span>{" "}
+              <span className="font-semibold">{author?.name}</span>{" "}
               <Dot color="gray" />
-              <p className="text-sm text-gray-700">2 hours ago</p>
+              <p className="text-sm text-gray-700">
+                {moment(createdAt).startOf("minute").fromNow()}
+              </p>
             </h5>
             <p className="text-gray-700 text-xs">Web Developer at Webestica</p>
           </div>
@@ -33,25 +37,26 @@ const PostCard = () => {
 
         <ThreeDotPopover />
       </div>
-      <div>
-        <p className="text-sm text-gray-700 mt-3">
-          {" "}
-          Im thrilled to share that Ive completed a graduate certificate course
-          in project management with the presidents honor roll.
-        </p>
-        <Image
-          src="/images/post.jpg"
-          width={600}
-          height={300}
-          alt="post"
-          className="rounded-md mt-3 object-cover object-center w-full h-72"
+      <article>
+        <div
+          className="text-sm text-gray-700 mt-3"
+          dangerouslySetInnerHTML={{ __html: content }} // Use dangerouslySetInnerHTML here
         />
+        {images?.length > 0 && (
+          <Image
+            src={images[0]}
+            width={600}
+            height={300}
+            alt="post"
+            className="rounded-md mt-3 object-cover object-center w-full h-72"
+          />
+        )}
         <div className="border-y border-gray-300 mt-4 pb-1 flex gap-x-4 items-center">
           <div className="flex items-center gap-x-2 mt-1 bg-gray-200 rounded-xl w-fit h-9">
             <button className="size-9 bg-gray-300 flex items-center justify-center rounded-full hover:text-primary transition-colors">
               <ArrowBigUp />
             </button>{" "}
-            <span className="font-semibold">21k</span>{" "}
+            <span className="font-semibold">{vote}</span>{" "}
             <button className="size-9 bg-gray-300 flex items-center justify-center rounded-full hover:text-primary transition-colors">
               <ArrowBigDown />
             </button>{" "}
@@ -61,12 +66,12 @@ const PostCard = () => {
             <span className="font-semibold">57</span>
           </div>
         </div>
-      </div>
+      </article>
       <div className="mt-5">
         <>
           <form className="flex items-center gap-x-3 justify-between">
             <Image
-              src="/images/avator.jpg"
+              src="/icons/avatar.png"
               width={56}
               height={56}
               alt="post"
@@ -85,7 +90,7 @@ const PostCard = () => {
         <div className="flex mt-5 gap-x-3">
           <>
             <Image
-              src="/images/avator.jpg"
+              src="/icons/avatar.png"
               width={60}
               height={60}
               alt="post"
@@ -109,7 +114,7 @@ const PostCard = () => {
         <div className="flex mt-5 gap-x-3">
           <>
             <Image
-              src="/images/avator.jpg"
+              src="/icons/avatar.png"
               width={60}
               height={60}
               alt="post"

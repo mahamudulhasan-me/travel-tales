@@ -116,7 +116,7 @@ const PostTextArea = (): JSX.Element => {
       setImageFiles([]); // Reset image files after posting
       setIsOpen(false);
     }
-  }, [isSuccess]);
+  }, [isSuccess, setIsOpen]);
 
   return (
     <>

@@ -47,7 +47,7 @@ export function ProfileUtilsPopover() {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Image
-          src="/images/avator.jpg"
+          src="/icons/avatar.png"
           width={40}
           height={40}
           alt="avatar"
