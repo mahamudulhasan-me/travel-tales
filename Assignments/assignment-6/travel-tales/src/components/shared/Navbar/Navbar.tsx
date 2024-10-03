@@ -1,8 +1,7 @@
-import { SignInFormModal } from "@/app/_authentication/SignInFormModal";
 import GlobalSearch from "@/components/ui/GlobalSearch";
-import { Bell, MessageSquareText, Settings } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import ProtectedNavItems from "./ProtectedNavItems";
 const navItems = [
   {
     id: 1,
@@ -42,32 +41,8 @@ const Navbar = () => {
                 </Link>
               </li>
             ))}
-            <li>
-              <SignInFormModal />
-            </li>
 
-            <li className="size-9 rounded-sm flex justify-center items-center bg-gray-200 cursor-pointer ">
-              <MessageSquareText size={18} strokeWidth={1} />
-            </li>
-            <li className="size-9 rounded-sm flex justify-center items-center bg-gray-200 cursor-pointer ">
-              <Settings size={18} strokeWidth={1} />
-            </li>
-            <li className="size-9 rounded-sm flex justify-center items-center bg-gray-200 cursor-pointer relative">
-              <Bell strokeWidth={1} size={18} />
-              <span className="absolute top-0 right-0 inline-block w-2 h-2 transition-all duration-500 ease-in-out bg-red-700 rounded"></span>
-            </li>
-            <li className="size-9 rounded-sm flex justify-center items-center bg-gray-200 cursor-pointer">
-              {/* <ProfileMenubar/> */}
-              <Link href="/profile">
-                <Image
-                  src={"/images/avator.jpg"}
-                  width={40}
-                  height={40}
-                  alt="avatar"
-                  className="rounded-sm"
-                />
-              </Link>
-            </li>
+            <ProtectedNavItems />
           </ul>
         </aside>
       </div>

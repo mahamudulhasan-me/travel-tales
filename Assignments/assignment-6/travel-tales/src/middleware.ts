@@ -1,40 +1,45 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getCurrentUser } from "./services/authService";
 
-const AuthRoutes = ["/login", "/register"];
+// Define protected routes
+const protectedRoutes = ["/", "/profile"];
 
 type Role = keyof typeof roleBasedRoutes;
 
+// Define role-based routes
 const roleBasedRoutes = {
   USER: [/^\/profile/],
   ADMIN: [/^\/admin/],
 };
 
-// This function can be marked `async` if using `await` inside
+// Simulated function to check if a user is logged in (replace this with your actual logic)
+
+// Middleware function to protect routes
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  //   const user = await getCurrentUser();
-  const user = { role: "" };
-  if (!user) {
-    if (AuthRoutes.includes(pathname)) {
-      return NextResponse.next();
-    } else {
-      return NextResponse.redirect(new URL(`/`, request.url));
-    }
+  // Check if the route being accessed is a protected route
+  const isProtectedRoute = protectedRoutes.some((route) =>
+    pathname.startsWith(route)
+  );
+
+  // Simulate checking if a user is authenticated
+  const user = await getCurrentUser();
+
+  // Redirect to /explore if the user is not authenticated and trying to access a protected route
+  if (!user && isProtectedRoute) {
+    return NextResponse.redirect(new URL("/explore", request.url));
   }
 
-  if (user?.role && roleBasedRoutes[user?.role as Role]) {
-    const routes = roleBasedRoutes[user?.role as Role];
-
-    if (routes.some((route) => pathname.match(route))) {
-      return NextResponse.next();
-    }
+  // If a user exists (authenticated), allow them to continue to the requested page
+  if (user) {
+    return NextResponse.next(); // Proceed to the next middleware or the requested page
   }
 
-  return NextResponse.redirect(new URL("/", request.url));
+  return NextResponse.next(); // Fallback case, just continue
 }
 
-// See "Matching Paths" below to learn more
+// Apply middleware to specific routes
 export const config = {
-  matcher: ["/admin", "/login", "/register"],
+  matcher: ["/", "/profile/:path*", "/admin/:path*"], // Protect these routes
 };

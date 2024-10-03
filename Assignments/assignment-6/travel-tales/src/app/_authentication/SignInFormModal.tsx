@@ -12,11 +12,16 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
+import Loader from "@/components/ui/Loader";
+import { useUser } from "@/context/userProvider";
 import { useUserSignIn } from "@/hooks/authHooks";
+
 import { Eye, EyeOff } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import SignUpForm from "./SignUpForm";
 type Inputs = {
   email: string;
@@ -24,14 +29,21 @@ type Inputs = {
 };
 
 export function SignInFormModal({ explore }: { explore?: boolean }) {
+  const { isLoading, setIsLoading, setUser } = useUser();
   const [showModal, setShowModal] = useState(false);
   const [showSignUpForm, setShowSignUpForm] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useRouter();
 
   const togglePassword = () => setShowPassword((prev) => !prev);
 
-  const { mutate: handleUserSignIn, data } = useUserSignIn();
-  console.log("from login", data);
+  const {
+    mutate: handleUserSignIn,
+    data,
+    isSuccess,
+    isError,
+  } = useUserSignIn();
+
   const {
     register,
     handleSubmit,
@@ -40,6 +52,7 @@ export function SignInFormModal({ explore }: { explore?: boolean }) {
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
+    setIsLoading(true);
     // Example: set an error if email is invalid
     if (!data.email.includes("@")) {
       setError("email", {
@@ -48,7 +61,21 @@ export function SignInFormModal({ explore }: { explore?: boolean }) {
       });
     }
     handleUserSignIn(data);
+    setIsLoading(false);
   };
+  useEffect(() => {
+    setIsLoading(true);
+    if (isSuccess) {
+      navigate.push("/");
+      setUser(data?.data);
+      toast.success(data?.message);
+      setShowModal(false);
+    } else if (isError) {
+      toast.error("Something went wrong. Please try again.");
+      navigate.push("/explore");
+    }
+    setIsLoading(false);
+  }, [isSuccess, data, setIsLoading, setUser, isError, navigate]);
 
   return (
     <Dialog open={showModal} onOpenChange={setShowModal}>
@@ -56,6 +83,7 @@ export function SignInFormModal({ explore }: { explore?: boolean }) {
         <div>{explore ? <BtnExplore /> : <BtnSignIn />}</div>
       </DialogTrigger>
       <DialogContent className="w-full py-10 px-12">
+        {isLoading && <Loader />}
         <DialogHeader>
           <DialogTitle className="text-3xl text-center">
             {showSignUpForm ? "Sign Up" : "Sign In"}

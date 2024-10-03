@@ -3,15 +3,15 @@ import { InView } from "@/components/core/InView";
 import { TextEffect } from "@/components/core/TextEffect";
 import Image from "next/image";
 
-const ExplorePage = () => {
+const ExplorePage = async () => {
   return (
-    <section className=" container mx-auto  px-5 h-[calc(100vh-5rem)] flex justify-between items-center">
+    <section className="container mx-auto px-5 h-[calc(100vh-5rem)] flex justify-between items-center">
       <aside className="flex flex-col gap-y-6">
         <div>
           <TextEffect
             per="char"
             preset="fade"
-            className="text-8xl  leading-tight"
+            className="text-8xl leading-tight"
           >
             Discover
           </TextEffect>
@@ -19,7 +19,7 @@ const ExplorePage = () => {
             delay={0.5}
             per="char"
             preset="blur"
-            className="text-8xl  leading-tight"
+            className="text-8xl leading-tight"
           >
             Hidden Gems!
           </TextEffect>

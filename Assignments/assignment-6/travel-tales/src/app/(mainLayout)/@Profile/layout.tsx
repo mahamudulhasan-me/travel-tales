@@ -34,6 +34,7 @@ const SidebarProfileLayout = ({
       link: "/",
     },
   ];
+
   return (
     <div className="sticky top-20 mb-10">
       <div className="bg-white common-shadow rounded-md mb-4">

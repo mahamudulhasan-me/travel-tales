@@ -1,7 +1,12 @@
+"use client";
+import { useUser } from "@/context/userProvider";
 import Image from "next/image";
 import Link from "next/link";
 
 const ProfileInfo = () => {
+  const { user } = useUser();
+  console.log(user);
+
   return (
     <div className="">
       <Image
@@ -27,10 +32,9 @@ const ProfileInfo = () => {
           href={"/"}
           className="text-xl font-semibold text-gray-800 hover:text-primary transition-colors"
         >
-          Mahamudul Hasan
+          {user?.name}
         </Link>
-        <p>@mahamudul_hasan</p>
-
+        <p>{user?.email}</p>
         <p className="mt-5">
           I&apos;d love to change the world, but they won’t give me the source
           code.

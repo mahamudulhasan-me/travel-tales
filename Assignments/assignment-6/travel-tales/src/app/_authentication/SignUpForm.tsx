@@ -1,11 +1,14 @@
 "use client";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { useUser } from "@/context/userProvider";
 import { useUserSignUp } from "@/hooks/authHooks";
-import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff } from "lucide-react";
+import { useRouter } from "next/navigation";
+
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 type FormValues = {
   fullName: string;
@@ -16,14 +19,20 @@ type FormValues = {
 };
 
 const SignUpForm = () => {
-  const { toast } = useToast();
+  const navigate = useRouter();
+  const { isLoading, setIsLoading, setUser } = useUser();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const togglePassword = () => setShowPassword((prev) => !prev);
   const toggleConfirmPassword = () => setShowConfirmPassword((prev) => !prev);
 
-  const { mutate: handleUserSignUp, isSuccess, isError } = useUserSignUp();
+  const {
+    mutate: handleUserSignUp,
+    data,
+    isSuccess,
+    isError,
+  } = useUserSignUp();
 
   // Initialize react-hook-form
   const {
@@ -34,6 +43,7 @@ const SignUpForm = () => {
   } = useForm<FormValues>();
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
+    setIsLoading(true);
     // Handle successful form submission
     const signUpInfo = {
       name: data.fullName,
@@ -43,6 +53,7 @@ const SignUpForm = () => {
       status: "Basic",
     };
     handleUserSignUp(signUpInfo);
+    setIsLoading(false);
   };
 
   // Watch for password and confirmPassword to validate they match
@@ -50,18 +61,16 @@ const SignUpForm = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      toast({
-        title: "Account created.",
-        description: "We've created your account for you.",
-      });
+      navigate.push("/");
+      toast.success(data?.message);
+      setIsLoading(false);
+      setUser(data?.data);
     }
     if (isError) {
-      toast({
-        title: "Error",
-        description: "Something went wrong.",
-      });
+      toast.error("Something went wrong");
+      setIsLoading(false);
     }
-  }, [isSuccess, isError, toast]);
+  }, [isSuccess, isError]);
 
   return (
     <form
@@ -163,6 +172,7 @@ const SignUpForm = () => {
 
       {/* Submit button */}
       <button
+        disabled={isLoading}
         type="submit"
         className="w-full bg-primary text-white py-3 rounded-md font-semibold"
       >
