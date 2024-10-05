@@ -1,4 +1,6 @@
-import { IPost } from "@/type/post";
+import { useUser } from "@/context/userProvider";
+import useVoteMutation from "@/hooks/post/useVoteMutation";
+import { IPost, IVoteInfo } from "@/type/post";
 import {
   ArrowBigDown,
   ArrowBigUp,
@@ -9,9 +11,45 @@ import {
 import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { ThreeDotPopover } from "./ThreeDotPopover";
 const PostCard = ({ post }: { post: IPost }) => {
-  const { content, images, author, vote, createdAt } = post;
+  const { user } = useUser();
+  const [voteCount, setVoteCount] = useState(post?.voteCount || 0);
+  const [myVote, setMyVote] = useState<IVoteInfo | undefined>(undefined); // Track user's vote
+  const { _id, content, images, author, createdAt, votes } = post;
+
+  const { mutate: vote, data, isPending } = useVoteMutation(_id as string);
+
+  useEffect(() => {
+    // Find the current user's vote from the votes array
+    const userVote = votes?.find((vote) => vote.userId === user?._id);
+    setMyVote(userVote);
+  }, [votes, user]);
+
+  const handleVote = (voteType: "upvote" | "downvote") => {
+    const voteInfo: IVoteInfo = {
+      postId: _id,
+      userId: user?._id, // Pass the current user's ID
+      voteType,
+    };
+    vote(voteInfo); // Trigger mutation
+  };
+
+  console.log(user);
+
+  useEffect(() => {
+    if (data) {
+      setVoteCount(data?.data?.voteCount);
+      const updatedVote = data?.data?.votes?.find(
+        (vote) => vote.userId === user?._id
+      );
+      setMyVote(updatedVote); // Update the user's vote after mutation
+    }
+  }, [data, user]);
+
+  const isUpvoted = myVote?.voteType === "upvote";
+  const isDownvoted = myVote?.voteType === "downvote";
   return (
     <div className="bg-white common-shadow rounded-md my-4 p-5">
       <div className="flex justify-between items-center">
@@ -52,12 +90,30 @@ const PostCard = ({ post }: { post: IPost }) => {
           />
         )}
         <div className="border-y border-gray-300 mt-4 pb-1 flex gap-x-4 items-center">
-          <div className="flex items-center gap-x-2 mt-1 bg-gray-200 rounded-xl w-fit h-9">
-            <button className="size-9 bg-gray-300 flex items-center justify-center rounded-full hover:text-primary transition-colors">
+          <div
+            className={`flex items-center gap-x-2 mt-1 bg-gray-200 rounded-xl w-fit h-9 ${
+              (isUpvoted && "bg-blue-300") || (isDownvoted && "bg-red-300")
+            }`}
+          >
+            <button
+              onClick={() => handleVote("upvote")}
+              disabled={isPending || isUpvoted}
+              className={`size-9  flex items-center justify-center rounded-full  transition-colors ${
+                isUpvoted
+                  ? "bg-blue-600 text-white hover:text-white"
+                  : "bg-gray-300 hover:text-primary"
+              }`}
+            >
               <ArrowBigUp />
             </button>{" "}
-            <span className="font-semibold">{vote}</span>{" "}
-            <button className="size-9 bg-gray-300 flex items-center justify-center rounded-full hover:text-primary transition-colors">
+            <span className={`font-semibold`}>{voteCount}</span>{" "}
+            <button
+              onClick={() => handleVote("downvote")}
+              disabled={isPending || isDownvoted}
+              className={`size-9 flex items-center justify-center rounded-full hover:text-primary transition-colors ${
+                isDownvoted ? "bg-rose-600 text-white" : "bg-gray-300 "
+              }`}
+            >
               <ArrowBigDown />
             </button>{" "}
           </div>
