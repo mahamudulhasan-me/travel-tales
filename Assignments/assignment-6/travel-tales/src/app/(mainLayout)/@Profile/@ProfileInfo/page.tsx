@@ -5,7 +5,6 @@ import Link from "next/link";
 
 const ProfileInfo = () => {
   const { user } = useUser();
-  console.log(user);
 
   return (
     <div className="">
@@ -14,16 +13,16 @@ const ProfileInfo = () => {
         width={800}
         height={20}
         alt="user"
-        className="rounded-t-md w-full h-16 object-center object-cover z-10"
+        className="rounded-t-md w-full h-16 object-center object-cover z-10 "
       />
       <figure className="size-16 mx-auto -mt-6  rounded-sm flex justify-center items-center bg-white  cursor-pointer z-20">
         <>
           <Image
-            src={"/icons/avatar.png"}
+            src={user?.profilePhoto || "/icons/avatar.png"}
             width={60}
             height={60}
             alt="avatar"
-            className=" rounded-md ring ring-white bg-gray-300"
+            className=" rounded-md ring ring-white bg-blue-100"
           />
         </>
       </figure>

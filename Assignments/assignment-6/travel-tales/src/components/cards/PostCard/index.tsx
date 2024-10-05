@@ -1,28 +1,27 @@
 import { useUser } from "@/context/userProvider";
+import useGetCommentQuery from "@/hooks/comment/useGetPostQuery";
 import useVoteMutation from "@/hooks/post/useVoteMutation";
+import { IComment } from "@/type/comment";
 import { IPost, IVoteInfo } from "@/type/post";
-import {
-  ArrowBigDown,
-  ArrowBigUp,
-  Dot,
-  MessageSquare,
-  Send,
-} from "lucide-react";
+import { ArrowBigDown, ArrowBigUp, Dot, MessageSquare } from "lucide-react";
 import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import CommentForm from "./CommentForm";
 import { ThreeDotPopover } from "./ThreeDotPopover";
+
 const PostCard = ({ post }: { post: IPost }) => {
   const { user } = useUser();
   const [voteCount, setVoteCount] = useState(post?.voteCount || 0);
-  const [myVote, setMyVote] = useState<IVoteInfo | undefined>(undefined); // Track user's vote
+  const [myVote, setMyVote] = useState<IVoteInfo | undefined>(undefined);
   const { _id, content, images, author, createdAt, votes } = post;
 
   const { mutate: vote, data, isPending } = useVoteMutation(_id as string);
+  const { data: comments = [], isLoading: commentsLoading } =
+    useGetCommentQuery(_id as string);
 
   useEffect(() => {
-    // Find the current user's vote from the votes array
     const userVote = votes?.find((vote) => vote.userId === user?._id);
     setMyVote(userVote);
   }, [votes, user]);
@@ -30,26 +29,25 @@ const PostCard = ({ post }: { post: IPost }) => {
   const handleVote = (voteType: "upvote" | "downvote") => {
     const voteInfo: IVoteInfo = {
       postId: _id,
-      userId: user?._id, // Pass the current user's ID
+      userId: user?._id,
       voteType,
     };
-    vote(voteInfo); // Trigger mutation
+    vote(voteInfo);
   };
-
-  console.log(user);
 
   useEffect(() => {
     if (data) {
       setVoteCount(data?.data?.voteCount);
       const updatedVote = data?.data?.votes?.find(
-        (vote) => vote.userId === user?._id
+        (vote: IVoteInfo) => vote.userId === user?._id
       );
-      setMyVote(updatedVote); // Update the user's vote after mutation
+      setMyVote(updatedVote);
     }
   }, [data, user]);
 
   const isUpvoted = myVote?.voteType === "upvote";
   const isDownvoted = myVote?.voteType === "downvote";
+
   return (
     <div className="bg-white common-shadow rounded-md my-4 p-5">
       <div className="flex justify-between items-center">
@@ -78,7 +76,7 @@ const PostCard = ({ post }: { post: IPost }) => {
       <article>
         <div
           className="text-sm text-gray-700 mt-3"
-          dangerouslySetInnerHTML={{ __html: content }} // Use dangerouslySetInnerHTML here
+          dangerouslySetInnerHTML={{ __html: content }}
         />
         {images?.length > 0 && (
           <Image
@@ -98,15 +96,15 @@ const PostCard = ({ post }: { post: IPost }) => {
             <button
               onClick={() => handleVote("upvote")}
               disabled={isPending || isUpvoted}
-              className={`size-9  flex items-center justify-center rounded-full  transition-colors ${
+              className={`size-9 flex items-center justify-center rounded-full transition-colors ${
                 isUpvoted
                   ? "bg-blue-600 text-white hover:text-white"
                   : "bg-gray-300 hover:text-primary"
               }`}
             >
               <ArrowBigUp />
-            </button>{" "}
-            <span className={`font-semibold`}>{voteCount}</span>{" "}
+            </button>
+            <span className="font-semibold">{voteCount}</span>
             <button
               onClick={() => handleVote("downvote")}
               disabled={isPending || isDownvoted}
@@ -115,83 +113,59 @@ const PostCard = ({ post }: { post: IPost }) => {
               }`}
             >
               <ArrowBigDown />
-            </button>{" "}
+            </button>
           </div>
-          <div className="flex items-center gap-x-2 mt-1 bg-gray-200 rounded-xl w-fit  px-2 text-sm h-9">
-            <MessageSquare size={20} />{" "}
-            <span className="font-semibold">57</span>
+          <div className="flex items-center gap-x-2 mt-1 bg-gray-200 rounded-xl w-fit px-2 text-sm h-9">
+            <MessageSquare size={20} />
+            <span className="font-semibold">
+              {commentsLoading ? "Loading..." : comments.length || 0}
+            </span>
           </div>
         </div>
       </article>
       <div className="mt-5">
-        <>
-          <form className="flex items-center gap-x-3 justify-between">
-            <Image
-              src="/icons/avatar.png"
-              width={56}
-              height={56}
-              alt="post"
-              className="rounded-full size-10"
-            />
-
-            <input
-              type="text"
-              className="input-style bg-[#eff2f6] focus:bg-white transition-colors"
-            />
-            <button type="submit">
-              <Send size={28} />
-            </button>
-          </form>
-        </>
-        <div className="flex mt-5 gap-x-3">
-          <>
-            <Image
-              src="/icons/avatar.png"
-              width={60}
-              height={60}
-              alt="post"
-              className="size-9 rounded-full"
-            />
-          </>
-          <div className="p-3 bg-gray-100 w-full rounded-md">
-            <h1 className="flex items-center justify-between font-medium">
-              <Link href={"/"} className="hover:text-primary transition-colors">
-                {" "}
-                Mahamudul Hasan
-              </Link>
-              <span className="text-xs text-gray-500">5 hours ago</span>
-            </h1>
-            <p className="text-gray-700 mt-1">
-              Removed demands expense account in outward tedious do. Particular
-              way thoroughly unaffected projection.
-            </p>
-          </div>
-        </div>
-        <div className="flex mt-5 gap-x-3">
-          <>
-            <Image
-              src="/icons/avatar.png"
-              width={60}
-              height={60}
-              alt="post"
-              className="size-9 rounded-full"
-            />
-          </>
-          <div className="p-3 bg-gray-100 w-full rounded-md">
-            <h1 className="flex items-center justify-between font-medium">
-              <Link href={"/"} className="hover:text-primary transition-colors">
-                {" "}
-                Mahamudul Hasan
-              </Link>
-              <span className="text-xs text-gray-500">5 hours ago</span>
-            </h1>
-            <p className="text-gray-700 mt-1">
-              Removed demands expense account in outward tedious do. Particular
-              way thoroughly unaffected projection.
-            </p>
-          </div>
-        </div>
+        <CommentForm postId={_id} userId={user?._id} />
+        {comments?.data?.length > 0 ? (
+          comments?.data?.map((comment: IComment) => {
+            if (comment.postId === _id) {
+              return (
+                <div key={comment._id} className="flex mt-3 gap-x-3">
+                  <Image
+                    src="/icons/avatar.png"
+                    width={60}
+                    height={60}
+                    alt="post"
+                    className="size-9 rounded-full"
+                  />
+                  <div className="p-3 bg-gray-100 w-full rounded-md">
+                    <h1 className="flex items-center justify-between font-medium">
+                      <Link
+                        href={"/"}
+                        className="hover:text-primary transition-colors"
+                      >
+                        {/*@ts-ignore */}
+                        {comment?.author?.name}
+                      </Link>
+                      <span className="text-xs text-gray-500">
+                        {moment(comment?.createdAt).startOf("minute").fromNow()}
+                      </span>
+                    </h1>
+                    <p className="text-gray-700 mt-1">{comment?.content}</p>
+                  </div>
+                </div>
+              );
+            }
+            return null; // Return null for comments that do not match
+          })
+        ) : (
+          <div className="mt-3 text-gray-500">No comments yet.</div>
+        )}
       </div>
+
+      {/* <CommentCard comments={comments?.data} /> */}
+      {/* {comments?.data?.length === 0 && !commentsLoading && (
+        <div className="mt-3 text-gray-500">No comments yet.</div>
+      )} */}
     </div>
   );
 };

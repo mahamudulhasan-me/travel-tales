@@ -1,5 +1,7 @@
+"use client";
 import ProfileNavbar from "@/components/shared/Navbar/ProfileNavbar";
 import { Button } from "@/components/ui/button";
+import { useUser } from "@/context/userProvider";
 import {
   BriefcaseBusiness,
   CalendarPlus,
@@ -7,13 +9,15 @@ import {
   MapPinCheckInside,
   UserPen,
 } from "lucide-react";
+import moment from "moment";
 import Image from "next/image";
 
-const page = () => {
+const ProfileHeader = () => {
+  const { user } = useUser();
   return (
     <div className="mt-6 bg-white rounded-md common-shadow">
       <Image
-        src="/images/cover.jpg"
+        src={user?.coverPhoto || "/images/cover.jpg"}
         alt="cover"
         width={800}
         height={200}
@@ -22,15 +26,15 @@ const page = () => {
       <div className="px-5 py-3 flex items-center justify-between -mt-[3.5rem] ">
         <figure className="flex items-center gap-x-5">
           <Image
-            src={"/icons/avatar.png"}
+            src={user?.profilePhoto || "/icons/avatar.png"}
             alt="avator"
             width={120}
             height={120}
-            className="rounded-full ring ring-white size-32 "
+            className="rounded-full ring ring-white size-32 bg-blue-100"
           />
           <div className="mt-8">
             <h2 className="font-semibold text-xl text-gray-800">
-              Mahamudul Hasan
+              {user?.name}
             </h2>
             <p className=" text-gray-500">250 connections</p>
           </div>
@@ -51,11 +55,12 @@ const page = () => {
         </p>
         <p className="flex items-center gap-x-1 text-gray-700 ">
           <MapPinCheckInside size={18} />
-          Uttara, Dhaka-1230
+          {user?.address || "N/A"}
         </p>
         <p className="flex items-center gap-x-1 text-gray-700 ">
           <CalendarPlus size={18} />
-          Joined on Jan 01, 2020
+          {/* Joined on Jan 01, 2020 */}
+          Joined on {moment(user?.createdAt).format("MMM DD, YYYY")}
         </p>
       </div>
       <ProfileNavbar />
@@ -63,4 +68,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default ProfileHeader;

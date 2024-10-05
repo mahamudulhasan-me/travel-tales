@@ -1,10 +1,8 @@
 import { handleVote } from "@/services/postService";
 import { IPost, IVoteInfo } from "@/type/post";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 
 const useVoteMutation = (postId: string) => {
-  const queryClient = useQueryClient();
-
   return useMutation<IPost, Error, IVoteInfo>({
     mutationKey: ["VOTE", postId], // Use specific post ID as part of the mutation key
     mutationFn: async (voteInfo) => await handleVote(voteInfo),

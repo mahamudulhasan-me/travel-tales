@@ -8,11 +8,12 @@ import { useUser } from "@/context/userProvider";
 import { logout } from "@/services/authService";
 import { Bookmark, CircleOff, CircleX, Power, UserX } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export function ProfileUtilsPopover() {
-  const { setUser } = useUser();
+  const { setUser, user } = useUser();
   const [open, setOpen] = useState(false);
   const navigate = useRouter();
 
@@ -47,16 +48,36 @@ export function ProfileUtilsPopover() {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Image
-          src="/icons/avatar.png"
+          src={user?.profilePhoto || "/icons/avatar.png"}
           width={40}
           height={40}
-          alt="avatar"
+          alt={user?.name || "avatar"}
           className="rounded-sm cursor-pointer" // Added cursor-pointer for better UX
           onClick={() => setOpen((prev) => !prev)} // Toggle the open state
         />
       </PopoverTrigger>
       <PopoverContent className="w-fit" align="start">
         <ul className="space-y-2">
+          <li>
+            <div className="flex items-center gap-x-2">
+              <Image
+                src={user?.profilePhoto || "/icons/avatar.png"}
+                width={40}
+                height={40}
+                alt={user?.name || "avatar"}
+                className="rounded-full bg-slate-300 size-12 p-1"
+              />
+              <aside>
+                <p className="font-medium ">{user?.name}</p>
+                <p className="text-gray-500 text-xs">Blogger</p>
+              </aside>
+            </div>
+            <Link href="/profile" onClick={() => setOpen(false)}>
+              <button className="bg-blue-100 text-primary px-4 py-1 rounded-sm w-full mt-2 hover:bg-primary hover:text-white transition-colors">
+                Profile
+              </button>
+            </Link>
+          </li>
           {listItems.map((listItem) => (
             <li
               key={listItem.id}

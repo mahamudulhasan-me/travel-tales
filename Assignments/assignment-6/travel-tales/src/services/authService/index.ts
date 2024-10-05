@@ -1,14 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
-import axiosInstance from "@/lib/AxiosInstance";
+import envConfig from "@/config/envConfig";
 import { IUserSignInResponse } from "@/type/user.type";
+import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
 import { FieldValues } from "react-hook-form";
 
 export const signUpUser = async (userData: FieldValues) => {
   try {
-    const { data } = await axiosInstance.post("/auth/signup", userData);
+    const { data } = await axios.post(
+      `${envConfig.baseApi}/auth/signup`,
+      userData
+    );
 
     if (data.success) {
       cookies().set("accessToken", data?.accessToken);
@@ -23,8 +27,8 @@ export const signUpUser = async (userData: FieldValues) => {
 
 export const loginUser = async (userData: FieldValues) => {
   try {
-    const { data } = (await axiosInstance.post(
-      "/auth/login",
+    const { data } = (await axios.post(
+      `${envConfig.baseApi}/auth/login`,
       userData
     )) as IUserSignInResponse;
     if (data.success) {

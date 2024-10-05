@@ -6,8 +6,10 @@ export interface IUser {
   status: string;
   mobileNumber?: string;
   profilePhoto?: string;
+  coverPhoto?: string;
   createdAt?: string;
   updatedAt?: string;
+  address?: string;
   __v?: number;
 }
 

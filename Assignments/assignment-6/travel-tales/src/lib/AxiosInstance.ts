@@ -1,26 +1,30 @@
+"use client";
+import envConfig from "@/config/envConfig";
 import axios from "axios";
 
-import envConfig from "@/config/envConfig";
-
+// Create a client-side axios instance
 const axiosInstance = axios.create({
   baseURL: envConfig.baseApi,
 });
 
-// axiosInstance.interceptors.request.use(
-//   function (config) {
-//     const cookieStore = cookies();
-//     const accessToken = cookieStore.get("accessToken")?.value;
+axiosInstance.interceptors.request.use(
+  function (config) {
+    // For client-side, fetch accessToken from document.cookie or localStorage
+    const accessToken = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("accessToken"))
+      ?.split("=")[1];
 
-//     if (accessToken) {
-//       config.headers.Authorization = accessToken;
-//     }
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }
 
-//     return config;
-//   },
-//   function (error) {
-//     return Promise.reject(error);
-//   }
-// );
+    return config;
+  },
+  function (error) {
+    return Promise.reject(error);
+  }
+);
 
 // axiosInstance.interceptors.response.use(
 //   function (response) {
