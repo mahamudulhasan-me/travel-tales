@@ -4,13 +4,16 @@ export interface IUser {
   role: string;
   email: string;
   status: string;
-  mobileNumber?: string;
-  profilePhoto?: string;
-  coverPhoto?: string;
+  phone?: string;
+
+  profileImage?: string;
+  coverImage?: string;
   createdAt?: string;
   updatedAt?: string;
   address?: string;
   __v?: number;
+  dateOfBirth?: string;
+  bio?: string;
 }
 
 export interface IUserSignInResponse {

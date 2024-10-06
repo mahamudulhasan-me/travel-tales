@@ -1,5 +1,6 @@
 "use client";
 import PostCard from "@/components/cards/PostCard";
+import PostCardSkeleton from "@/components/skeletor/PostCardSkeleton";
 import useGetPostByUserQuery from "@/hooks/post/useGetPostByUserQuery";
 import { IPost } from "@/type/post";
 

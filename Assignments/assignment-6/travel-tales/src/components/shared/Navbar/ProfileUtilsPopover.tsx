@@ -48,7 +48,7 @@ export function ProfileUtilsPopover() {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Image
-          src={user?.profilePhoto || "/icons/avatar.png"}
+          src={user?.profilePicture || "/icons/avatar.png"}
           width={40}
           height={40}
           alt={user?.name || "avatar"}
@@ -61,7 +61,7 @@ export function ProfileUtilsPopover() {
           <li>
             <div className="flex items-center gap-x-2">
               <Image
-                src={user?.profilePhoto || "/icons/avatar.png"}
+                src={user?.profilePicture || "/icons/avatar.png"}
                 width={40}
                 height={40}
                 alt={user?.name || "avatar"}
@@ -73,7 +73,7 @@ export function ProfileUtilsPopover() {
               </aside>
             </div>
             <Link href="/profile" onClick={() => setOpen(false)}>
-              <button className="bg-blue-100 text-primary px-4 py-1 rounded-sm w-full mt-2 hover:bg-primary hover:text-white transition-colors">
+              <button className="bg-blue-100 text-primary px-4 py-1 rounded-sm w-full mt-2 hover:bg-primary hover:text-white transition-colors outline-none">
                 Profile
               </button>
             </Link>

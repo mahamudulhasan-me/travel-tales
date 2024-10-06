@@ -1,23 +1,36 @@
 "use client";
+import ProfileEditModal from "@/components/modal/ProfileEditModal";
 import ProfileNavbar from "@/components/shared/Navbar/ProfileNavbar";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@/context/userProvider";
+import useGetUserByIdQuery from "@/hooks/user/useGetUserByIdQuery";
 import {
   BriefcaseBusiness,
   CalendarPlus,
+  Crown,
   Ellipsis,
   MapPinCheckInside,
-  UserPen,
 } from "lucide-react";
 import moment from "moment";
 import Image from "next/image";
+import { useEffect } from "react";
 
 const ProfileHeader = () => {
-  const { user } = useUser();
+  const { user, setUser } = useUser();
+  const { data: userData, isSuccess } = useGetUserByIdQuery(
+    user?._id as string
+  );
+  useEffect(() => {
+    if (isSuccess) {
+      setUser(userData);
+    }
+  }, [isSuccess, setUser, userData]);
+
+  console.log(userData);
   return (
     <div className="mt-6 bg-white rounded-md common-shadow">
       <Image
-        src={user?.coverPhoto || "/images/cover.jpg"}
+        src={user?.coverImage || "/images/cover.jpg"}
         alt="cover"
         width={800}
         height={200}
@@ -26,7 +39,7 @@ const ProfileHeader = () => {
       <div className="px-5 py-3 flex items-center justify-between -mt-[3.5rem] ">
         <figure className="flex items-center gap-x-5">
           <Image
-            src={user?.profilePhoto || "/icons/avatar.png"}
+            src={user?.profileImage || "/icons/avatar.png"}
             alt="avator"
             width={120}
             height={120}
@@ -40,9 +53,12 @@ const ProfileHeader = () => {
           </div>
         </figure>
         <div className="flex items-center gap-4 mt-6">
-          <button className="flex items-center gap-x-2 bg-rose-100 text-rose-600 font-medium px-4 py-2 rounded-md text-sm">
-            <UserPen size={20} /> Edit Profile
+          <button className="flex items-center gap-x-2 bg-gradient-to-r from-red-500 to-orange-500 text-white font-medium px-3 py-2 rounded-md text-sm">
+            <Crown size={20} color="#FFD700" />
+            Get Premium
           </button>
+
+          <ProfileEditModal />
           <Button variant={"secondary"}>
             <Ellipsis size={20} />
           </Button>
