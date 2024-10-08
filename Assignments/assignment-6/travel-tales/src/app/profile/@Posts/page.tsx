@@ -7,9 +7,16 @@ import { IPost } from "@/type/post";
 const Posts = () => {
   const { data: posts, isLoading } = useGetPostByUserQuery();
   if (isLoading) {
-    return Array.from({ length: 5 }).map((_, index) => (
+    return Array.from({ length: 2 }).map((_, index) => (
       <PostCardSkeleton key={index} />
     ));
+  }
+  if (!posts) {
+    return (
+      <div className="text-center w-full common-shadow text-red-600 bg-white rounded-md font-semibold p-2 mt-4">
+        No Posts Yet...
+      </div>
+    );
   }
   return (
     <div>
