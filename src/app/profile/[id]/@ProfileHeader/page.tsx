@@ -17,38 +17,36 @@ import moment from "moment";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 const ProfileHeader = () => {
   const { id } = useParams();
-  const { user, setUser } = useUser();
+  const { user } = useUser();
   const [isLoading, setIsLoading] = useState(false);
   const [isLoggedUser, setIsLoggedUser] = useState(false);
-  const { data: userData, isSuccess } = useGetUserByIdQuery(id as string);
+  const { data: userData } = useGetUserByIdQuery(id as string);
 
   const {
     mutate: makePremium,
     data,
     isPending,
+    error,
+    isError,
     isSuccess: makePremiumSuccess,
-  } = useMakePremiumMutation(user?._id as string);
-
-  // useEffect(() => {
-  //   setIsLoading(true);
-  //   if (isSuccess) {
-  //     setUser(userData);
-  //   }
-  //   setIsLoading(false);
-  // }, [isSuccess, setUser, userData]);
-
+  } = useMakePremiumMutation();
+  console.log(error);
   useEffect(() => {
-    if (makePremiumSuccess) {
+    if (isError) {
+      //@ts-ignore
+      toast.warning(error?.response?.data?.message);
+    } else if (makePremiumSuccess) {
       window.location.href = data?.data?.payment_url;
     }
-  }, [data, makePremiumSuccess]);
+  }, [data, error, isError, makePremiumSuccess]);
 
   const handleMakePremium = () => {
     setIsLoading(true);
-    makePremium();
+    makePremium(user?._id as string);
     setIsLoading(false);
   };
 

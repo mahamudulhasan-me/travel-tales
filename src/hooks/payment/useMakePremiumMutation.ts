@@ -1,10 +1,10 @@
 import { payment } from "@/services/paymentService";
 import { useMutation } from "@tanstack/react-query";
 
-const useMakePremiumMutation = (userId: string) => {
+const useMakePremiumMutation = () => {
   return useMutation({
     mutationKey: ["make-premium"],
-    mutationFn: async () => await payment(userId),
+    mutationFn: async (userId: string) => await payment(userId),
   });
 };
 

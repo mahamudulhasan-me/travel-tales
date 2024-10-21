@@ -38,8 +38,11 @@ const PostTextArea = (): JSX.Element => {
   const [editorContent, setEditorContent] = useState<string>("");
   const [imageFiles, setImageFiles] = useState<File[]>([]); // State for storing image files
 
-  console.log(category);
-  const { mutate: createPost, isSuccess } = useCreatePost();
+  const {
+    mutate: createPost,
+
+    isSuccess,
+  } = useCreatePost();
 
   useEffect(() => {
     if (quill) {
@@ -92,11 +95,15 @@ const PostTextArea = (): JSX.Element => {
   };
 
   const handlePost = async () => {
-    setIsLoading(true);
+    if (!category) {
+      toast.warning("Post category required!");
+      return;
+    }
     if (!editorContent) {
       toast.error("Please write something");
       return;
     }
+    setIsLoading(true);
     const imageUrls = await uploadImages(); // Upload images and get URLs
     const postInfo: IPost = {
       content: editorContent,
