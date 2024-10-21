@@ -1,21 +1,15 @@
 "use client";
 import ProfileEditModal from "@/components/modal/ProfileEditModal";
 import ProfileNavbar from "@/components/shared/Navbar/ProfileNavbar";
+import PremiumUserToolTip from "@/components/tooltips/PremiumUserToolTip";
 import { Button } from "@/components/ui/button";
 import Loader from "@/components/ui/Loader";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { useUser } from "@/context/userProvider";
 import useMakePremiumMutation from "@/hooks/payment/useMakePremiumMutation";
 import useGetUserByIdQuery from "@/hooks/user/useGetUserByIdQuery";
 import {
   BriefcaseBusiness,
   CalendarPlus,
-  Check,
   Crown,
   Ellipsis,
   MapPinCheckInside,
@@ -41,7 +35,7 @@ const ProfileHeader = () => {
     isError,
     isSuccess: makePremiumSuccess,
   } = useMakePremiumMutation();
-  console.log(error);
+
   useEffect(() => {
     if (isError) {
       //@ts-ignore
@@ -89,22 +83,7 @@ const ProfileHeader = () => {
             <div className="mt-8">
               <h2 className="font-semibold text-xl text-gray-800 flex items-center gap-1">
                 {userData?.name}{" "}
-                {userData?.status === "Premium" && (
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger>
-                        <Check
-                          absoluteStrokeWidth
-                          className="text-white bg-primary rounded-full p-0.5 border-dotted border-2"
-                          size={18}
-                        />
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Premium User</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                )}
+                {userData?.status === "Premium" && <PremiumUserToolTip />}
                 {/* <Check absoluteStrokeWidth /> */}
               </h2>
               <p className=" text-gray-500">250 connections</p>

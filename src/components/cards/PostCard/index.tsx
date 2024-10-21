@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
+import PremiumUserToolTip from "@/components/tooltips/PremiumUserToolTip";
 import { useUser } from "@/context/userProvider";
 import useGetCommentQuery from "@/hooks/comment/useGetPostQuery";
 import useVoteMutation from "@/hooks/post/useVoteMutation";
@@ -79,14 +80,19 @@ const PostCard = ({ post }: { post: IPost }) => {
             className="rounded-full ring ring-primary p-0.5 size-12"
           />
           <div>
-            <h5 className="flex items-center gap-x-1">
+            <aside className="flex items-center gap-x-1">
               {/* @ts-ignore */}
-              <span className="font-semibold">{author?.name}</span>{" "}
+              <h5 className="font-semibold flex items-center gap-1">
+                {author?.name}{" "}
+                {author?.status === "Premium" && (
+                  <PremiumUserToolTip iconSize={16} />
+                )}
+              </h5>
               <Dot color="gray" />
               <p className="text-sm text-gray-700">
                 {moment(createdAt).startOf("minute").fromNow()}
               </p>
-            </h5>
+            </aside>
             <div className="flex items-center gap-x-0.5">
               {" "}
               {category ? (
