@@ -1,7 +1,10 @@
+"use client";
 import PostWritingDialog from "@/components/cards/PostWritingDialog";
+import { useUser } from "@/context/userProvider";
+import { useParams } from "next/navigation";
 import { ReactNode } from "react";
 
-const layout = ({
+const ProfileLayout = ({
   Posts,
   ProfileHeader,
   Sidebar,
@@ -10,11 +13,13 @@ const layout = ({
   ProfileHeader: ReactNode;
   Sidebar: ReactNode;
 }) => {
+  const { id } = useParams();
+  const { user } = useUser();
   return (
     <div className="container-mini px-5 grid grid-cols-12 gap-6  ">
       <aside className=" col-span-8">
         {ProfileHeader}
-        <PostWritingDialog />
+        {id === user?._id && <PostWritingDialog />}
         {Posts}
       </aside>
       <aside className="col-span-4 mt-6">{Sidebar}</aside>
@@ -22,4 +27,4 @@ const layout = ({
   );
 };
 
-export default layout;
+export default ProfileLayout;

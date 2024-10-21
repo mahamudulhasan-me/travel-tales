@@ -15,14 +15,16 @@ import {
 } from "lucide-react";
 import moment from "moment";
 import Image from "next/image";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const ProfileHeader = () => {
+  const { id } = useParams();
   const { user, setUser } = useUser();
   const [isLoading, setIsLoading] = useState(false);
-  const { data: userData, isSuccess } = useGetUserByIdQuery(
-    user?._id as string
-  );
+  const [isLoggedUser, setIsLoggedUser] = useState(false);
+  const { data: userData, isSuccess } = useGetUserByIdQuery(id as string);
+
   const {
     mutate: makePremium,
     data,
@@ -30,13 +32,13 @@ const ProfileHeader = () => {
     isSuccess: makePremiumSuccess,
   } = useMakePremiumMutation(user?._id as string);
 
-  useEffect(() => {
-    setIsLoading(true);
-    if (isSuccess) {
-      setUser(userData);
-    }
-    setIsLoading(false);
-  }, [isSuccess, setUser, userData]);
+  // useEffect(() => {
+  //   setIsLoading(true);
+  //   if (isSuccess) {
+  //     setUser(userData);
+  //   }
+  //   setIsLoading(false);
+  // }, [isSuccess, setUser, userData]);
 
   useEffect(() => {
     if (makePremiumSuccess) {
@@ -49,13 +51,22 @@ const ProfileHeader = () => {
     makePremium();
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    setIsLoading(true);
+    if (id === user?._id) {
+      setIsLoggedUser(true);
+    }
+    setIsLoading(false);
+  }, [id, user]);
+
   return (
     <>
       {isPending || (isLoading && <Loader />)}
 
       <div className="mt-6 bg-white rounded-md common-shadow">
         <Image
-          src={user?.coverImage || "/images/cover.jpg"}
+          src={userData?.coverImage || "/images/cover.jpg"}
           alt="cover"
           width={800}
           height={200}
@@ -64,7 +75,7 @@ const ProfileHeader = () => {
         <div className="px-5 py-3 flex items-center justify-between -mt-[3.5rem] ">
           <figure className="flex items-center gap-x-5">
             <Image
-              src={user?.profileImage || "/icons/avatar.png"}
+              src={userData?.profileImage || "/icons/avatar.png"}
               alt="avator"
               width={120}
               height={120}
@@ -72,21 +83,23 @@ const ProfileHeader = () => {
             />
             <div className="mt-8">
               <h2 className="font-semibold text-xl text-gray-800">
-                {user?.name}
+                {userData?.name}
               </h2>
               <p className=" text-gray-500">250 connections</p>
             </div>
           </figure>
           <div className="flex items-center gap-4 mt-6">
-            <button
-              onClick={handleMakePremium}
-              className="flex items-center gap-x-2 bg-gradient-to-r from-red-500 to-orange-500 text-white font-medium px-3 py-2 rounded-md text-sm"
-            >
-              <Crown size={20} color="#FFD700" />
-              Get Premium
-            </button>
+            {isLoggedUser && (
+              <button
+                onClick={handleMakePremium}
+                className="flex items-center gap-x-2 bg-gradient-to-r from-red-500 to-orange-500 text-white font-medium px-3 py-2 rounded-md text-sm"
+              >
+                <Crown size={20} color="#FFD700" />
+                Get Premium
+              </button>
+            )}
 
-            <ProfileEditModal />
+            {isLoggedUser && <ProfileEditModal />}
             <Button variant={"secondary"}>
               <Ellipsis size={20} />
             </Button>
@@ -99,12 +112,12 @@ const ProfileHeader = () => {
           </p>
           <p className="flex items-center gap-x-1 text-gray-700 ">
             <MapPinCheckInside size={18} />
-            {user?.address || "N/A"}
+            {userData?.address || "N/A"}
           </p>
           <p className="flex items-center gap-x-1 text-gray-700 ">
             <CalendarPlus size={18} />
             {/* Joined on Jan 01, 2020 */}
-            Joined on {moment(user?.createdAt).format("MMM DD, YYYY")}
+            Joined on {moment(userData?.createdAt).format("MMM DD, YYYY")}
           </p>
         </div>
         <ProfileNavbar />

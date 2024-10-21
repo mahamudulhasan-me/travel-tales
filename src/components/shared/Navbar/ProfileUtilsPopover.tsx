@@ -72,7 +72,7 @@ export function ProfileUtilsPopover() {
                 <p className="text-gray-500 text-xs">Blogger</p>
               </aside>
             </div>
-            <Link href="/profile" onClick={() => setOpen(false)}>
+            <Link href={`/profile/${user?._id}`} onClick={() => setOpen(false)}>
               <button className="bg-blue-100 text-primary px-4 py-1 rounded-sm w-full mt-2 hover:bg-primary hover:text-white transition-colors outline-none">
                 Profile
               </button>

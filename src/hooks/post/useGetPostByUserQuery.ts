@@ -2,10 +2,10 @@
 import { getPostByUser } from "@/services/postService";
 import { useQuery } from "@tanstack/react-query";
 
-const useGetPostByUserQuery = () => {
+const useGetPostByUserQuery = (userId: string) => {
   return useQuery({
     queryKey: ["posts", "postByUser"],
-    queryFn: async () => await getPostByUser(),
+    queryFn: async () => await getPostByUser(userId),
   });
 };
 

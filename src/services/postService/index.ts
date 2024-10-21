@@ -2,7 +2,6 @@
 
 import axiosInstance from "@/lib/AxiosInstance";
 import { IPost, IVoteInfo } from "@/type/post";
-import { getCurrentUser } from "../authService";
 
 export const createPost = async (postData: IPost): Promise<IPost | any> => {
   try {
@@ -31,10 +30,9 @@ export const handleVote = async (voteInfo: IVoteInfo) => {
   }
 };
 
-export const getPostByUser = async () => {
-  const user = await getCurrentUser();
+export const getPostByUser = async (userId: string) => {
   try {
-    const { data } = await axiosInstance.get(`/post/postByUser/${user?._id}`);
+    const { data } = await axiosInstance.get(`/post/postByUser/${userId}`);
     return data;
   } catch (error) {
     throw new Error(error as string);

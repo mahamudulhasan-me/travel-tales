@@ -48,12 +48,12 @@ const WhoToFollow = () => {
                 alt="avatar"
                 className="rounded-full  ring-primary ring-1 p-0.5 size-10"
               />
-              <div>
+              <Link href={`/profile/${user?._id}`}>
                 <h1 className="font-medium">{user.name}</h1>
                 <p className="text-sm text-gray-500">
                   {convertNameToUsername(user?.name as string)}
                 </p>
-              </div>
+              </Link>
             </aside>
             {user?.following.includes(currentUser?._id) ? (
               <button

@@ -1,20 +1,13 @@
 "use client";
-import { useUser } from "@/context/userProvider";
 import useGetUserByIdQuery from "@/hooks/user/useGetUserByIdQuery";
 import { Cake, Mail } from "lucide-react";
 import moment from "moment";
-import { useEffect } from "react";
+import { useParams } from "next/navigation";
 
 const About = () => {
-  const { user, setUser } = useUser();
+  const { id } = useParams();
 
-  const { data: userData } = useGetUserByIdQuery(user?._id as string);
-
-  useEffect(() => {
-    if (userData) {
-      setUser(userData);
-    }
-  }, [userData, setUser]);
+  const { data: userData } = useGetUserByIdQuery(id as string);
 
   return (
     <div className="bg-white common-shadow p-5">

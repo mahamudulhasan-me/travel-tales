@@ -3,9 +3,11 @@ import PostCard from "@/components/cards/PostCard";
 import PostCardSkeleton from "@/components/skeletor/PostCardSkeleton";
 import useGetPostByUserQuery from "@/hooks/post/useGetPostByUserQuery";
 import { IPost } from "@/type/post";
+import { useParams } from "next/navigation";
 
 const Posts = () => {
-  const { data: posts, isLoading } = useGetPostByUserQuery();
+  const { id } = useParams();
+  const { data: posts, isLoading } = useGetPostByUserQuery(id as string);
   if (isLoading) {
     return Array.from({ length: 2 }).map((_, index) => (
       <PostCardSkeleton key={index} />
