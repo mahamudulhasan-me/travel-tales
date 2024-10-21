@@ -3,12 +3,19 @@ import ProfileEditModal from "@/components/modal/ProfileEditModal";
 import ProfileNavbar from "@/components/shared/Navbar/ProfileNavbar";
 import { Button } from "@/components/ui/button";
 import Loader from "@/components/ui/Loader";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { useUser } from "@/context/userProvider";
 import useMakePremiumMutation from "@/hooks/payment/useMakePremiumMutation";
 import useGetUserByIdQuery from "@/hooks/user/useGetUserByIdQuery";
 import {
   BriefcaseBusiness,
   CalendarPlus,
+  Check,
   Crown,
   Ellipsis,
   MapPinCheckInside,
@@ -80,14 +87,31 @@ const ProfileHeader = () => {
               className="rounded-full ring ring-white size-32 bg-blue-100"
             />
             <div className="mt-8">
-              <h2 className="font-semibold text-xl text-gray-800">
-                {userData?.name}
+              <h2 className="font-semibold text-xl text-gray-800 flex items-center gap-1">
+                {userData?.name}{" "}
+                {userData?.status === "Premium" && (
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <Check
+                          absoluteStrokeWidth
+                          className="text-white bg-primary rounded-full p-0.5 border-dotted border-2"
+                          size={18}
+                        />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Premium User</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                )}
+                {/* <Check absoluteStrokeWidth /> */}
               </h2>
               <p className=" text-gray-500">250 connections</p>
             </div>
           </figure>
           <div className="flex items-center gap-4 mt-6">
-            {isLoggedUser && (
+            {isLoggedUser && userData?.status === "Basic" && (
               <button
                 onClick={handleMakePremium}
                 className="flex items-center gap-x-2 bg-gradient-to-r from-red-500 to-orange-500 text-white font-medium px-3 py-2 rounded-md text-sm"

@@ -41,9 +41,10 @@ export function SignInFormModal({ explore }: { explore?: boolean }) {
     mutate: handleUserSignIn,
     data,
     isSuccess,
+    error: loginError,
     isError,
   } = useUserSignIn();
-
+  console.log({ loginError });
   const {
     register,
     handleSubmit,
@@ -71,11 +72,11 @@ export function SignInFormModal({ explore }: { explore?: boolean }) {
       toast.success(data?.message);
       setShowModal(false);
     } else if (isError) {
-      toast.error("Something went wrong. Please try again.");
+      toast.error(loginError?.message);
       navigate.push("/explore");
     }
     setIsLoading(false);
-  }, [isSuccess, data, setIsLoading, setUser, isError, navigate]);
+  }, [isSuccess, data, setIsLoading, setUser, isError, navigate, loginError]);
 
   return (
     <Dialog open={showModal} onOpenChange={setShowModal}>

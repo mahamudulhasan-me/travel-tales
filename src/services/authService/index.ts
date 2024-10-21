@@ -1,86 +1,114 @@
-"use server";
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import envConfig from "@/config/envConfig";
-import axios from "axios";
-import { jwtDecode } from "jwt-decode";
-import { cookies } from "next/headers";
+import axiosInstance from "@/lib/AxiosInstance";
+import Cookies from "js-cookie"; // Client-side cookie handling
+import { jwtDecode } from "jwt-decode"; // To decode JWT tokens
 import { FieldValues } from "react-hook-form";
 
+// Sign up user (Client Component version)
 export const signUpUser = async (userData: FieldValues) => {
-  const { data } = await axios.post(
-    `${envConfig.baseApi}/auth/signup`,
-    userData
-  );
-  console.log(data);
-  if (data.success) {
-    cookies().set("accessToken", data?.accessToken);
-    cookies().set("refreshToken", data?.refreshToken);
-  }
-  // try {
-  //   const { data } = await axios.post(
-  //     `${envConfig.baseApi}/auth/signup`,
-  //     userData
-  //   );
-  //   console.log(data);
-  //   if (data.success) {
-  //     cookies().set("accessToken", data?.accessToken);
-  //     cookies().set("refreshToken", data?.refreshToken);
-  //   }
-
-  //   return data;
-  // } catch (error: any) {
-  //   throw new Error(error);
-  // }
-};
-
-export const loginUser = async (userData: FieldValues) => {
   try {
-    const { data } = await axios.post(
-      `${envConfig.baseApi}/auth/login`,
-      userData
-    );
+    const { data } = await axiosInstance.post(`/auth/signup`, userData);
+
     if (data.success) {
-      cookies().set("accessToken", data?.accessToken);
-      cookies().set("refreshToken", data?.refreshToken);
+      // Set cookies on the client using js-cookie
+      Cookies.set("accessToken", data?.accessToken);
+      Cookies.set("refreshToken", data?.refreshToken);
     }
+
     return data;
   } catch (error: any) {
-    throw new Error(error);
+    if (error.response) {
+      // Handle server error
+      const errorMessage = error.response.data.message || "Sign up failed";
+      throw new Error(errorMessage);
+    } else if (error.request) {
+      throw new Error("No response from server. Please try again.");
+    } else {
+      throw new Error(`Sign up error: ${error.message}`);
+    }
   }
 };
 
+// Login user (Client Component version)
+export const loginUser = async (userData: FieldValues) => {
+  try {
+    const { data } = await axiosInstance.post(`/auth/login`, userData);
+
+    if (data.success) {
+      // Set cookies on the client using js-cookie
+      Cookies.set("accessToken", data?.accessToken);
+      Cookies.set("refreshToken", data?.refreshToken);
+    }
+
+    return data;
+  } catch (error: any) {
+    if (error.response) {
+      const errorMessage = error.response.data.message || "Login failed";
+      throw new Error(errorMessage);
+    } else if (error.request) {
+      throw new Error("No response from server. Please try again.");
+    } else {
+      throw new Error(`Login error: ${error.message}`);
+    }
+  }
+};
+
+// Logout user (Client Component version)
 export const logout = () => {
-  cookies().delete("accessToken");
-  cookies().delete("refreshToken");
+  // Remove cookies using js-cookie
+  Cookies.remove("accessToken");
+  Cookies.remove("refreshToken");
 };
 
+// Get the current user (Client Component version)
 export const getCurrentUser = async () => {
-  const accessToken = cookies().get("accessToken")?.value;
-
-  let decodedToken = null;
-
+  const accessToken = Cookies.get("accessToken");
+  console.log({ accessToken });
   if (accessToken) {
-    decodedToken = await jwtDecode(accessToken);
+    try {
+      // Decode JWT token
+      const decodedToken = jwtDecode(accessToken);
+      console.log(decodedToken);
+      return decodedToken;
+    } catch (error) {
+      throw new Error("Failed to decode token");
+    }
   }
-  return decodedToken;
+
+  return null;
 };
 
+// Refresh token functionality (if needed)
 // export const getNewAccessToken = async () => {
 //   try {
-//     const refreshToken = cookies().get("refreshToken")?.value;
+//     const refreshToken = Cookies.get("refreshToken");
 
-//     const res = await axiosInstance({
-//       url: "/auth/refresh-token",
-//       method: "POST",
+//     if (!refreshToken) {
+//       throw new Error("No refresh token available");
+//     }
+
+//     const { data } = await axios.post(`${envConfig.baseApi}/auth/refresh-token`, {}, {
 //       withCredentials: true,
 //       headers: {
 //         cookie: `refreshToken=${refreshToken}`,
 //       },
 //     });
 
-//     return res.data;
-//   } catch (error) {
-//     throw new Error("Failed to get new access token");
+//     // Set new tokens in cookies
+//     Cookies.set("accessToken", data?.accessToken);
+//     Cookies.set("refreshToken", data?.refreshToken);
+
+//     return data;
+//   } catch (error: any) {
+//     if (error.response) {
+//       const errorMessage = error.response.data.message || "Failed to refresh token";
+//       throw new Error(errorMessage);
+//     } else if (error.request) {
+//       throw new Error("No response from server. Please try again.");
+//     } else {
+//       throw new Error(`Refresh token error: ${error.message}`);
+//     }
 //   }
 // };

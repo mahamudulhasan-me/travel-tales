@@ -32,7 +32,10 @@ const SignUpForm = () => {
     data,
     isSuccess,
     isError,
+    error: signUpError,
   } = useUserSignUp();
+
+  console.log({ signUpError }, { data });
 
   // Initialize react-hook-form
   const {
@@ -67,10 +70,10 @@ const SignUpForm = () => {
       setUser(data?.data);
     }
     if (isError) {
-      toast.error("Something went wrong");
+      toast.error(signUpError?.message);
       setIsLoading(false);
     }
-  }, [isSuccess, isError, navigate, data, setIsLoading, setUser]);
+  }, [isSuccess, isError, navigate, data, setIsLoading, setUser, signUpError]);
 
   return (
     <form

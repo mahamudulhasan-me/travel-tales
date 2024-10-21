@@ -1,18 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getCurrentUser } from "./services/authService";
+import { getCurrentUser } from "./hooks/user/useGetCurrentUser";
 
 // Define protected routes
 const protectedRoutes = ["/", "/profile"];
-
-type Role = keyof typeof roleBasedRoutes;
 
 // Define role-based routes
 const roleBasedRoutes = {
   USER: [/^\/profile/],
   ADMIN: [/^\/admin/],
 };
-
-// Simulated function to check if a user is logged in (replace this with your actual logic)
 
 // Middleware function to protect routes
 export async function middleware(request: NextRequest) {
@@ -23,8 +19,8 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith(route)
   );
 
-  // Simulate checking if a user is authenticated
-  const user = await getCurrentUser();
+  // Get the current user based on the request
+  const user = await getCurrentUser(request); // Pass the request to the function
 
   // Redirect to /explore if the user is not authenticated and trying to access a protected route
   if (!user && isProtectedRoute) {
