@@ -34,7 +34,7 @@ const PostTextArea = (): JSX.Element => {
       toolbar: toolbarOptions, // Set the custom toolbar here
     },
   });
-  console.log(isPremium);
+
   const [editorContent, setEditorContent] = useState<string>("");
   const [imageFiles, setImageFiles] = useState<File[]>([]); // State for storing image files
 

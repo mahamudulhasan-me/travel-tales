@@ -65,12 +65,12 @@ export const logout = () => {
 // Get the current user (Client Component version)
 export const getCurrentUser = async () => {
   const accessToken = Cookies.get("accessToken");
-  console.log({ accessToken });
+
   if (accessToken) {
     try {
       // Decode JWT token
       const decodedToken = jwtDecode(accessToken);
-      console.log(decodedToken);
+
       return decodedToken;
     } catch (error) {
       throw new Error("Failed to decode token");

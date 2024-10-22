@@ -35,8 +35,6 @@ const SignUpForm = () => {
     error: signUpError,
   } = useUserSignUp();
 
-  console.log({ signUpError }, { data });
-
   // Initialize react-hook-form
   const {
     register,

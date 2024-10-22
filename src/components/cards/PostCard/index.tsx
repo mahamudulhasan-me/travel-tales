@@ -41,13 +41,13 @@ const PostCard = ({ post }: { post: IPost }) => {
     category,
     isPremium,
   } = post;
-  console.log(author);
+
   const { mutate: vote, data, isPending } = useVoteMutation(_id as string);
   const { data: comments, isLoading: commentsLoading } = useGetCommentQuery(
     _id as string
   );
 
-  console.log({ updateCommentData });
+
 
   useEffect(() => {
     const userVote = votes?.find((vote) => vote.userId === user?._id);

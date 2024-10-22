@@ -1,12 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { getPosts } from "@/services/postService";
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 
-const useGetPosts = (limit: number) => {
+const useGetPosts = (limit: number, filterBy: string, sortBy: string) => {
   return useQuery<any, Error>({
-    queryKey: ["posts", limit],
-    queryFn: async () => await getPosts(limit),
-    keepPreviousData: true, // This option is valid in react-query 4.x
+    queryKey: ["posts", limit, filterBy, sortBy],
+    queryFn: async () => await getPosts(limit, filterBy, sortBy),
+    keepPreviousData: true, // Keep the previous data while fetching new data
   } as UseQueryOptions<any, Error>); // Explicitly cast options
 };
 

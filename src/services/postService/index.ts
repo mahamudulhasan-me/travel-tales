@@ -13,10 +13,17 @@ export const createPost = async (postData: IPost): Promise<IPost | any> => {
 };
 
 // Frontend: Fetch posts with limit and skip for infinite scroll
-export const getPosts = async (limit = 5) => {
+export const getPosts = async (
+  limit = 5,
+  filterBy = "default",
+  sortBy = "default"
+) => {
   try {
-    const response = await axiosInstance.get(`/post?limit=${limit}`);
-    return response.data; // Adjusted to return the entire response data
+    // Send filter and sort as query parameters
+    const response = await axiosInstance.get(`/post`, {
+      params: { limit, filterBy, sortBy },
+    });
+    return response.data; // Return the entire response data (posts and total count)
   } catch (error) {
     throw new Error(error as string);
   }

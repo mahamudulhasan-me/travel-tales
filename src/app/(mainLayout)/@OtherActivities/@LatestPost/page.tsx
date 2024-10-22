@@ -7,7 +7,7 @@ import moment from "moment";
 import Link from "next/link";
 
 const LatestPost = () => {
-  const { data: posts, isLoading } = useGetPosts(10, 0);
+  const { data: posts, isLoading } = useGetPosts(10, "default", "default");
 
   return (
     <div className="bg-white rounded-md common-shadow p-5">

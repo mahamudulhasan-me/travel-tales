@@ -44,7 +44,7 @@ export function SignInFormModal({ explore }: { explore?: boolean }) {
     error: loginError,
     isError,
   } = useUserSignIn();
-  console.log({ loginError });
+
   const {
     register,
     handleSubmit,
