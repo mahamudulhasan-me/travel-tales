@@ -5,7 +5,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import useDeleteCommentMutation from "@/hooks/comment/useDeleteCommentMutaion";
 import { Ellipsis, Flag, Pencil, Trash2 } from "lucide-react";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 export function CommentThreeDotPopover({
   setUpdateCommentData,
@@ -16,19 +19,31 @@ export function CommentThreeDotPopover({
   content: string;
   commentId: string;
 }) {
+  const { mutate: deleteComment, isSuccess } =
+    useDeleteCommentMutation(commentId);
   const handleReadyForUpdate = () => {
     setUpdateCommentData({ updateMode: true, comment: content, commentId });
   };
+
+  const handleDelete = () => {
+    deleteComment();
+  };
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Comment deleted successfully");
+    }
+  }, [isSuccess]);
+
   const listItems = [
     {
       id: 1,
       title: <span onClick={handleReadyForUpdate}>Update Comment</span>,
-      icon: <Pencil size={18} onClick={() => handleReadyForUpdate} />,
+      icon: <Pencil size={18} onClick={handleReadyForUpdate} />,
     },
     {
       id: 2,
-      title: "Delete",
-      icon: <Trash2 size={18} />,
+      title: <span onClick={handleDelete}>Delete</span>,
+      icon: <Trash2 size={18} onClick={handleDelete} />,
     },
   ];
   return (

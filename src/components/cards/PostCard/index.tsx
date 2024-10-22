@@ -215,7 +215,7 @@ const PostCard = ({ post }: { post: IPost }) => {
                         <CommentThreeDotPopover
                           setUpdateCommentData={setUpdateCommentData}
                           content={comment?.content}
-                          commentId={comment?._id}
+                          commentId={comment?._id as string}
                         />
                       </p>
                     </h1>
