@@ -7,7 +7,7 @@ import moment from "moment";
 import Link from "next/link";
 
 const LatestPost = () => {
-  const { data: posts, isLoading } = useGetPosts();
+  const { data: posts, isLoading } = useGetPosts(10, 0);
 
   return (
     <div className="bg-white rounded-md common-shadow p-5">
@@ -19,7 +19,7 @@ const LatestPost = () => {
           direction="vertical"
           className="space-y-3 h-[50vh] overflow-hidden"
         >
-          {posts?.data?.data.map((post: IPost) => (
+          {posts?.data?.posts?.map((post: IPost) => (
             <div key={post._id}>
               <article
                 className="font-semibold text-gray-900"

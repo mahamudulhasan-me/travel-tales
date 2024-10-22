@@ -1,3 +1,4 @@
+import { useUser } from "@/context/userProvider";
 import useCreateCommentMutation from "@/hooks/comment/useCreateCommentMutation";
 import useUpdateCommentMutation from "@/hooks/comment/useUpdateCommentMutation"; // Import the update mutation
 import { Send } from "lucide-react";
@@ -37,6 +38,7 @@ const CommentForm = ({
   const { mutate: updateComment } = useUpdateCommentMutation(
     updateCommentData.commentId as string // Pass the commentId for updating
   );
+  const { user } = useUser();
 
   // Prepopulate the input field if we are in update mode
   if (updateCommentData.updateMode && updateCommentData.comment) {
@@ -74,7 +76,7 @@ const CommentForm = ({
       onSubmit={handleSubmit(onSubmit)} // Bind form submission
     >
       <Image
-        src="/icons/avatar.png"
+        src={user?.profileImage || "/icons/avatar.png"}
         width={56}
         height={56}
         alt="user avatar"

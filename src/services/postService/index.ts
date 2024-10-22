@@ -12,10 +12,11 @@ export const createPost = async (postData: IPost): Promise<IPost | any> => {
   }
 };
 
-export const getPosts = async () => {
+// Frontend: Fetch posts with limit and skip for infinite scroll
+export const getPosts = async (limit = 5) => {
   try {
-    const data = await axiosInstance.get("/post");
-    return data;
+    const response = await axiosInstance.get(`/post?limit=${limit}`);
+    return response.data; // Adjusted to return the entire response data
   } catch (error) {
     throw new Error(error as string);
   }

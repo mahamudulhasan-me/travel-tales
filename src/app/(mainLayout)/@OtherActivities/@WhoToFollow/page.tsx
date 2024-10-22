@@ -1,4 +1,5 @@
 "use client";
+import PremiumUserToolTip from "@/components/tooltips/PremiumUserToolTip";
 import { useUser } from "@/context/userProvider";
 import useGetAllUsersQuery from "@/hooks/user/useGetAllUsersQuery";
 import useHandleFollow from "@/hooks/user/useHandleFollow";
@@ -12,9 +13,8 @@ import Link from "next/link";
 const WhoToFollow = () => {
   const { user: currentUser } = useUser();
   const { data: users, isLoading } = useGetAllUsersQuery();
-  const { mutate: handleFollow, isLoading: isFollowing } = useHandleFollow();
-  const { mutate: handleUnfollow, isLoading: isUnfollowing } =
-    useHandleUnfollow();
+  const { mutate: handleFollow } = useHandleFollow();
+  const { mutate: handleUnfollow } = useHandleUnfollow();
 
   const handleFollowUser = (user: IUser) => {
     handleFollow({
@@ -42,14 +42,19 @@ const WhoToFollow = () => {
           <div key={user._id} className="flex justify-between items-center">
             <aside className="flex items-center gap-x-3">
               <Image
-                src={"/icons/avatar.png"}
+                src={user?.profileImage || "/icons/avatar.png"}
                 width={60}
                 height={60}
                 alt="avatar"
                 className="rounded-full  ring-primary ring-1 p-0.5 size-10"
               />
               <Link href={`/profile/${user?._id}`}>
-                <h1 className="font-medium">{user.name}</h1>
+                <h1 className="font-medium flex items-center gap-x-1">
+                  {user.name}{" "}
+                  {user?.status === "Premium" && (
+                    <PremiumUserToolTip iconSize={14} />
+                  )}
+                </h1>
                 <p className="text-sm text-gray-500">
                   {convertNameToUsername(user?.name as string)}
                 </p>
@@ -60,14 +65,14 @@ const WhoToFollow = () => {
                 onClick={() => handleUnfollowUser(user)}
                 className="size-10 rounded-full flex justify-center items-center bg-primary text-white transition-colors"
               >
-                {isUnfollowing ? "Unfollowing..." : <UserCheck />}
+                <UserCheck />
               </button>
             ) : (
               <button
                 onClick={() => handleFollowUser(user)}
                 className="size-10 rounded-full bg-blue-100 flex justify-center items-center text-primary hover:bg-primary hover:text-white transition-colors"
               >
-                {isFollowing ? "Following..." : <Plus />}
+                <Plus />
               </button>
             )}
           </div>

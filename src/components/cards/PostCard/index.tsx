@@ -193,7 +193,7 @@ const PostCard = ({ post }: { post: IPost }) => {
                 <>
                   <div key={comment._id} className="flex mt-3 gap-x-3">
                     <Image
-                      src="/icons/avatar.png"
+                      src={comment?.author?.profileImage || "/icons/avatar.png"}
                       width={60}
                       height={60}
                       alt="post"

@@ -1,4 +1,6 @@
+"use client";
 /* eslint-disable jsx-a11y/alt-text */
+
 import {
   Dialog,
   DialogClose,
@@ -9,10 +11,12 @@ import {
   DialogTrigger,
 } from "@/components/core/Dialog";
 import { ScrollArea } from "@/components/website/scroll-area";
+import { useUser } from "@/context/userProvider";
 import { Image, Smile, SquarePlus, Video } from "lucide-react";
 import PostTextArea from "./PostTextArea";
 
 export default function PostWritingDialog() {
+  const { user } = useUser();
   return (
     <Dialog
       transition={{
@@ -29,7 +33,7 @@ export default function PostWritingDialog() {
       >
         <div className="flex items-center space-x-3 p-3 ">
           <DialogImage
-            src="images/avator.jpg"
+            src={user?.profileImage || "images/avator.jpg"}
             alt="What I Talk About When I Talk About Running - book cover"
             className="h-8 w-8 object-cover object-top"
             style={{
