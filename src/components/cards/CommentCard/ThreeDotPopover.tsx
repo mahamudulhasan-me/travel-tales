@@ -7,9 +7,17 @@ import {
 } from "@/components/ui/popover";
 import { Ellipsis, Flag, Pencil, Trash2 } from "lucide-react";
 
-export function CommentThreeDotPopover({ setUpdateCommentData, content }) {
+export function CommentThreeDotPopover({
+  setUpdateCommentData,
+  content,
+  commentId,
+}: {
+  setUpdateCommentData: any;
+  content: string;
+  commentId: string;
+}) {
   const handleReadyForUpdate = () => {
-    setUpdateCommentData({ updateMode: true, comment: content });
+    setUpdateCommentData({ updateMode: true, comment: content, commentId });
   };
   const listItems = [
     {

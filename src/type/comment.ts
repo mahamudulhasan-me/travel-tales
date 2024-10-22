@@ -9,3 +9,8 @@ export interface IComment {
   updatedAt?: Date; // Automatically set when the comment is updated
   __v?: number; // Version key for Mongoose documents (optional)
 }
+
+export interface IUpdateComment {
+  commentId: string;
+  content: string;
+}

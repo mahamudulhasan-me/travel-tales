@@ -183,6 +183,7 @@ const PostCard = ({ post }: { post: IPost }) => {
           postId={_id}
           userId={user?._id}
           updateCommentData={updateCommentData}
+          setUpdateCommentData={setUpdateCommentData}
         />
         {comments?.data?.length > 0 ? (
           comments?.data?.map((comment: IComment) => {
@@ -214,6 +215,7 @@ const PostCard = ({ post }: { post: IPost }) => {
                         <CommentThreeDotPopover
                           setUpdateCommentData={setUpdateCommentData}
                           content={comment?.content}
+                          commentId={comment?._id}
                         />
                       </p>
                     </h1>

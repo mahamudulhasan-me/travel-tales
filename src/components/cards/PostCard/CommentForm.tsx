@@ -1,4 +1,5 @@
 import useCreateCommentMutation from "@/hooks/comment/useCreateCommentMutation";
+import useUpdateCommentMutation from "@/hooks/comment/useUpdateCommentMutation"; // Import the update mutation
 import { Send } from "lucide-react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
@@ -13,13 +14,16 @@ const CommentForm = ({
   postId,
   userId,
   updateCommentData,
+  setUpdateCommentData,
 }: {
   postId: string | undefined;
   userId: string | undefined;
   updateCommentData: {
     updateMode: boolean;
+    commentId?: string; // Add commentId for updating
     comment?: string;
   };
+  setUpdateCommentData: any;
 }) => {
   const {
     register,
@@ -30,6 +34,9 @@ const CommentForm = ({
   } = useForm<CommentFormValues>();
 
   const { mutate: createComment } = useCreateCommentMutation(postId as string);
+  const { mutate: updateComment } = useUpdateCommentMutation(
+    updateCommentData.commentId as string // Pass the commentId for updating
+  );
 
   // Prepopulate the input field if we are in update mode
   if (updateCommentData.updateMode && updateCommentData.comment) {
@@ -38,10 +45,18 @@ const CommentForm = ({
 
   // Handle form submission
   const onSubmit = (data: CommentFormValues) => {
-    if (updateCommentData.updateMode) {
+    if (updateCommentData.updateMode && updateCommentData.commentId) {
       // Handle comment update logic
-      console.log("Updating comment:", data.content);
-      // You can implement the update logic here
+      updateComment(
+        { content: data.content },
+        {
+          onSuccess: () => {
+            // Set update mode to false and clear input field
+            setUpdateCommentData({ updateMode: false });
+            reset(); // Reset form after submission
+          },
+        }
+      );
     } else {
       // Handle new comment creation
       createComment({
@@ -49,8 +64,8 @@ const CommentForm = ({
         author: userId as string,
         content: data.content,
       });
+      reset(); // Reset form after submission
     }
-    reset(); // Reset form after submission
   };
 
   return (
