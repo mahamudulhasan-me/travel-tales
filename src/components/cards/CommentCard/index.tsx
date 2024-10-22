@@ -35,7 +35,7 @@ const CommentCard = ({ comments }: { comments: any }) => {
               alt="post"
               className="size-9 rounded-full"
             />
-            <div className="p-3 bg-gray-100 w-full rounded-md">
+            <div className="p-3 bg-gray-100 w-fit rounded-md">
               <h1 className="flex items-center justify-between font-medium">
                 <Link
                   href={"/"}
@@ -48,6 +48,7 @@ const CommentCard = ({ comments }: { comments: any }) => {
               </h1>
               <p className="text-gray-700 mt-1">{comment?.content}</p>
             </div>
+            <div></div>
           </div>
         ))
       ) : (

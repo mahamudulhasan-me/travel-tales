@@ -2,71 +2,85 @@ import useCreateCommentMutation from "@/hooks/comment/useCreateCommentMutation";
 import { Send } from "lucide-react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
+
 interface CommentFormValues {
   content: string;
   postId: string | undefined;
   userId: string | undefined;
 }
+
 const CommentForm = ({
   postId,
   userId,
+  updateCommentData,
 }: {
   postId: string | undefined;
   userId: string | undefined;
+  updateCommentData: {
+    updateMode: boolean;
+    comment?: string;
+  };
 }) => {
   const {
     register,
     handleSubmit,
     reset,
+    setValue, // Used to prepopulate input
     formState: { errors },
   } = useForm<CommentFormValues>();
 
   const { mutate: createComment } = useCreateCommentMutation(postId as string);
 
+  // Prepopulate the input field if we are in update mode
+  if (updateCommentData.updateMode && updateCommentData.comment) {
+    setValue("content", updateCommentData.comment);
+  }
+
   // Handle form submission
   const onSubmit = (data: CommentFormValues) => {
-    console.log("Submitted comment:", data.content);
-    createComment({
-      postId: postId as string,
-      author: userId as string,
-      content: data.content,
-    });
-    reset();
+    if (updateCommentData.updateMode) {
+      // Handle comment update logic
+      console.log("Updating comment:", data.content);
+      // You can implement the update logic here
+    } else {
+      // Handle new comment creation
+      createComment({
+        postId: postId as string,
+        author: userId as string,
+        content: data.content,
+      });
+    }
+    reset(); // Reset form after submission
   };
 
   return (
-    <>
-      {" "}
-      <form
-        className="flex items-center gap-x-3 justify-between"
-        onSubmit={handleSubmit(onSubmit)} // Bind form submission
-      >
-        <Image
-          src="/icons/avatar.png"
-          width={56}
-          height={56}
-          alt="user avatar"
-          className="rounded-full size-10"
+    <form
+      className="flex items-center gap-x-3 justify-between"
+      onSubmit={handleSubmit(onSubmit)} // Bind form submission
+    >
+      <Image
+        src="/icons/avatar.png"
+        width={56}
+        height={56}
+        alt="user avatar"
+        className="rounded-full size-10"
+      />
+      <div className="w-full">
+        <input
+          type="text"
+          placeholder="Write a comment..."
+          className="input-style bg-[#eff2f6] focus:bg-white transition-colors w-full"
+          {...register("content", { required: "Comment is required" })} // Register input field with validation
         />
-        <div className="w-full">
-          <input
-            type="text"
-            placeholder="Write a comment..."
-            className="input-style bg-[#eff2f6] focus:bg-white transition-colors w-full"
-            {...register("content", { required: "Comment is required" })} // Register input field with validation
-          />
-          {/* Error handling */}
-          {errors.content && (
-            <p className="text-red-500 text-sm mt-1">
-              {errors.content.message}
-            </p>
-          )}
-        </div>
-        <button type="submit">
-          <Send size={28} />
-        </button>
-      </form>
-    </>
+        {/* Error handling */}
+        {errors.content && (
+          <p className="text-red-500 text-sm mt-1">{errors.content.message}</p>
+        )}
+      </div>
+      <button type="submit">
+        <Send size={28} />
+      </button>
+    </form>
   );
 };
 

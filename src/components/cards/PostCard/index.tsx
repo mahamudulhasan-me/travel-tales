@@ -17,6 +17,7 @@ import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { CommentThreeDotPopover } from "../CommentCard/ThreeDotPopover";
 import CommentForm from "./CommentForm";
 import { ThreeDotPopover } from "./ThreeDotPopover";
 
@@ -24,6 +25,11 @@ const PostCard = ({ post }: { post: IPost }) => {
   const { user } = useUser();
   const [voteCount, setVoteCount] = useState(post?.voteCount || 0);
   const [myVote, setMyVote] = useState<IVoteInfo | undefined>(undefined);
+  const [updateCommentData, setUpdateCommentData] = useState({
+    updateMode: false,
+    comment: "",
+    readyForUpdate: false,
+  });
   const {
     _id,
     content,
@@ -39,6 +45,8 @@ const PostCard = ({ post }: { post: IPost }) => {
   const { data: comments, isLoading: commentsLoading } = useGetCommentQuery(
     _id as string
   );
+
+  console.log({ updateCommentData });
 
   useEffect(() => {
     const userVote = votes?.find((vote) => vote.userId === user?._id);
@@ -77,7 +85,7 @@ const PostCard = ({ post }: { post: IPost }) => {
             width={60}
             height={60}
             alt="avatar"
-            className="rounded-full ring ring-primary p-0.5 size-12"
+            className="rounded-full ring-1 ring-primary p-0.5 size-12"
           />
           <div>
             <aside className="flex items-center gap-x-1">
@@ -85,7 +93,7 @@ const PostCard = ({ post }: { post: IPost }) => {
               <h5 className="font-semibold flex items-center gap-1">
                 {author?.name}{" "}
                 {author?.status === "Premium" && (
-                  <PremiumUserToolTip iconSize={16} />
+                  <PremiumUserToolTip iconSize={14} />
                 )}
               </h5>
               <Dot color="gray" />
@@ -171,7 +179,11 @@ const PostCard = ({ post }: { post: IPost }) => {
         </div>
       </article>
       <div className="mt-5">
-        <CommentForm postId={_id} userId={user?._id} />
+        <CommentForm
+          postId={_id}
+          userId={user?._id}
+          updateCommentData={updateCommentData}
+        />
         {comments?.data?.length > 0 ? (
           comments?.data?.map((comment: IComment) => {
             if (comment.postId === _id) {
@@ -184,7 +196,7 @@ const PostCard = ({ post }: { post: IPost }) => {
                     alt="post"
                     className="size-9 rounded-full"
                   />
-                  <div className="p-3 bg-gray-100 w-full rounded-md">
+                  <div className="pl-2 pb-2 bg-gray-100 w-full rounded-md">
                     <h1 className="flex items-center justify-between font-medium">
                       <Link
                         href={"/"}
@@ -193,11 +205,19 @@ const PostCard = ({ post }: { post: IPost }) => {
                         {/*@ts-ignore */}
                         {comment?.author?.name}
                       </Link>
-                      <span className="text-xs text-gray-500">
-                        {moment(comment?.createdAt).startOf("minute").fromNow()}
-                      </span>
+                      <p className="flex items-center gap-x-1">
+                        <span className="text-xs text-gray-500">
+                          {moment(comment?.createdAt)
+                            .startOf("minute")
+                            .fromNow()}
+                        </span>
+                        <CommentThreeDotPopover
+                          setUpdateCommentData={setUpdateCommentData}
+                          content={comment?.content}
+                        />
+                      </p>
                     </h1>
-                    <p className="text-gray-700 mt-1">{comment?.content}</p>
+                    <p className="text-gray-700 ">{comment?.content}</p>
                   </div>
                 </div>
               );

@@ -5,43 +5,29 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-  Bookmark,
-  CircleOff,
-  CircleX,
-  Ellipsis,
-  Flag,
-  Pencil,
-} from "lucide-react";
+import { Ellipsis, Flag, Pencil, Trash2 } from "lucide-react";
 
-export function ThreeDotPopover() {
+export function CommentThreeDotPopover({ setUpdateCommentData, content }) {
+  const handleReadyForUpdate = () => {
+    setUpdateCommentData({ updateMode: true, comment: content });
+  };
   const listItems = [
     {
-      id: 11,
-      title: "Save Post",
-      icon: <Bookmark size={18} />,
-    },
-    {
       id: 1,
-      title: "Edit Post",
-      icon: <Pencil size={18} />,
+      title: <span onClick={handleReadyForUpdate}>Update Comment</span>,
+      icon: <Pencil size={18} onClick={() => handleReadyForUpdate} />,
     },
     {
       id: 2,
-      title: "Hide Post",
-      icon: <CircleOff size={18} />,
-    },
-    {
-      id: 4,
-      title: "Block",
-      icon: <CircleX size={18} />,
+      title: "Delete",
+      icon: <Trash2 size={18} />,
     },
   ];
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button variant={"ghost"}>
-          <Ellipsis />
+          <Ellipsis size={18} className="text-gray-700" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-fit" align="start">

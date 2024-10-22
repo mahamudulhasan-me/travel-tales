@@ -1,4 +1,5 @@
 "use client";
+import PremiumUserToolTip from "@/components/tooltips/PremiumUserToolTip";
 import { Skeleton } from "@/components/ui/skeleton"; // Adjusted import for your Skeleton
 import { useUser } from "@/context/userProvider";
 import useGetPostByUserQuery from "@/hooks/post/useGetPostByUserQuery";
@@ -59,9 +60,12 @@ const ProfileInfo = () => {
           <>
             <Link
               href={"/"}
-              className="text-xl font-semibold text-gray-800 hover:text-primary transition-colors"
+              className="text-xl font-semibold text-gray-800 hover:text-primary transition-colors "
             >
-              {userData?.name}
+              {userData?.name}{" "}
+              {userData?.status === "Premium" && (
+                <PremiumUserToolTip iconSize={14} />
+              )}{" "}
             </Link>
             <p>{userData?.email}</p>
             <p className="mt-5">
