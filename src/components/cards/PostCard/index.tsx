@@ -12,6 +12,7 @@ import {
   Dot,
   Loader,
   MessageSquare,
+  Reply,
 } from "lucide-react";
 import moment from "moment";
 import Image from "next/image";
@@ -189,39 +190,65 @@ const PostCard = ({ post }: { post: IPost }) => {
           comments?.data?.map((comment: IComment) => {
             if (comment.postId === _id) {
               return (
-                <div key={comment._id} className="flex mt-3 gap-x-3">
-                  <Image
-                    src="/icons/avatar.png"
-                    width={60}
-                    height={60}
-                    alt="post"
-                    className="size-9 rounded-full"
-                  />
-                  <div className="pl-2 pb-2 bg-gray-100 w-full rounded-md">
-                    <h1 className="flex items-center justify-between font-medium">
-                      <Link
-                        href={"/"}
-                        className="hover:text-primary transition-colors"
-                      >
-                        {/*@ts-ignore */}
-                        {comment?.author?.name}
-                      </Link>
-                      <p className="flex items-center gap-x-1">
-                        <span className="text-xs text-gray-500">
-                          {moment(comment?.createdAt)
-                            .startOf("minute")
-                            .fromNow()}
-                        </span>
-                        <CommentThreeDotPopover
-                          setUpdateCommentData={setUpdateCommentData}
-                          content={comment?.content}
-                          commentId={comment?._id as string}
-                        />
-                      </p>
-                    </h1>
-                    <p className="text-gray-700 ">{comment?.content}</p>
+                <>
+                  <div key={comment._id} className="flex mt-3 gap-x-3">
+                    <Image
+                      src="/icons/avatar.png"
+                      width={60}
+                      height={60}
+                      alt="post"
+                      className="size-9 rounded-full"
+                    />
+                    <div className="pl-2 pb-2 bg-gray-100 w-full rounded-md ">
+                      <h1 className="flex items-center justify-between font-medium">
+                        <Link
+                          href={"/"}
+                          className="hover:text-primary transition-colors"
+                        >
+                          {/*@ts-ignore */}
+                          {comment?.author?.name}
+                        </Link>
+                        <p className="flex items-center gap-x-1">
+                          <span className="text-xs text-gray-500 mr-1">
+                            {moment(comment?.createdAt)
+                              .startOf("minute")
+                              .fromNow()}
+                          </span>
+                          {user?._id === comment?.author?._id && (
+                            <CommentThreeDotPopover
+                              setUpdateCommentData={setUpdateCommentData}
+                              content={comment?.content}
+                              commentId={comment?._id as string}
+                            />
+                          )}
+                        </p>
+                      </h1>
+                      <p className="text-gray-700 ">{comment?.content}</p>
+                    </div>
                   </div>
-                </div>
+                  <div className="ml-12 pb-1 flex gap-x-4 items-center mt-0.5">
+                    <div
+                      className={`flex items-center gap-x-2  bg-gray-200 rounded-xl w-fit h-6`}
+                    >
+                      <button
+                        className={`size-6 flex items-center justify-center rounded-full hover:text-primary transition-colors bg-gray-300"
+                        `}
+                      >
+                        <ArrowBigUp size={16} />
+                      </button>
+                      <span className="font-semibold text-sm">{0}</span>
+                      <button
+                        className={`size-6 flex items-center justify-center rounded-full hover:text-primary transition-colors bg-gray-300`}
+                      >
+                        <ArrowBigDown size={16} />
+                      </button>
+                    </div>
+                    <button className="flex items-center gap-x-1  bg-gray-200 rounded-xl w-fit px-2 text-sm h-6">
+                      <Reply size={14} />
+                      <span className="text-xs font-semibold">Reply</span>
+                    </button>
+                  </div>
+                </>
               );
             }
             return null; // Return null for comments that do not match
