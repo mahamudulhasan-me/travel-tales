@@ -40,6 +40,14 @@ body {
   margin: 0 auto; /* Center align */
 }
 
+.custom-scrollbar {
+  scrollbar-width: none; /* For Firefox */
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Opera */
+}
+
 @media (min-width: 640px) {
   .container-mini {
     max-width: 512px; /* 80% of 640px */

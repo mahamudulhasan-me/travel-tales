@@ -1,5 +1,8 @@
+import Link from "next/link";
+import PostOpenModal from "../modal/PostOpenModal";
 import "./GlobalSearchStyle.css";
 const GlobalSearch = () => {
+  const isSearchValue = false;
   return (
     <div className="relative">
       <div className="group">
@@ -20,18 +23,31 @@ const GlobalSearch = () => {
         </svg>
         <input placeholder="Search Post..." type="search" className="input" />
       </div>
-      <div className="absolute w-72 bg-white p-2 glassmorphisom rounded-b-md">
-        <h6 className="font-semibold">Mahamudul Hasan </h6>
-        <article>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores ea
-        </article>
-        <div className="flex items-center text-sm">
-          <button className="text-primary font-semibold w-24">
-            View Details
-          </button>
-          <div className="w-full h-[1px] bg-gray-500"></div>
+      {isSearchValue && (
+        <div className="absolute w-72 bg-white p-1 glassmorphisom rounded-b-md">
+          {Array.from({ length: 5 }).map((_, index) => (
+            <div
+              key={index}
+              className="flex flex-col  hover:bg-gray-50 p-1 rounded-md transition-colors"
+            >
+              <Link href={"/"} className="font-semibold text-sm">
+                Mahamudul Hasan
+              </Link>
+              <article className="text-xs">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores
+                ea
+              </article>
+              <div className="flex items-center text-xs">
+                {/* <button className="text-primary font-semibold w-24 ">
+                  View Details
+                </button> */}
+                <PostOpenModal />
+                <div className="w-full h-[0.5px] bg-gray-500 mt-1"></div>
+              </div>
+            </div>
+          ))}
         </div>
-      </div>
+      )}
     </div>
   );
 };
