@@ -46,3 +46,15 @@ export const getPostByUser = async (userId: string) => {
     throw new Error(error as string);
   }
 };
+
+export const updatePost = async (data: IPost, postId: string) => {
+  try {
+    const { data: response } = await axiosInstance.patch(
+      `/post/${postId}`,
+      data
+    );
+    return response;
+  } catch (error) {
+    throw new Error(error as string);
+  }
+};

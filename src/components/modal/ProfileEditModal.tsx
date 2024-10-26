@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 "use client";
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 
 import {
   Dialog,
@@ -12,10 +12,12 @@ import {
 } from "@/components/ui/dialog";
 import envConfig from "@/config/envConfig";
 import { useUser } from "@/context/userProvider";
+import useGetUserByIdQuery from "@/hooks/user/useGetUserByIdQuery";
 import useUpdateUserMutation from "@/hooks/user/useUpdateUserMutation";
 import { IUser } from "@/type/user.type";
 import axios from "axios";
 import { UserPen } from "lucide-react";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -24,58 +26,101 @@ import Loader from "../ui/Loader";
 
 export default function ProfileEditModal(): JSX.Element {
   const { user, isLoading, setIsLoading, setUser } = useUser();
-  const [open, setOpen] = useState(false); // State to control modal open/close
+  const {
+    data: uData,
+    refetch,
+    isLoading: uLoading,
+    isSuccess: uSuccess,
+    isError,
+    error,
+  } = useGetUserByIdQuery(user?._id as string);
+
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (isError) {
+      console.error("Error fetching user:", error);
+    }
+    if (uSuccess) {
+      setUser(uData?.data);
+    }
+  }, [setUser, uData?.data, uSuccess, isError, error]);
 
   const imageBBApiUrl = `https://api.imgbb.com/1/upload?key=${envConfig.imagebbApiKey}`;
 
-  const { register, handleSubmit, reset } = useForm<IUser>({
-    defaultValues: {
-      name: user?.name || "",
-      email: user?.email || "",
-      status: user?.status || "",
-      phone: user?.phone || "",
-      address: user?.address || "",
-      profileImage: user?.profileImage || "",
-      coverImage: user?.coverImage || "",
-      dateOfBirth: user?.dateOfBirth || "",
-      bio: user?.bio || "",
-    },
-  });
+  const { register, handleSubmit, reset, setValue } = useForm<IUser>();
+
+  useEffect(() => {
+    if (uData) {
+      reset({
+        name: uData?.name || "",
+        email: uData?.email || "",
+        status: uData?.status || "",
+        phone: uData?.phone || "",
+        address: uData?.address || "",
+        profileImage: uData?.profileImage || "",
+        coverImage: uData?.coverImage || "",
+        dateOfBirth: uData?.dateOfBirth ? uData?.dateOfBirth.split("T")[0] : "",
+        bio: uData?.bio || "",
+      });
+    }
+  }, [uData, reset]);
+
+  console.log({ user }, { uData });
+
+  const [currentProfileImage, setCurrentProfileImage] = useState<string | null>(
+    uData?.profileImage || null
+  );
+  const [currentCoverImage, setCurrentCoverImage] = useState<string | null>(
+    uData?.coverImage || null
+  );
 
   const {
     mutate: updateUser,
     isSuccess,
     data: userData,
-  } = useUpdateUserMutation(user?._id as string);
+  } = useUpdateUserMutation(uData?._id as string);
 
   const onSubmit = async (data: IUser) => {
     setIsLoading(true);
 
-    let profileImage = null;
-    let coverImage = null;
+    let profileImage = currentProfileImage; // Retain existing profile image if not changed
+    let coverImage = currentCoverImage; // Retain existing cover image if not changed
 
-    // If profile picture is selected, upload it
-    //@ts-ignore
-    if (data?.profilePicture[0]) {
+    // Check if a new profile picture is selected
+    if (data.profileImage && data.profileImage[0]) {
       const profileImageFormData = new FormData();
-      profileImageFormData.append("image", data.profilePicture[0]);
+      profileImageFormData.append("image", data.profileImage[0]);
 
-      const profileResponse = await axios.post(
-        imageBBApiUrl,
-        profileImageFormData
-      );
-      profileImage = profileResponse.data.data.url;
+      try {
+        const profileResponse = await axios.post(
+          imageBBApiUrl,
+          profileImageFormData
+        );
+        profileImage = profileResponse.data.data.url; // Update profileImage URL
+      } catch (error) {
+        toast.error("Failed to upload profile image");
+        setIsLoading(false);
+        return;
+      }
     }
 
-    // If cover photo is selected, upload it
-    //@ts-ignore
-    if (data.coverPhoto[0]) {
+    // Check if a new cover photo is selected
+    if (data.coverImage && data.coverImage[0]) {
       const coverImageFormData = new FormData();
-      //@ts-ignore
-      coverImageFormData.append("image", data.coverPhoto[0]);
+      coverImageFormData.append("image", data.coverImage[0]);
 
-      const coverResponse = await axios.post(imageBBApiUrl, coverImageFormData);
-      coverImage = coverResponse.data.data.url;
+      try {
+        const coverResponse = await axios.post(
+          imageBBApiUrl,
+          coverImageFormData
+        );
+        coverImage = coverResponse.data.data.url; // Update coverImage URL
+      } catch (error) {
+        toast.error("Failed to upload cover image");
+        setIsLoading(false);
+        return;
+      }
     }
 
     const formData = {
@@ -84,13 +129,13 @@ export default function ProfileEditModal(): JSX.Element {
       status: data.status,
       phone: data.phone,
       address: data.address,
-      profileImage: profileImage,
-      coverImage: coverImage,
-      dateOfBirth: data?.dateOfBirth,
+      profileImage, // Use existing or newly uploaded profile image
+      coverImage, // Use existing or newly uploaded cover image
+      dateOfBirth: data.dateOfBirth,
+      bio: data.bio,
     };
 
-    //@ts-ignore
-    updateUser(formData);
+    updateUser(formData); // Send the data to updateUser mutation
     setIsLoading(false);
   };
 
@@ -100,8 +145,9 @@ export default function ProfileEditModal(): JSX.Element {
       reset(); // Reset the form
       toast.success("Profile updated successfully");
       setOpen(false); // Close the modal on success
+      refetch();
     }
-  }, [isSuccess, reset, setUser, userData]);
+  }, [isSuccess, refetch, reset, setUser, userData]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -118,7 +164,7 @@ export default function ProfileEditModal(): JSX.Element {
         <DialogHeader>
           <DialogTitle>Edit profile</DialogTitle>
           <DialogDescription>
-            Make changes to your profile here. Click save when you&apos;re done.
+            Make changes to your profile here. Click save when you're done.
           </DialogDescription>
         </DialogHeader>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
@@ -136,10 +182,51 @@ export default function ProfileEditModal(): JSX.Element {
               <input
                 type="text"
                 className="input-style"
+                disabled
                 {...register("status", { required: true })}
               />
             </aside>
           </div>
+
+          {/* Image Previews */}
+          <div className="grid grid-cols-2 gap-4">
+            <aside>
+              <Label htmlFor="profilePicture">Profile Picture</Label>
+              {currentProfileImage && (
+                <Image
+                  width={200}
+                  height={200}
+                  src={currentProfileImage}
+                  alt="Current Profile"
+                  className="w-20 h-20 rounded-full"
+                />
+              )}
+              <input
+                type="file"
+                className="input-style"
+                {...register("profileImage")}
+              />
+            </aside>
+            <aside>
+              <Label htmlFor="coverPhoto">Cover Photo</Label>
+              {currentCoverImage && (
+                <Image
+                  width={400}
+                  height={200}
+                  src={currentCoverImage}
+                  alt="Current Cover"
+                  className="w-full h-32 object-cover"
+                />
+              )}
+              <input
+                type="file"
+                className="input-style"
+                {...register("coverImage")}
+              />
+            </aside>
+          </div>
+
+          {/* Other Inputs */}
           <div className="grid grid-cols-2 gap-4">
             <aside>
               <Label htmlFor="email">Email*</Label>
@@ -158,6 +245,7 @@ export default function ProfileEditModal(): JSX.Element {
               />
             </aside>
           </div>
+
           <div className="grid grid-cols-2 gap-4">
             <aside>
               <Label htmlFor="dob">Date of Birth</Label>
@@ -176,30 +264,14 @@ export default function ProfileEditModal(): JSX.Element {
               />
             </aside>
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            <aside>
-              <Label htmlFor="profilePicture">Profile Picture</Label>
-              <input
-                type="file"
-                className="input-style"
-                {...register("profilePicture")}
-              />
-            </aside>
-            <aside>
-              <Label htmlFor="coverPhoto">Cover Photo</Label>
-              <input
-                type="file"
-                className="input-style"
-                {...register("coverPhoto")}
-              />
-            </aside>
-          </div>
+
           <div className="grid grid-cols-1 gap-4">
             <aside>
               <Label htmlFor="bio">Bio</Label>
               <textarea className="input-style" {...register("bio")} />
             </aside>
           </div>
+
           <DialogFooter>
             <button
               type="submit"

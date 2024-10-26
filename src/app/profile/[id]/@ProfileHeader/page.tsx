@@ -89,7 +89,7 @@ const ProfileHeader = () => {
               <p className=" text-gray-500">250 connections</p>
             </div>
           </figure>
-          <div className="flex items-center gap-4 mt-6">
+          <div className="flex items-center gap-x-2 mt-6">
             {isLoggedUser && userData?.status === "Basic" && (
               <button
                 onClick={handleMakePremium}

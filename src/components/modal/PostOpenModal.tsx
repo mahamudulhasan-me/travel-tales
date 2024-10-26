@@ -1,8 +1,9 @@
 "use client";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { IPost } from "@/type/post";
 import PostCard from "../cards/PostCard";
 
-const PostOpenModal = ({ post }) => {
+const PostOpenModal = ({ post }: { post: IPost }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>

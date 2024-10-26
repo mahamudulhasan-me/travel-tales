@@ -1,3 +1,4 @@
+import { UpdatePostModal } from "@/components/modal/UpdatePostModal";
 import { Button } from "@/components/ui/button";
 
 import {
@@ -5,6 +6,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { IPost } from "@/type/post";
 import {
   Bookmark,
   CircleOff,
@@ -14,7 +16,7 @@ import {
   Pencil,
 } from "lucide-react";
 
-export function ThreeDotPopover() {
+export function ThreeDotPopover({ post }: IPost) {
   const listItems = [
     {
       id: 11,
@@ -23,7 +25,7 @@ export function ThreeDotPopover() {
     },
     {
       id: 1,
-      title: "Edit Post",
+      title: <UpdatePostModal post={post} />,
       icon: <Pencil size={18} />,
     },
     {
@@ -49,7 +51,7 @@ export function ThreeDotPopover() {
           {listItems.map((listItem) => (
             <li
               key={listItem.id}
-              className="flex items-start gap-x-2 text-gray-700 w-full cursor-pointer   p-1"
+              className="flex items-center gap-x-2 text-gray-700 w-full cursor-pointer   p-1"
             >
               <>
                 {listItem.icon}

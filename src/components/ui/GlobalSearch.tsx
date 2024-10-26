@@ -10,6 +10,7 @@ const GlobalSearch = () => {
   const [searchValue, setSearchValue] = useState("");
   const [debouncedSearchValue, setDebouncedSearchValue] = useState(""); // State for debounced value
   const [isSearchDivOpen, setIsSearchDivOpen] = useState(false); // Control modal open/close
+
   const searchDivRef = useRef<HTMLDivElement>(null); // Ref to track clicks outside
 
   // Debouncing effect: update debounced value after 500ms of inactivity
@@ -32,7 +33,7 @@ const GlobalSearch = () => {
   }, [searchValue]); // Only re-run the effect if searchValue changes
 
   // Fetch posts using the debounced search value
-  const { data, isLoading, error } = useGetPosts(
+  const { data, isLoading } = useGetPosts(
     5,
     "default",
     "default",
@@ -110,7 +111,7 @@ const GlobalSearch = () => {
                   className="flex flex-col  hover:bg-gray-50 p-1 rounded-md transition-colors"
                 >
                   <Link href={"/"} className="font-semibold text-sm">
-                    {post.author.name}
+                    {post?.author?.name || "Author"}
                   </Link>
                   <article
                     className="text-xs"

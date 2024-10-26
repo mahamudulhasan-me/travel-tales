@@ -26,6 +26,7 @@ const PostCard = ({ post }: { post: IPost }) => {
   const { user } = useUser();
   const [voteCount, setVoteCount] = useState(post?.voteCount || 0);
   const [myVote, setMyVote] = useState<IVoteInfo | undefined>(undefined);
+  const [readAbleText, setReadAbleText] = useState(300);
   const [updateCommentData, setUpdateCommentData] = useState({
     updateMode: false,
     comment: "",
@@ -46,8 +47,6 @@ const PostCard = ({ post }: { post: IPost }) => {
   const { data: comments, isLoading: commentsLoading } = useGetCommentQuery(
     _id as string
   );
-
-
 
   useEffect(() => {
     const userVote = votes?.find((vote) => vote.userId === user?._id);
@@ -123,13 +122,28 @@ const PostCard = ({ post }: { post: IPost }) => {
           </div>
         </div>
 
-        <ThreeDotPopover />
+        <ThreeDotPopover post={post} />
       </div>
       <article>
         <div
           className="text-sm text-gray-700 mt-3"
-          dangerouslySetInnerHTML={{ __html: content }}
+          dangerouslySetInnerHTML={{ __html: content.slice(0, readAbleText) }}
         />
+        {readAbleText === content.length ? (
+          <span
+            onClick={() => setReadAbleText(300)}
+            className="text-xs text-gray-700 font-semibold underline cursor-pointer"
+          >
+            Show Less
+          </span>
+        ) : (
+          <span
+            onClick={() => setReadAbleText(content.length)}
+            className="text-xs text-gray-700 font-semibold underline cursor-pointer"
+          >
+            Read More...
+          </span>
+        )}
         {images?.length > 0 && (
           <Image
             src={images[0]}
