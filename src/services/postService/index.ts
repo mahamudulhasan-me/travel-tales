@@ -16,12 +16,12 @@ export const createPost = async (postData: IPost): Promise<IPost | any> => {
 export const getPosts = async (
   limit = 5,
   filterBy = "default",
-  sortBy = "default"
+  sortBy = "default",
+  searchValue = ""
 ) => {
   try {
-    // Send filter and sort as query parameters
     const response = await axiosInstance.get(`/post`, {
-      params: { limit, filterBy, sortBy },
+      params: { limit, filterBy, sortBy, searchValue },
     });
     return response.data; // Return the entire response data (posts and total count)
   } catch (error) {
