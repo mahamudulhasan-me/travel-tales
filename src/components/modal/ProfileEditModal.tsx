@@ -26,25 +26,9 @@ import Loader from "../ui/Loader";
 
 export default function ProfileEditModal(): JSX.Element {
   const { user, isLoading, setIsLoading, setUser } = useUser();
-  const {
-    data: uData,
-    refetch,
-    isLoading: uLoading,
-    isSuccess: uSuccess,
-    isError,
-    error,
-  } = useGetUserByIdQuery(user?._id as string);
+  const { data: uData, refetch } = useGetUserByIdQuery(user?._id as string);
 
   const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    if (isError) {
-      console.error("Error fetching user:", error);
-    }
-    if (uSuccess) {
-      setUser(uData?.data);
-    }
-  }, [setUser, uData?.data, uSuccess, isError, error]);
 
   const imageBBApiUrl = `https://api.imgbb.com/1/upload?key=${envConfig.imagebbApiKey}`;
 
@@ -66,14 +50,16 @@ export default function ProfileEditModal(): JSX.Element {
     }
   }, [uData, reset]);
 
-  console.log({ user }, { uData });
-
+  const [changedProfileImage, setChangedProfileImage] = useState(false);
+  const [changedCoverImage, setChangedCoverImage] = useState(false);
   const [currentProfileImage, setCurrentProfileImage] = useState<string | null>(
     uData?.profileImage || null
   );
   const [currentCoverImage, setCurrentCoverImage] = useState<string | null>(
     uData?.coverImage || null
   );
+
+  console.log(changedProfileImage, changedCoverImage);
 
   const {
     mutate: updateUser,
@@ -84,11 +70,16 @@ export default function ProfileEditModal(): JSX.Element {
   const onSubmit = async (data: IUser) => {
     setIsLoading(true);
 
-    let profileImage = currentProfileImage; // Retain existing profile image if not changed
-    let coverImage = currentCoverImage; // Retain existing cover image if not changed
+    // Initialize image variables
+    let profileImage = currentProfileImage; // Default to existing profile image
+    let coverImage = currentCoverImage; // Default to existing cover image
 
-    // Check if a new profile picture is selected
-    if (data.profileImage && data.profileImage[0]) {
+    // Check if a new profile image is uploaded
+    if (
+      changedProfileImage &&
+      data.profileImage &&
+      data.profileImage.length > 0
+    ) {
       const profileImageFormData = new FormData();
       profileImageFormData.append("image", data.profileImage[0]);
 
@@ -97,7 +88,7 @@ export default function ProfileEditModal(): JSX.Element {
           imageBBApiUrl,
           profileImageFormData
         );
-        profileImage = profileResponse.data.data.url; // Update profileImage URL
+        profileImage = profileResponse.data.data.url; // Use the new URL if uploaded successfully
       } catch (error) {
         toast.error("Failed to upload profile image");
         setIsLoading(false);
@@ -105,8 +96,8 @@ export default function ProfileEditModal(): JSX.Element {
       }
     }
 
-    // Check if a new cover photo is selected
-    if (data.coverImage && data.coverImage[0]) {
+    // Check if a new cover image is uploaded
+    if (changedCoverImage && data.coverImage && data.coverImage.length > 0) {
       const coverImageFormData = new FormData();
       coverImageFormData.append("image", data.coverImage[0]);
 
@@ -115,7 +106,7 @@ export default function ProfileEditModal(): JSX.Element {
           imageBBApiUrl,
           coverImageFormData
         );
-        coverImage = coverResponse.data.data.url; // Update coverImage URL
+        coverImage = coverResponse.data.data.url; // Use the new URL if uploaded successfully
       } catch (error) {
         toast.error("Failed to upload cover image");
         setIsLoading(false);
@@ -123,19 +114,21 @@ export default function ProfileEditModal(): JSX.Element {
       }
     }
 
+    // Prepare the form data with updated or existing image URLs
     const formData = {
       name: data.name,
       email: data.email,
       status: data.status,
       phone: data.phone,
       address: data.address,
-      profileImage, // Use existing or newly uploaded profile image
-      coverImage, // Use existing or newly uploaded cover image
+      profileImage: changedProfileImage ? profileImage : uData?.profileImage, // Will use either new or existing
+      coverImage: changedCoverImage ? coverImage : uData?.coverImage, // Will use either new or existing
       dateOfBirth: data.dateOfBirth,
       bio: data.bio,
     };
 
-    updateUser(formData); // Send the data to updateUser mutation
+    // Update the user
+    updateUser(formData);
     setIsLoading(false);
   };
 
@@ -205,8 +198,10 @@ export default function ProfileEditModal(): JSX.Element {
                 type="file"
                 className="input-style"
                 {...register("profileImage")}
+                onChange={() => setChangedProfileImage(true)}
               />
             </aside>
+
             <aside>
               <Label htmlFor="coverPhoto">Cover Photo</Label>
               {currentCoverImage && (
@@ -222,6 +217,7 @@ export default function ProfileEditModal(): JSX.Element {
                 type="file"
                 className="input-style"
                 {...register("coverImage")}
+                onChange={() => setChangedCoverImage(true)}
               />
             </aside>
           </div>
