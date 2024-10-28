@@ -49,3 +49,25 @@ export const handleUnFollow = async (followInfo: IFollowInfo) => {
     throw new Error(error as string);
   }
 };
+
+export const handleDeleteUser = async (userId: string) => {
+  try {
+    const { data } = await axiosInstance.delete(`/users/${userId}`);
+    return data;
+  } catch (error) {
+    throw new Error(error as string);
+  }
+};
+
+export interface IChangeRole {
+  userId: string;
+  role: "user" | "admin";
+}
+export const handleChangeUserRole = async (userInfo: IChangeRole) => {
+  try {
+    const { data } = await axiosInstance.post(`/users/change-role`, userInfo);
+    return data;
+  } catch (error) {
+    throw new Error(error as string);
+  }
+};

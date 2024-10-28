@@ -1,5 +1,9 @@
 import Sidebar from "@/components/admin/Sidebar";
 
+export const metadata = {
+  title: "Dashboard",
+  description: "Travel Tales",
+};
 export function AdminDashboardLayout({
   children,
 }: {
@@ -10,7 +14,7 @@ export function AdminDashboardLayout({
       <div className="w-[18%]">
         <Sidebar />
       </div>{" "}
-      <div className="w-[82%]">{children}</div>
+      <div className="w-[82%] m-6">{children}</div>
     </div>
   );
 }

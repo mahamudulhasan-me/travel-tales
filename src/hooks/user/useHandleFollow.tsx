@@ -13,6 +13,7 @@ const useHandleFollow = (): UseMutationResult<void, Error, IFollowInfo> => {
     mutationFn: async (followInfo) => await handleFollow(followInfo),
     onSuccess: () => {
       // Invalidate and refetch the allUsers query
+      //@ts-ignore
       queryClient.invalidateQueries(["allUsers"]);
     },
   });
