@@ -2,12 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "./hooks/user/useGetCurrentUser";
 
 // Define protected routes
-const protectedRoutes = ["/", "/profile"];
+const protectedRoutes = ["/", "/profile", "/dashboard"];
 
 // Define role-based routes
 const roleBasedRoutes = {
   USER: [/^\/profile/],
-  ADMIN: [/^\/admin/],
+  ADMIN: [/^\/admin/, /^\/dashboard/], // Admin can access /dashboard
 };
 
 // Middleware function to protect routes
@@ -27,9 +27,18 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/explore", request.url));
   }
 
-  // If a user exists (authenticated), allow them to continue to the requested page
+  // If a user exists (authenticated), check for role-based access
   if (user) {
-    return NextResponse.next(); // Proceed to the next middleware or the requested page
+    // Check if the user is trying to access the /dashboard route
+    if (pathname.startsWith("/dashboard")) {
+      // If the user is not an admin, redirect to the home page
+      if (user.role !== "admin") {
+        return NextResponse.redirect(new URL("/", request.url));
+      }
+    }
+
+    // Allow the user to continue to the requested page if all checks pass
+    return NextResponse.next();
   }
 
   return NextResponse.next(); // Fallback case, just continue
@@ -37,5 +46,5 @@ export async function middleware(request: NextRequest) {
 
 // Apply middleware to specific routes
 export const config = {
-  matcher: ["/", "/profile/:path*", "/admin/:path*"], // Protect these routes
+  matcher: ["/", "/profile/:path*", "/admin/:path*", "/dashboard"], // Add /dashboard route
 };
