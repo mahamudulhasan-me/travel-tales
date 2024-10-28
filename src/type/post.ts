@@ -9,7 +9,7 @@ export interface IVoteInfo {
 export interface IPost {
   data?: any;
   _id?: string;
-  author?: string | IUser | undefined;
+  author?: IUser | string | undefined;
   content: string;
   images: string[];
   isPremium: boolean;

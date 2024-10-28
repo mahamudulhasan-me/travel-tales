@@ -1,13 +1,12 @@
-import { updatePost } from "@/services/postService";
-import { IPost } from "@/type/post";
+import { deletePost } from "@/services/postService";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-const useUpdatePostMutation = (postId: string) => {
+const useDeletePost = () => {
   const queryClient = useQueryClient(); // Initialize queryClient
 
-  return useMutation<any, Error, IPost>({
-    mutationKey: ["UPDATE_POST"],
-    mutationFn: async (postData) => await updatePost(postData, postId),
+  return useMutation<any, Error, string>({
+    mutationKey: ["DELETE_POST"],
+    mutationFn: async (postId) => await deletePost(postId),
     onSuccess: () => {
       // Invalidate the `posts` query to ensure UI updates with new data
       //@ts-ignore
@@ -17,4 +16,4 @@ const useUpdatePostMutation = (postId: string) => {
   });
 };
 
-export default useUpdatePostMutation;
+export default useDeletePost;

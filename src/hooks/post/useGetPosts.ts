@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { getPosts } from "@/services/postService";
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 

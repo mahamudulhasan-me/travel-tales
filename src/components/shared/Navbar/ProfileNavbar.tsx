@@ -1,7 +1,9 @@
 "use client";
+import { useUser } from "@/context/userProvider";
 import { useState } from "react";
 
 const ProfileNavbar = () => {
+  const { setShowSection } = useUser();
   const [active, setActive] = useState(0);
 
   const tabs = [
@@ -9,10 +11,16 @@ const ProfileNavbar = () => {
     "About",
     "Photos",
     "Videos",
-    "Friends",
+    "Followers",
+    "Following",
     "Groups",
     "More",
   ];
+
+  const handleClick = (index: number, tab: string) => {
+    setActive(index);
+    setShowSection(tab.toLowerCase());
+  };
 
   return (
     <div className="px-5 mt-2 mb-5">
@@ -26,7 +34,7 @@ const ProfileNavbar = () => {
                 : "bg-white text-gray-800 border-b-[3px] border-white"
             }
             `}
-            onClick={() => setActive(index)}
+            onClick={() => handleClick(index, tab)}
           >
             {tab}
           </li>

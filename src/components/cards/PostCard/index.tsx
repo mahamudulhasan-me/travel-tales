@@ -129,21 +129,23 @@ const PostCard = ({ post }: { post: IPost }) => {
           className="text-sm text-gray-700 mt-3"
           dangerouslySetInnerHTML={{ __html: content.slice(0, readAbleText) }}
         />
-        {readAbleText === content.length ? (
-          <span
-            onClick={() => setReadAbleText(300)}
-            className="text-xs text-gray-700 font-semibold underline cursor-pointer"
-          >
-            Show Less
-          </span>
-        ) : (
-          <span
-            onClick={() => setReadAbleText(content.length)}
-            className="text-xs text-gray-700 font-semibold underline cursor-pointer"
-          >
-            Read More...
-          </span>
-        )}
+        {content.length >= readAbleText ? (
+          readAbleText === content.length ? (
+            <span
+              onClick={() => setReadAbleText(300)}
+              className="text-xs text-gray-700 font-semibold underline cursor-pointer"
+            >
+              Show Less
+            </span>
+          ) : (
+            <span
+              onClick={() => setReadAbleText(content.length)}
+              className="text-xs text-gray-700 font-semibold underline cursor-pointer"
+            >
+              Read More...
+            </span>
+          )
+        ) : null}
         {images?.length > 0 && (
           <Image
             src={images[0]}
@@ -268,7 +270,7 @@ const PostCard = ({ post }: { post: IPost }) => {
             return null; // Return null for comments that do not match
           })
         ) : (
-          <div className="mt-3 text-gray-500">No comments yet.</div>
+          <div className="mt-3 text-gray-500 ml-12">No comments yet...</div>
         )}
       </div>
 

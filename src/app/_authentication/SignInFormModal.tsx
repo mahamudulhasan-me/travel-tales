@@ -22,6 +22,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
+import ForgetPassword from "./ForgetPassword";
 import SignUpForm from "./SignUpForm";
 type Inputs = {
   email: string;
@@ -166,9 +167,7 @@ export function SignInFormModal({ explore }: { explore?: boolean }) {
                 <Checkbox id="terms" />
                 <Label htmlFor="terms">Remember me?</Label>
               </div>
-              <Label className="cursor-pointer text-primary">
-                Forget password?
-              </Label>
+              <ForgetPassword />
             </div>
 
             <DialogFooter className="mt-5">

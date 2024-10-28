@@ -19,6 +19,8 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import FollowerLists from "./FollowerList";
+import FollowingLists from "./FollowingLists";
 
 const ProfileHeader = () => {
   const { id } = useParams();
@@ -26,6 +28,8 @@ const ProfileHeader = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoggedUser, setIsLoggedUser] = useState(false);
   const { data: userData } = useGetUserByIdQuery(id as string);
+
+  const { showSection } = useUser();
 
   const {
     mutate: makePremium,
@@ -123,6 +127,8 @@ const ProfileHeader = () => {
         </div>
         <ProfileNavbar />
       </div>
+      {showSection === "followers" && <FollowerLists id={id} />}
+      {showSection === "following" && <FollowingLists id={id} />}
     </>
   );
 };

@@ -15,10 +15,13 @@ interface IUserProviderValues {
   isLoading: boolean;
   setUser: Dispatch<SetStateAction<IUser | null>>;
   setIsLoading: Dispatch<SetStateAction<boolean>>;
+  showSection: string;
+  setShowSection: Dispatch<SetStateAction<string>>;
 }
 const UserContext = createContext<IUserProviderValues | undefined>(undefined);
 const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<IUser | null>(null);
+  const [showSection, setShowSection] = useState("feed");
   const [isLoading, setIsLoading] = useState(true);
 
   const handleUser = async () => {
@@ -33,7 +36,14 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <UserContext.Provider
-      value={{ user, setUser, isLoading, setIsLoading: setIsLoading }}
+      value={{
+        user,
+        setUser,
+        isLoading,
+        setIsLoading: setIsLoading,
+        showSection,
+        setShowSection,
+      }}
     >
       {children}
     </UserContext.Provider>

@@ -32,7 +32,7 @@ export default function ProfileEditModal(): JSX.Element {
 
   const imageBBApiUrl = `https://api.imgbb.com/1/upload?key=${envConfig.imagebbApiKey}`;
 
-  const { register, handleSubmit, reset, setValue } = useForm<IUser>();
+  const { register, handleSubmit, reset } = useForm<IUser>();
 
   useEffect(() => {
     if (uData) {

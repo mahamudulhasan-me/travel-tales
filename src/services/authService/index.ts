@@ -80,6 +80,21 @@ export const getCurrentUser = async () => {
   return null;
 };
 
+export const handleForgetPassword = async (userData: {
+  email: string;
+  password: string;
+}) => {
+  try {
+    const { data } = await axiosInstance.post(
+      `/auth/forget-password`,
+      userData
+    );
+    return data;
+  } catch (error) {
+    throw new Error(error as string);
+  }
+};
+
 // Refresh token functionality (if needed)
 // export const getNewAccessToken = async () => {
 //   try {

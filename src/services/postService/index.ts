@@ -58,3 +58,12 @@ export const updatePost = async (data: IPost, postId: string) => {
     throw new Error(error as string);
   }
 };
+
+export const deletePost = async (postId: string) => {
+  try {
+    const { data: response } = await axiosInstance.delete(`/post/${postId}`);
+    return response;
+  } catch (error) {
+    throw new Error(error as string);
+  }
+};
