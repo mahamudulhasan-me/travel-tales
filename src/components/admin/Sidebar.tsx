@@ -39,7 +39,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="h-full w-full max-w-full bg-slate-900 pt-10">
+    <div className="h-full bg-slate-900 pt-10">
       <ul className="flex flex-col gap-2 p-2 text-white font-semibold text-lg">
         {listItems.map((item) => {
           const isActive = pathname === item.path; // Check if the current path matches the link's path
