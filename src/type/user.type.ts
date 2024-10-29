@@ -5,7 +5,7 @@ export interface IUser {
   email: string;
   status: string;
   phone?: string;
-
+  isPremium?: boolean;
   profileImage?: string;
   coverImage?: string;
   createdAt?: string;
