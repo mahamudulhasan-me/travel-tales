@@ -127,8 +127,8 @@ const ProfileHeader = () => {
         </div>
         <ProfileNavbar />
       </div>
-      {showSection === "followers" && <FollowerLists id={id} />}
-      {showSection === "following" && <FollowingLists id={id} />}
+      {showSection === "followers" && <FollowerLists id={id as string} />}
+      {showSection === "following" && <FollowingLists id={id as string} />}
     </>
   );
 };

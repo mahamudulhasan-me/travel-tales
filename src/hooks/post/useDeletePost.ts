@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { deletePost } from "@/services/postService";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 

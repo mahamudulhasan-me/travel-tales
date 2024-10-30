@@ -8,7 +8,7 @@ import envConfig from "@/config/envConfig";
 import { postCategories } from "@/const/postCategories";
 import { useUser } from "@/context/userProvider";
 import useCreatePost from "@/hooks/post/useCreatePost";
-import { IPost } from "@/type/post";
+import { IPost, IPostCreate } from "@/type/post";
 import "quill/dist/quill.snow.css";
 import { useEffect, useState } from "react";
 import { useQuill } from "react-quilljs";
@@ -105,9 +105,9 @@ const PostTextArea = (): JSX.Element => {
     }
     setIsLoading(true);
     const imageUrls = await uploadImages(); // Upload images and get URLs
-    const postInfo: IPost = {
+    const postInfo: IPostCreate = {
       content: editorContent,
-      author: user?._id,
+      author: user?._id as string,
       images: imageUrls, // Use the uploaded image URLs
       isPremium,
       category: category,

@@ -28,3 +28,11 @@ export interface IPost {
   __v?: number;
   votes?: IVoteInfo[];
 }
+
+export interface IPostCreate {
+  content: string;
+  author?: string;
+  images: string[];
+  isPremium: boolean;
+  category: string;
+}

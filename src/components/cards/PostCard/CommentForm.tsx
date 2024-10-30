@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useUser } from "@/context/userProvider";
 import useCreateCommentMutation from "@/hooks/comment/useCreateCommentMutation";
 import useUpdateCommentMutation from "@/hooks/comment/useUpdateCommentMutation"; // Import the update mutation

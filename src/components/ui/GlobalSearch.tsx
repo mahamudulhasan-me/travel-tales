@@ -1,4 +1,5 @@
 "use client";
+import { useUser } from "@/context/userProvider";
 import useGetPosts from "@/hooks/post/useGetPosts";
 import { IPost } from "@/type/post";
 import Link from "next/link";
@@ -7,6 +8,7 @@ import PostOpenModal from "../modal/PostOpenModal";
 import "./GlobalSearchStyle.css";
 
 const GlobalSearch = () => {
+  const { user } = useUser();
   const [searchValue, setSearchValue] = useState("");
   const [debouncedSearchValue, setDebouncedSearchValue] = useState(""); // State for debounced value
   const [isSearchDivOpen, setIsSearchDivOpen] = useState(false); // Control modal open/close
@@ -58,7 +60,7 @@ const GlobalSearch = () => {
   }, [searchDivRef]);
 
   return (
-    <div className="relative" ref={searchDivRef}>
+    <div className={user?._id ? "relative" : "hidden"} ref={searchDivRef}>
       <div className="group">
         <svg
           xmlns="http://www.w3.org/2000/svg"

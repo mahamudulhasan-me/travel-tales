@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import axiosInstance from "@/lib/AxiosInstance";
-import { IComment } from "@/type/comment";
+import { ICreateComment } from "@/type/comment";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const useCreateCommentMutation = (postId: string) => {
   const queryClient = useQueryClient(); // Get the query client
 
-  return useMutation<any, Error, IComment>({
+  return useMutation<any, Error, ICreateComment>({
     mutationKey: ["CREATE_COMMENT"],
     mutationFn: async (commentInfo) =>
       await axiosInstance.post("/comment", commentInfo),

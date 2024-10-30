@@ -157,7 +157,7 @@ export default function ProfileEditModal(): JSX.Element {
         <DialogHeader>
           <DialogTitle>Edit profile</DialogTitle>
           <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
+            Make changes to your profile here. Click save when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>

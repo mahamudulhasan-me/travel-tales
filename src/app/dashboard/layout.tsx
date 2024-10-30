@@ -4,11 +4,8 @@ export const metadata = {
   title: "Dashboard",
   description: "Travel Tales",
 };
-export function AdminDashboardLayout({
-  children,
-}: {
-  children: React.ReactNode | React.ReactNode[];
-}): JSX.Element {
+//@ts-ignore
+const AdminDashboardLayout = ({ children }) => {
   return (
     <div className="flex items-start justify-between w-full h-[calc(100vh-3.5rem)]">
       <div className="w-[18%] h-full overflow-y-auto custom-scrollbar">
@@ -19,6 +16,6 @@ export function AdminDashboardLayout({
       </div>
     </div>
   );
-}
+};
 
 export default AdminDashboardLayout;

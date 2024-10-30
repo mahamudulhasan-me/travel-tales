@@ -1,7 +1,7 @@
 export interface IUser {
-  _id: string;
+  _id?: string;
   name: string;
-  role: string;
+  role?: string;
   email: string;
   status: string;
   phone?: string;
@@ -14,8 +14,8 @@ export interface IUser {
   __v?: number;
   dateOfBirth?: string;
   bio?: string;
-  followers: string[];
-  following: string[];
+  followers?: string[];
+  following?: string[];
 }
 
 export interface IUserSignInResponse {

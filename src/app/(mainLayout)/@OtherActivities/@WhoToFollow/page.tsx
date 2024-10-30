@@ -60,7 +60,7 @@ const WhoToFollow = () => {
                 </p>
               </Link>
             </aside>
-            {user?.followers.includes(currentUser?._id) ? (
+            {user?.followers!.includes(currentUser?._id as string) ? (
               <button
                 onClick={() => handleUnfollowUser(user)}
                 className="size-10 rounded-full flex justify-center items-center bg-primary text-white transition-colors"

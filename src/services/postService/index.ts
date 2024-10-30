@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import axiosInstance from "@/lib/AxiosInstance";
-import { IPost, IVoteInfo } from "@/type/post";
+import { IPost, IPostCreate, IVoteInfo } from "@/type/post";
 
-export const createPost = async (postData: IPost): Promise<IPost | any> => {
+export const createPost = async (
+  postData: IPostCreate
+): Promise<IPost | any> => {
   try {
     const data = await axiosInstance.post("/post", postData);
     return data;
@@ -47,7 +49,7 @@ export const getPostByUser = async (userId: string) => {
   }
 };
 
-export const updatePost = async (data: IPost, postId: string) => {
+export const updatePost = async (data: IPostCreate, postId: string) => {
   try {
     const { data: response } = await axiosInstance.patch(
       `/post/${postId}`,

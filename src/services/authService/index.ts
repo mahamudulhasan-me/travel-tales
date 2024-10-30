@@ -80,10 +80,7 @@ export const getCurrentUser = async () => {
   return null;
 };
 
-export const handleForgetPassword = async (userData: {
-  email: string;
-  password: string;
-}) => {
+export const handleForgetPassword = async (userData: FieldValues) => {
   try {
     const { data } = await axiosInstance.post(
       `/auth/forget-password`,

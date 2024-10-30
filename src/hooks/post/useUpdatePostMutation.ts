@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { updatePost } from "@/services/postService";
-import { IPost } from "@/type/post";
+import { IPost, IPostCreate } from "@/type/post";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const useUpdatePostMutation = (postId: string) => {
   const queryClient = useQueryClient(); // Initialize queryClient
 
-  return useMutation<any, Error, IPost>({
+  return useMutation<any, Error, IPostCreate>({
     mutationKey: ["UPDATE_POST"],
     mutationFn: async (postData) => await updatePost(postData, postId),
     onSuccess: () => {
