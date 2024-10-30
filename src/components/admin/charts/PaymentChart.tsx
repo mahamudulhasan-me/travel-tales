@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/chart";
 import Loader from "@/components/ui/Loader";
 import useGetPaymentReport from "@/hooks/report/useGetPaymentReport";
+import moment from "moment";
 
 const chartConfig = {
   user: {
@@ -49,12 +50,17 @@ export default function PaymentChart() {
       transactionAmount: item.totalPayment,
     };
   });
-  console.log(data);
+
   return (
     <Card className="mb-6 common-shadow">
       <CardHeader>
-        <CardTitle>Combined Bar and Line Chart</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>Payment Activity With User</CardTitle>
+        <CardDescription>
+          {moment(data?.data[0].date).format("DD MMM, YYYY")} -{" "}
+          {moment(data?.data[data?.data.length - 1].date).format(
+            "DD MMM, YYYY"
+          )}
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>

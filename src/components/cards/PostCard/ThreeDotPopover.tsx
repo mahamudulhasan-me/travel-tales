@@ -1,7 +1,6 @@
 import { DeletePostModal } from "@/components/modal/DeletePostModal";
 import { UpdatePostModal } from "@/components/modal/UpdatePostModal";
 import { Button } from "@/components/ui/button";
-
 import {
   Popover,
   PopoverContent,
@@ -9,10 +8,12 @@ import {
 } from "@/components/ui/popover";
 import { useUser } from "@/context/userProvider";
 import { IPost } from "@/type/post";
+import { handleDownload } from "@/utils/handlePostDownload";
 import {
   Bookmark,
   CircleOff,
   CircleX,
+  Download,
   Ellipsis,
   Flag,
   Pencil,
@@ -44,7 +45,7 @@ export function ThreeDotPopover({ post }: { post: IPost }) {
     {
       id: 5,
       secure: true,
-      title: <DeletePostModal id={post._id} />,
+      title: <DeletePostModal id={post._id as string} />,
       icon: <Trash2 size={18} />,
     },
     {
@@ -52,6 +53,16 @@ export function ThreeDotPopover({ post }: { post: IPost }) {
       secure: false,
       title: `Block ${post?.author?.name}`,
       icon: <CircleX size={18} />,
+    },
+    {
+      id: 5,
+      secure: false,
+      title: (
+        <span onClick={() => handleDownload(post)} className="cursor-pointer">
+          Download
+        </span>
+      ),
+      icon: <Download size={18} />,
     },
   ].filter((listItem) => {
     // Show secure items only if the user is the post author

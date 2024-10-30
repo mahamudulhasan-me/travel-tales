@@ -10,11 +10,11 @@ export function AdminDashboardLayout({
   children: React.ReactNode | React.ReactNode[];
 }): JSX.Element {
   return (
-    <div className="flex h-[calc(100vh-5rem)]">
-      <div className="w-[18%] overflow-y-auto custom-scrollbar">
+    <div className="flex items-start justify-between w-full h-[calc(100vh-3.5rem)]">
+      <div className="w-[18%] h-full overflow-y-auto custom-scrollbar">
         <Sidebar />
       </div>{" "}
-      <div className="w-[82%] m-6 h-full overflow-y-auto custom-scrollbar ">
+      <div className="w-[82%] p-6 h-full overflow-y-auto custom-scrollbar ">
         {children}
       </div>
     </div>

@@ -1,5 +1,3 @@
-import { IUser } from "./user.type";
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface IVoteInfo {
   postId: string | undefined;
@@ -9,7 +7,17 @@ export interface IVoteInfo {
 export interface IPost {
   data?: any;
   _id?: string;
-  author?: IUser | string | undefined;
+  author: {
+    _id: string;
+    name: string;
+    email: string;
+    profileImage: string;
+    coverImage: string;
+    status: string;
+    dateOfBirth: string;
+    bio: string;
+  };
+
   content: string;
   images: string[];
   isPremium: boolean;
