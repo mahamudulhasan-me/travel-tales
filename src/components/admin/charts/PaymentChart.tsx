@@ -1,6 +1,6 @@
 "use client";
 
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
 import {
   Card,
@@ -15,53 +15,74 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-
-export const description = "A multiple bar chart";
-
-const chartData = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
-];
+import Loader from "@/components/ui/Loader";
+import useGetPaymentReport from "@/hooks/report/useGetPaymentReport";
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "hsl(var(--chart-1))",
+  user: {
+    label: "User",
+    color: "#6528F7",
   },
-  mobile: {
-    label: "Mobile",
-    color: "hsl(var(--chart-2))",
+  transactionCount: {
+    label: "Transaction Count",
+    color: "#FF0080",
   },
 } satisfies ChartConfig;
 
+interface IReportChartData {
+  date: string;
+  newUsers: number;
+  transactionCount: number;
+  totalPayment: number;
+}
 export default function PaymentChart() {
+  const { data, isLoading } = useGetPaymentReport();
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  const chartData = data?.data.map((item: IReportChartData) => {
+    return {
+      date: item.date,
+      user: item.newUsers,
+      transactionCount: item.transactionCount,
+      transactionAmount: item.totalPayment,
+    };
+  });
+  console.log(data);
   return (
-    <Card className="common-shadow mb-6">
+    <Card className="mb-6 common-shadow">
       <CardHeader>
-        <CardTitle>Bar Chart - Multiple</CardTitle>
+        <CardTitle>Combined Bar and Line Chart</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
-          <BarChart accessibilityLayer data={chartData}>
+          <BarChart
+            width={500}
+            height={300}
+            data={chartData}
+            margin={{ left: 12, right: 12 }}
+          >
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="month"
+              dataKey="date"
               tickLine={false}
               tickMargin={10}
               axisLine={false}
-              tickFormatter={(value) => value.slice(0, 3)}
+              // tickFormatter={(value) => value.slice(0, 3)}
             />
+            <YAxis />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent indicator="dashed" />}
             />
-            <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
-            <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
+            <Bar dataKey="user" fill="var(--color-user)" radius={4} />
+            <Bar
+              dataKey="transactionCount"
+              fill="var(--color-transactionCount)"
+              radius={4}
+            />
           </BarChart>
         </ChartContainer>
       </CardContent>
