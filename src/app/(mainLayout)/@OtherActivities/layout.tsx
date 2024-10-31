@@ -8,7 +8,7 @@ const OtherActivitiesLayout = ({
   WhoToFollow: ReactNode;
 }) => {
   return (
-    <div className="flex flex-col gap-y-5 mb-10 sticky top-20">
+    <div className="md:flex hidden flex-col gap-y-5 mb-10 sticky top-20">
       {LatestPost} {WhoToFollow}
     </div>
   );

@@ -49,13 +49,16 @@ export const handleDownload = (post: IPost): void => {
       });
     } else {
       // If the line is an object with style
+      //@ts-ignore
       if (line.style === "bold") {
         doc.setFont("helvetica", "bold");
+        //@ts-ignore
       } else if (line.style === "italic") {
         doc.setFont("helvetica", "italic");
       } else {
         doc.setFont("helvetica", "normal");
       }
+      //@ts-ignore
       const wrappedText = doc.splitTextToSize(line.text, 180); // Adjust the width as necessary
       wrappedText.forEach((text: string) => {
         doc.text(`Content: ${text}`, margin, yOffset);

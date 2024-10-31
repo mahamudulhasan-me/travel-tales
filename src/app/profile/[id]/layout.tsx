@@ -17,13 +17,13 @@ const ProfileLayout = ({
   const { user, showSection } = useUser();
 
   return (
-    <div className="container-mini px-5 grid grid-cols-12 gap-6  ">
-      <aside className=" col-span-8">
+    <div className="container mx-auto md:px-28 grid grid-cols-12 gap-6  ">
+      <aside className="col-span-12 md:col-span-8">
         {ProfileHeader}
         {id === user?._id && showSection === "feed" && <PostWritingDialog />}
         {showSection === "feed" && Posts}
       </aside>
-      <aside className="col-span-4 mt-6">{Sidebar}</aside>
+      <aside className="hidden md:block  md:col-span-4 mt-6 ">{Sidebar}</aside>
     </div>
   );
 };

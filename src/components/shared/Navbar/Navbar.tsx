@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import NavListItems from "./NavListItems";
 import ProtectedNavItems from "./ProtectedNavItems";
+import ResponsiveNav from "./ResponsiveNav";
 
 const Navbar = () => {
   return (
@@ -16,15 +17,20 @@ const Navbar = () => {
               height={56}
               alt="Travel tales logo"
             />
-            <h2 className="uppercase font-semibold text-xl">Travel Tales</h2>
+            <h2 className="uppercase font-semibold text-xl hidden sm:block">
+              Travel Tales
+            </h2>
           </Link>
           <GlobalSearch />
         </aside>
-        <aside>
-          <ul className="flex items-center gap-x-3">
+        <aside className="hidden md:block">
+          <ul className=" md:flex  items-center gap-x-3">
             <NavListItems />
             <ProtectedNavItems />
           </ul>
+        </aside>
+        <aside className="md:hidden">
+          <ResponsiveNav />
         </aside>
       </div>
     </nav>

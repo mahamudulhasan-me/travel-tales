@@ -8,7 +8,7 @@ import envConfig from "@/config/envConfig";
 import { postCategories } from "@/const/postCategories";
 import { useUser } from "@/context/userProvider";
 import useCreatePost from "@/hooks/post/useCreatePost";
-import { IPost, IPostCreate } from "@/type/post";
+import { IPostCreate } from "@/type/post";
 import "quill/dist/quill.snow.css";
 import { useEffect, useState } from "react";
 import { useQuill } from "react-quilljs";
@@ -128,7 +128,10 @@ const PostTextArea = (): JSX.Element => {
   return (
     <>
       <h2 className="font-semibold text-xl text-center mb-2">Create Post</h2>
-      <div style={{ width: 600, height: 236 }} className="bg-white rounded-md">
+      <div
+        // style={{ width: 600, height: 236 }}
+        className="bg-white rounded-md md:w-[600px] md:h-[236px] h-[150px]"
+      >
         {isLoading && <Loader />}
         <div ref={quillRef} />
         <div className="flex items-center space-x-2 mt-2">

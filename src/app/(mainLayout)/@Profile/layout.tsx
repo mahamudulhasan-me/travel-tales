@@ -36,7 +36,7 @@ const SidebarProfileLayout = ({
   ];
 
   return (
-    <div className="mb-10">
+    <div className="mb-10 hidden md:block">
       <div className="bg-white common-shadow rounded-md mb-4">
         {ProfileInfo}
         {ProfileSidebar}

@@ -68,7 +68,8 @@ body {
 
 @media (min-width: 640px) {
   .container-mini {
-    max-width: 512px; /* 80% of 640px */
+    width: 100%;
+    max-width: 640px; /* 80% of 640px */
   }
 }
 
