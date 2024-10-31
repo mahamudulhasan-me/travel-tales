@@ -41,6 +41,8 @@ export async function middleware(request: NextRequest) {
       }
 
       return NextResponse.next();
+    } else {
+      return NextResponse.redirect(new URL("/", request.url));
     }
 
     // Redirect authenticated users to the home page after login
@@ -50,7 +52,6 @@ export async function middleware(request: NextRequest) {
     // }
 
     // Allow the user to continue to the requested page if all checks pass
-    return NextResponse.next();
   }
 
   return NextResponse.next(); // Fallback case, just continue
