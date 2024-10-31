@@ -33,21 +33,21 @@ export async function middleware(request: NextRequest) {
 
   // If a user exists (authenticated), check for role-based access
   if (user) {
-
-
     // Check if the user is trying to access the /dashboard route
     if (pathname.startsWith("/dashboard")) {
       // If the user is not an admin, redirect to the home page
       if (user.role !== "admin") {
         return NextResponse.redirect(new URL("/", request.url));
       }
+
+      return NextResponse.next();
     }
 
     // Redirect authenticated users to the home page after login
-    if (pathname === "/login") {
-      console.log("Redirecting to /");
-      return NextResponse.redirect(new URL("/", request.url));
-    }
+    // if (pathname === "/") {
+    //   console.log("Redirecting to /");
+    //   return NextResponse.redirect(new URL("/", request.url));
+    // }
 
     // Allow the user to continue to the requested page if all checks pass
     return NextResponse.next();
