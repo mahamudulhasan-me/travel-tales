@@ -17,7 +17,7 @@ const ProfileLayout = ({
   const { user, showSection } = useUser();
 
   return (
-    <div className="container mx-auto md:px-28 grid grid-cols-12 gap-6  ">
+    <div className="container mx-auto md:px-28 px-2 grid grid-cols-12 gap-6">
       <aside className="col-span-12 md:col-span-8">
         {ProfileHeader}
         {id === user?._id && showSection === "feed" && <PostWritingDialog />}

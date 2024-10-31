@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "./hooks/user/useGetCurrentUser";
+import { IUser } from "./type/user.type";
 
 // Define protected routes
 const protectedRoutes = ["/", "/profile", "/dashboard"];
@@ -20,7 +21,7 @@ export async function middleware(request: NextRequest) {
   );
 
   // Get the current user based on the request
-  const user = await getCurrentUser(request); // Pass the request to the function
+  const user = (await getCurrentUser(request)) as IUser; // Pass the request to the function
 
   // Redirect to /explore if the user is not authenticated and trying to access a protected route
   if (!user && isProtectedRoute) {
