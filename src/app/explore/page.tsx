@@ -1,4 +1,3 @@
-"use client";
 import { SignInFormModal } from "@/app/_authentication/SignInFormModal";
 import { InView } from "@/components/core/InView";
 import { TextEffect } from "@/components/core/TextEffect";
@@ -8,17 +7,6 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 const ExplorePage = () => {
-  const { user } = useUser();
-  const navigate = useRouter();
-
-  useEffect(() => {
-    if (user) {
-      navigate.push("/");
-    } else {
-      navigate.push("/explore");
-    }
-  }, [navigate, user]);
-
   return (
     <section className="container mx-auto px-5 h-[calc(100vh-5rem)] flex flex-col-reverse md:flex-row md:justify-between justify-evenly items-center">
       <aside className="flex flex-col gap-y-6">
