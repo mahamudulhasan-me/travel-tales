@@ -59,7 +59,7 @@ export default function ProfileEditModal(): JSX.Element {
     uData?.coverImage || null
   );
 
-  console.log(changedProfileImage, changedCoverImage);
+
 
   const {
     mutate: updateUser,

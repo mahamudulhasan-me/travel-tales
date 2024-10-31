@@ -39,7 +39,8 @@ const GlobalSearch = () => {
     5,
     "default",
     "default",
-    debouncedSearchValue
+    debouncedSearchValue,
+    user?._id as string
   );
 
   // Handle clicks outside of the search box to close the modal

@@ -38,7 +38,7 @@ const WhoToFollow = () => {
       <div className="mt-4 space-y-5">
         {isLoading && <p>Loading...</p>}
 
-        {users?.map((user: IUser) => (
+        {users?.slice(0, 10)?.map((user: IUser) => (
           <div key={user._id} className="flex justify-between items-center">
             <aside className="flex items-center gap-x-3">
               <Image

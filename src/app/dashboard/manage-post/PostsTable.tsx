@@ -35,6 +35,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useUser } from "@/context/userProvider";
 import useDeletePost from "@/hooks/post/useDeletePost";
 import useGetPosts from "@/hooks/post/useGetPosts";
 import { IPost } from "@/type/post";
@@ -44,6 +45,7 @@ import { toast } from "sonner";
 
 export default function PostsTable() {
   const router = useRouter();
+  const { user } = useUser();
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -52,7 +54,12 @@ export default function PostsTable() {
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
 
-  const { data: posts, isLoading } = useGetPosts(10, "default", "default");
+  const { data: posts, isLoading } = useGetPosts(
+    10,
+    "default",
+    "default",
+    user?._id as string
+  );
   const { mutate: deletePost, isSuccess } = useDeletePost();
 
   const data = React.useMemo(() => posts?.data?.posts, [posts]);

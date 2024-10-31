@@ -44,6 +44,7 @@ export function SignInFormModal({ explore }: { explore?: boolean }) {
     isSuccess,
     error: loginError,
     isError,
+    isPending,
   } = useUserSignIn();
 
   const {
@@ -85,7 +86,7 @@ export function SignInFormModal({ explore }: { explore?: boolean }) {
         <div>{explore ? <BtnExplore /> : <BtnSignIn />}</div>
       </DialogTrigger>
       <DialogContent className="w-full py-10 px-12">
-        {isLoading && <Loader />}
+        {(isPending || isLoading) && <Loader />}
         <DialogHeader>
           <DialogTitle className="text-3xl text-center">
             {showSignUpForm ? "Sign Up" : "Sign In"}
@@ -172,6 +173,7 @@ export function SignInFormModal({ explore }: { explore?: boolean }) {
 
             <DialogFooter className="mt-5">
               <button
+                disabled={isPending}
                 type="submit"
                 className="w-full bg-primary text-white py-3 rounded-md font-semibold"
               >

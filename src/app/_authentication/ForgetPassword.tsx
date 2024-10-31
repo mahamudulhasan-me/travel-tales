@@ -50,7 +50,6 @@ const ForgetPassword = () => {
       email: data.email,
       password: data.newPassword,
     };
-    console.log(resetPasswordData);
     handleForgetPassword(resetPasswordData, {
       onSuccess: () => {
         setIsLoading(false);

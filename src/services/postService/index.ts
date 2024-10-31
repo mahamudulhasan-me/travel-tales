@@ -19,11 +19,12 @@ export const getPosts = async (
   limit = 5,
   filterBy = "default",
   sortBy = "default",
-  searchValue = ""
+  searchValue = "",
+  userId: string
 ) => {
   try {
     const response = await axiosInstance.get(`/post`, {
-      params: { limit, filterBy, sortBy, searchValue },
+      params: { userId, limit, filterBy, sortBy, searchValue },
     });
     return response.data; // Return the entire response data (posts and total count)
   } catch (error) {

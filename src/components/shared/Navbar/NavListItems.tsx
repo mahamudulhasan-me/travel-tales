@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const NavListItems = () => {
   const { user } = useUser();
-  console.log(user);
+
   const navItems = [
     {
       id: 1,

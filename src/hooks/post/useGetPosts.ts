@@ -6,11 +6,13 @@ const useGetPosts = (
   limit: number,
   filterBy: string,
   sortBy: string,
+  userId: string,
   searchValue?: string
 ) => {
   return useQuery<any, Error>({
     queryKey: ["posts", limit, filterBy, sortBy, searchValue],
-    queryFn: async () => await getPosts(limit, filterBy, sortBy, searchValue),
+    queryFn: async () =>
+      await getPosts(limit, filterBy, sortBy, searchValue, userId),
     keepPreviousData: true, // Keep the previous data while fetching new data
   } as UseQueryOptions<any, Error>); // Explicitly cast options
 };

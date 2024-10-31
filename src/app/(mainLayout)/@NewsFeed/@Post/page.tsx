@@ -1,6 +1,7 @@
 "use client";
 import PostCard from "@/components/cards/PostCard";
 import PostCardSkeleton from "@/components/skeletor/PostCardSkeleton";
+import { useUser } from "@/context/userProvider";
 import useGetPosts from "@/hooks/post/useGetPosts";
 import { IPost } from "@/type/post";
 import { Frown, Smile } from "lucide-react";
@@ -10,13 +11,14 @@ import FilterPost from "./FilterPost";
 
 const Post = () => {
   const [limit, setLimit] = useState(5);
+  const { user } = useUser();
   const [filterBy, setFilterBy] = useState("default");
   const [sortBy, setSortBy] = useState("default");
   const {
     data: postsData,
     isLoading,
     isFetching,
-  } = useGetPosts(limit, filterBy, sortBy); // Pass limit to the hook
+  } = useGetPosts(limit, filterBy, sortBy, user?._id as string); // Pass limit to the hook
 
   // Infinite scroll load more function
   const loadMorePosts = () => {

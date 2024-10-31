@@ -1,5 +1,6 @@
 "use client";
 import { InfiniteSlider } from "@/components/core/InfiniteSlider";
+import { useUser } from "@/context/userProvider";
 import useGetPosts from "@/hooks/post/useGetPosts";
 import { IPost } from "@/type/post";
 import { Ellipsis } from "lucide-react";
@@ -7,7 +8,13 @@ import moment from "moment";
 import Link from "next/link";
 
 const LatestPost = () => {
-  const { data: posts, isLoading } = useGetPosts(10, "default", "default");
+  const { user } = useUser();
+  const { data: posts, isLoading } = useGetPosts(
+    10,
+    "default",
+    "default",
+    user?._id as string
+  );
 
   return (
     <div className="bg-white rounded-md common-shadow p-5">
