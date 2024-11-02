@@ -21,10 +21,15 @@ export async function middleware(request: NextRequest) {
   );
 
   // Get the current user based on the request
-  const user = (await getCurrentUser(request)) as IUser;
+  const user = (await getCurrentUser(request)) as IUser | null;
 
   // If user is not authenticated and trying to access a protected route
   if (!user && isProtectedRoute) {
+    // If the user is already on "/explore", do not redirect again
+    if (pathname === "/explore") {
+      return NextResponse.next();
+    }
+
     console.log("User not authenticated, redirecting to /explore");
     return NextResponse.redirect(new URL("/explore", request.url));
   }
@@ -38,11 +43,9 @@ export async function middleware(request: NextRequest) {
     }
 
     // Admin check for accessing /dashboard
-    if (pathname.startsWith("/dashboard")) {
-      if (user.role !== "admin") {
-        console.log("User is not admin, redirecting to home");
-        return NextResponse.redirect(new URL("/", request.url));
-      }
+    if (pathname.startsWith("/dashboard") && user.role !== "admin") {
+      console.log("User is not admin, redirecting to home");
+      return NextResponse.redirect(new URL("/", request.url));
     }
 
     // Allow the user to continue to the requested page if authenticated
