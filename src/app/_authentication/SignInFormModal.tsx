@@ -52,7 +52,12 @@ export function SignInFormModal({ explore }: { explore?: boolean }) {
     handleSubmit,
     formState: { errors },
     setError,
-  } = useForm<Inputs>();
+  } = useForm<Inputs>({
+    defaultValues: {
+      email: "mahmud@traveltales.com",
+      password: "Mdun@626456",
+    },
+  });
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     setIsLoading(true);
@@ -69,10 +74,11 @@ export function SignInFormModal({ explore }: { explore?: boolean }) {
   useEffect(() => {
     setIsLoading(true);
     if (isSuccess) {
-      navigate.push("/");
       setUser(data?.data);
       toast.success(data?.message);
       setShowModal(false);
+      navigate.push("/");
+      window.location.href = "/";
     } else if (isError) {
       toast.error(loginError?.message);
       navigate.push("/explore");

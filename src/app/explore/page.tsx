@@ -1,10 +1,7 @@
 import { SignInFormModal } from "@/app/_authentication/SignInFormModal";
 import { InView } from "@/components/core/InView";
 import { TextEffect } from "@/components/core/TextEffect";
-import { useUser } from "@/context/userProvider";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 
 const ExplorePage = () => {
   return (
