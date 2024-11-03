@@ -15,7 +15,7 @@ const NavListItems = () => {
     {
       id: 2,
       title: "Contact",
-      path: "/contact",
+      path: "/contact-us",
       isPrivate: false,
     },
     {
