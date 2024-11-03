@@ -20,7 +20,7 @@ const Analytics = () => {
   const { chartData, totals } = data?.data;
 
   return (
-    <div className="bg-white common-shadow rounded-md w-full p-4 mt-4 grid grid-cols-3 gap-4">
+    <div className="bg-white common-shadow rounded-md w-full p-4 mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
       <AnalyticsCard
         color="#CBDCEB"
         title="Total Users"

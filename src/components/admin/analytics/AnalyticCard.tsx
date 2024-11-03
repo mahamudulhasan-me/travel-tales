@@ -3,7 +3,7 @@ import { IChartData } from "@/app/dashboard/analytics/Analytics";
 import { AnimatedNumber } from "@/components/core/AnimatedNumber";
 import { useInView } from "framer-motion";
 import { TrendingUp } from "lucide-react";
-import { ReactNode, useRef, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import MiniChart from "../charts/MiniChart";
 
 interface IAnalyticsProps {
@@ -31,9 +31,12 @@ const AnalyticsCard = ({
   const ref = useRef(null);
   const isInView = useInView(ref);
 
-  if (isInView && value === 0) {
-    setValue(count);
-  }
+  useEffect(() => {
+    if (isInView && value === 0) {
+      setValue(count);
+    }
+  }, [isInView, count, value]);
+
   return (
     <div className="bg-white common-shadow rounded-md w-full p-4">
       <div className="flex justify-between items-start">
@@ -55,7 +58,7 @@ const AnalyticsCard = ({
           value={value}
         />
       </h1>
-      <div className="flex justify-between items-end gap-x-1">
+      <div className="flex md:flex-row flex-col-reverse justify-between items-end gap-1">
         <p className="flex items-center gap-x-2 text-green-600 font-semibold">
           <TrendingUp size={18} /> <span>{trend}</span>{" "}
           <span className="text-gray-500">Increased</span>
