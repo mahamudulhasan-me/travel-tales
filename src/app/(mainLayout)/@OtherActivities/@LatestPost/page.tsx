@@ -1,5 +1,6 @@
 "use client";
 import { InfiniteSlider } from "@/components/core/InfiniteSlider";
+import LatestPostLoader from "@/components/skeletor/LatestPostLoader";
 import { useUser } from "@/context/userProvider";
 import useGetPosts from "@/hooks/post/useGetPosts";
 import { IPost } from "@/type/post";
@@ -26,18 +27,24 @@ const LatestPost = () => {
           direction="vertical"
           className="space-y-3 h-[50vh] overflow-hidden"
         >
-          {posts?.data?.posts?.map((post: IPost) => (
-            <div key={post._id}>
-              <article
-                className="font-semibold text-gray-900"
-                dangerouslySetInnerHTML={{ __html: post.content.slice(0, 180) }}
-              />
+          {isLoading
+            ? Array.from({ length: 5 }).map((_, index) => (
+                <LatestPostLoader key={index} />
+              ))
+            : posts?.data?.posts?.map((post: IPost) => (
+                <div key={post._id}>
+                  <article
+                    className="font-semibold text-gray-900"
+                    dangerouslySetInnerHTML={{
+                      __html: post.content.slice(0, 50),
+                    }}
+                  />
 
-              <span className="text-gray-500 text-sm">
-                {moment(post?.createdAt).startOf("minute").fromNow()}
-              </span>
-            </div>
-          ))}
+                  <span className="text-gray-500 text-sm">
+                    {moment(post?.createdAt).startOf("minute").fromNow()}
+                  </span>
+                </div>
+              ))}
         </InfiniteSlider>
         <Link
           href={"/"}
