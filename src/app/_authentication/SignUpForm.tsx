@@ -68,6 +68,7 @@ const SignUpForm = () => {
       setIsLoading(false);
       setUser(data?.data);
       navigate.push("/");
+      window.location.href = "/";
     }
     if (isError) {
       toast.error(signUpError?.message);
