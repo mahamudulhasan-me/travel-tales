@@ -1,4 +1,4 @@
-import { footerListItems } from "@/app/(mainLayout)/@Profile/layout";
+import { footerListItems } from "@/const/footerListItems";
 import Link from "next/link";
 
 const Footer = () => {

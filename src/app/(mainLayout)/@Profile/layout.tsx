@@ -1,32 +1,7 @@
+import { footerListItems } from "@/const/footerListItems";
 import Link from "next/link";
 import { ReactNode } from "react";
 
-export const footerListItems = [
-  {
-    title: "About",
-    link: "/",
-  },
-  {
-    title: "Settings",
-    link: "/",
-  },
-  {
-    title: "Support",
-    link: "/",
-  },
-  {
-    title: "Docs",
-    link: "/",
-  },
-  {
-    title: "Help",
-    link: "/",
-  },
-  {
-    title: "Privacy & Terms",
-    link: "/",
-  },
-];
 const SidebarProfileLayout = ({
   ProfileInfo,
   ProfileSidebar,
