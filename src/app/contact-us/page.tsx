@@ -1,3 +1,5 @@
+import PageCover from "@/components/pageCover/PageCover";
+import Footer from "@/components/shared/Footer";
 import {
   Facebook,
   MapPinHouse,
@@ -11,11 +13,9 @@ import Link from "next/link";
 
 const ContactUsPage = () => {
   return (
-    <>
-      <section className="w-full h-[calc(100vh-4rem)] container mx-auto md:px-0 px-5">
-        <h1 className="text-3xl font-semibold w-full text-center my-10 border-b">
-          Contact Us
-        </h1>
+    <div className="bg-white overflow-hidden">
+      <PageCover title="Contact Us" image="/images/about-2.jpg" />
+      <section className="w-full h-[calc(100vh-4rem)] container mx-auto md:px-0 py-20 px-5">
         <div
           className="grid md:grid-cols-2 
     items-center justify-center gap-10 "
@@ -118,7 +118,8 @@ const ContactUsPage = () => {
           </aside>
         </div>
       </section>
-    </>
+      <Footer />
+    </div>
   );
 };
 

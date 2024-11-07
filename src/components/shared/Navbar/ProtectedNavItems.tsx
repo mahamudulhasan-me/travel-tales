@@ -1,13 +1,19 @@
 "use client";
 import { SignInFormModal } from "@/app/_authentication/SignInFormModal";
 import { useUser } from "@/context/userProvider";
-import { Bell, MessageSquareText, Settings } from "lucide-react";
+import { Bell, House, MessageSquareText, Settings } from "lucide-react";
+import Link from "next/link";
 import { ProfileUtilsPopover } from "./ProfileUtilsPopover";
 
 const ProtectedNavItems = () => {
   const { user } = useUser();
   return user ? (
     <>
+      <Link href={"/"}>
+        <li className="size-9 rounded-sm flex justify-center items-center bg-gray-200 cursor-pointer ">
+          <House size={18} strokeWidth={1} />
+        </li>
+      </Link>
       <li className="size-9 rounded-sm flex justify-center items-center bg-gray-200 cursor-pointer ">
         <MessageSquareText size={18} strokeWidth={1} />
       </li>
