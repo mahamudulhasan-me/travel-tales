@@ -76,6 +76,7 @@ const ExplorePage = () => {
           />
         </InView>
       </figure>
+      <section className="md:col-span-6 col-span-12  overflow-y-auto custom-scrollbar"></section>
     </section>
   );
 };
