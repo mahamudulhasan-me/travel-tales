@@ -27,7 +27,7 @@ const ExploreNav = () => {
           />
         </Link>
 
-        <ul className=" md:flex  items-center gap-x-4">
+        <ul className=" flex  items-center gap-x-4">
           {navItems.map((navItem) => (
             <li key={navItem.id} className="font-semibold">
               <Link

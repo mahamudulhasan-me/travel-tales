@@ -28,15 +28,15 @@ const MoreThan = () => {
   return (
     <section className="container mx-auto px-5 my-20">
       <div className="flex flex-col items-center justify-center">
-        <h1 className="text-3xl font-bold text-gray-800">
+        <h1 className="md:text-3xl text-2xl font-bold text-gray-800 text-center">
           More Than Just Travel Stories
         </h1>
-        <p className="text-gray-600 max-w-xl text-center mt-1">
+        <p className="text-gray-600 max-w-xl text-center mt-1 md:text-base text-sm">
           Explore meaningful experiences, connect with real travelers, and
           unlock exclusive insights.
         </p>
       </div>
-      <div className="mt-10 flex items-center justify-center gap-x-8">
+      <div className="mt-10 flex lg:flex-row flex-col items-center justify-center gap-8">
         {features.map((feature, index) => (
           <MoreThanCard key={index} feature={feature} />
         ))}

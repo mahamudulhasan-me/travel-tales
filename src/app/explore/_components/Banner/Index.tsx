@@ -14,30 +14,30 @@ const Banner = () => {
       className="w-full h-full bg-gray-50 relative"
     >
       <div className=" min-h-screen pt-28 container mx-auto px-5 flex flex-col justify-center items-center">
-        <h1 className="text-6xl font-semibold text-center flex mt-20">
+        <h1 className="lg:text-6xl text-4xl font-semibold text-center flex mt-20">
           Every Journey Has a Story <br /> Share Yours <SendIcon />
         </h1>
-        <h6 className="text-center text-gray-600 mt-2 font-normal text-xl">
+        <h6 className="text-center text-base text-gray-600 mt-2 font-normal lg:text-xl">
           Discover real adventures, inspire future travels, and connect with a
           global tribe of explorers.
         </h6>
-        <div className="w-full flex items-center justify-center my-8">
+        <div className="w-full flex md:flex-row flex-col gap-y-2 items-center justify-center my-8">
           <SignInFormModal explore /> <TotalTrustedUser />
         </div>
-        <div className="w-full flex items-center justify-center gap-x-5">
+        <div className="w-full flex lg:flex-row flex-col  items-center justify-center gap-5">
           <Image
             src="/images/banner/phone.png"
             alt="cover"
             width={1080}
             height={1080}
-            className="w-[360px]"
+            className="2xl:w-[360px] xl:w-[320px] w-[300px]"
           />
           <Image
             src="/images/banner/laptop.png"
             alt="cover"
             width={1080}
             height={1080}
-            className="w-[800px] h-[480px]"
+            className="2xl:w-[800px] xl:w-[750px]"
           />
         </div>
       </div>
