@@ -1,4 +1,8 @@
-const MoreThanCard = ({ feature }) => {
+const MoreThanCard = ({
+  feature,
+}: {
+  feature: { icon: JSX.Element; title: string; description: string };
+}) => {
   return (
     <div className="flex flex-col items-center justify-center">
       {feature?.icon}
