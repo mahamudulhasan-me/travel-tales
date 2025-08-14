@@ -1,6 +1,5 @@
 "use client";
 import BtnExplore from "@/components/ui/buttons/BtnExplore";
-import BtnSignIn from "@/components/ui/buttons/BtnSignIn";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
@@ -52,7 +51,12 @@ export function SignInFormModal({ explore }: { explore?: boolean }) {
     handleSubmit,
     formState: { errors },
     setError,
-  } = useForm<Inputs>();
+  } = useForm<Inputs>({
+    defaultValues: {
+      email: "mahmud@traveltales.com",
+      password: "Mdun@626456",
+    },
+  });
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     setIsLoading(true);
@@ -69,10 +73,11 @@ export function SignInFormModal({ explore }: { explore?: boolean }) {
   useEffect(() => {
     setIsLoading(true);
     if (isSuccess) {
-      navigate.push("/");
       setUser(data?.data);
       toast.success(data?.message);
       setShowModal(false);
+      navigate.push("/");
+      window.location.href = "/";
     } else if (isError) {
       toast.error(loginError?.message);
       navigate.push("/explore");
@@ -83,7 +88,15 @@ export function SignInFormModal({ explore }: { explore?: boolean }) {
   return (
     <Dialog open={showModal} onOpenChange={setShowModal}>
       <DialogTrigger asChild>
-        <div>{explore ? <BtnExplore /> : <BtnSignIn />}</div>
+        <div>
+          {explore ? (
+            <BtnExplore />
+          ) : (
+            <button className="bg-primary text-white font-semibold py-2 px-6 rounded">
+              Sign up free
+            </button>
+          )}
+        </div>
       </DialogTrigger>
       <DialogContent className="w-full py-10 px-12">
         {(isPending || isLoading) && <Loader />}

@@ -1,3 +1,4 @@
+import { footerListItems } from "@/const/footerListItems";
 import Link from "next/link";
 import { ReactNode } from "react";
 
@@ -8,33 +9,6 @@ const SidebarProfileLayout = ({
   ProfileInfo: ReactNode;
   ProfileSidebar: ReactNode;
 }) => {
-  const footerListItems = [
-    {
-      title: "About",
-      link: "/",
-    },
-    {
-      title: "Settings",
-      link: "/",
-    },
-    {
-      title: "Support",
-      link: "/",
-    },
-    {
-      title: "Docs",
-      link: "/",
-    },
-    {
-      title: "Help",
-      link: "/",
-    },
-    {
-      title: "Privacy & Terms",
-      link: "/",
-    },
-  ];
-
   return (
     <div className="mb-10 hidden md:block">
       <div className="bg-white common-shadow rounded-md mb-4">

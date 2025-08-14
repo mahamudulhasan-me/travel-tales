@@ -21,42 +21,41 @@ export async function middleware(request: NextRequest) {
   );
 
   // Get the current user based on the request
-  const user = (await getCurrentUser(request)) as IUser;
+  const user = (await getCurrentUser(request)) as IUser | null;
 
-  // Debug log to check user object
-
-  // Redirect to /explore if the user is not authenticated and trying to access a protected route
+  // If user is not authenticated and trying to access a protected route
   if (!user && isProtectedRoute) {
+    // If the user is already on "/explore", do not redirect again
+    if (pathname === "/explore") {
+      return NextResponse.next();
+    }
+
     console.log("User not authenticated, redirecting to /explore");
     return NextResponse.redirect(new URL("/explore", request.url));
   }
 
-  // If a user exists (authenticated), check for role-based access
+  // If user is authenticated
   if (user) {
-
-
-    // Check if the user is trying to access the /dashboard route
-    if (pathname.startsWith("/dashboard")) {
-      // If the user is not an admin, redirect to the home page
-      if (user.role !== "admin") {
-        return NextResponse.redirect(new URL("/", request.url));
-      }
-    }
-
-    // Redirect authenticated users to the home page after login
-    if (pathname === "/login") {
-      console.log("Redirecting to /");
+    // Redirect authenticated users from /explore to home page
+    if (pathname === "/explore") {
+      console.log("User is authenticated, redirecting to home");
       return NextResponse.redirect(new URL("/", request.url));
     }
 
-    // Allow the user to continue to the requested page if all checks pass
+    // Admin check for accessing /dashboard
+    if (pathname.startsWith("/dashboard") && user.role !== "admin") {
+      console.log("User is not admin, redirecting to home");
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+
+    // Allow the user to continue to the requested page if authenticated
     return NextResponse.next();
   }
 
-  return NextResponse.next(); // Fallback case, just continue
+  return NextResponse.next(); // Fallback case
 }
 
 // Apply middleware to specific routes
 export const config = {
-  matcher: ["/", "/profile/:path*", "/admin/:path*", "/dashboard", "/login"], // Add /dashboard and /login route
+  matcher: ["/", "/profile/:path*", "/admin/:path*", "/dashboard", "/explore"],
 };

@@ -1,5 +1,9 @@
 "use client";
+
+import ExploreNav from "@/app/explore/_components/Banner/Nav";
+
 import GlobalSearch from "@/components/ui/GlobalSearch";
+import { useUser } from "@/context/userProvider";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -8,13 +12,12 @@ import ProtectedNavItems from "./ProtectedNavItems";
 import ResponsiveNav from "./ResponsiveNav";
 
 const Navbar = () => {
-  const pathname = usePathname();
-  const isExploringPage = pathname === "/explore";
-  return (
+  const { user } = useUser();
+
+  return user ? (
     <nav
-      className={`${
-        isExploringPage && "hidden"
-      } bg-white py-1 z-50 sticky top-0 shadow-[rgba(50,_50,_105,_0.15)_0px_2px_5px_0px,_rgba(0,_0,_0,_0.05)_0px_1px_1px_0px]`}
+      className={` bg-white py-1 z-50 sticky top-0 shadow-[rgba(50,_50,_105,_0.15)_0px_2px_5px_0px,_rgba(0,_0,_0,_0.05)_0px_1px_1px_0px]`}
+  
     >
       <div className="container mx-auto px-5 flex items-center justify-between">
         <aside className="flex items-center justify-start gap-x-2">
@@ -42,6 +45,8 @@ const Navbar = () => {
         </aside>
       </div>
     </nav>
+  ) : (
+    <ExploreNav />
   );
 };
 

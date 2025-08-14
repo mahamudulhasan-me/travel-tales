@@ -1,27 +1,20 @@
-"use client";
-import { useUser } from "@/context/userProvider";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import BannerPage from "./_components/Banner";
+import Banner from "./_components/Banner/Index";
+import MoreThan from "./_components/MoreThan";
+
 
 const ExplorePage = () => {
-  const { user } = useUser();
-  const navigate = useRouter();
-
-  useEffect(() => {
-    if (user) {
-      navigate.push("/");
-    } else {
-      navigate.push("/explore");
-    }
-  }, [navigate, user]);
-
   return (
-    <div>
-      <BannerPage />
-    </div>
+    <>
+      <Banner />
+      <MoreThan />
+    </>
+
+   
   );
 };
 
 export default ExplorePage;
-//  <SignInFormModal explore={true} />
+{
+  /* <SignInFormModal explore={true} /> */
+}
+

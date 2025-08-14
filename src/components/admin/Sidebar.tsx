@@ -52,7 +52,7 @@ const Sidebar = () => {
               }`}
             >
               {item.icon}
-              {item.title}
+              <span className="hidden sm:block"> {item.title}</span>
             </Link>
           );
         })}

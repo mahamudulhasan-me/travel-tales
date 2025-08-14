@@ -18,14 +18,12 @@ const GlobalSearch = () => {
   // Debouncing effect: update debounced value after 500ms of inactivity
   useEffect(() => {
     const handler = setTimeout(() => {
-      setDebouncedSearchValue(searchValue);
+      setDebouncedSearchValue(searchValue); // Update the debounced search value
     }, 500); // 500ms delay (can be adjusted)
 
-    // Open the modal when user starts typing
-    if (searchValue.trim()) {
+    // Open the modal when user starts typing (immediately)
+    if (searchValue) {
       setIsSearchDivOpen(true);
-    } else {
-      setIsSearchDivOpen(false); // Close modal when search input is cleared
     }
 
     // Clean up the timeout if searchValue changes (debouncing logic)
@@ -34,13 +32,20 @@ const GlobalSearch = () => {
     };
   }, [searchValue]); // Only re-run the effect if searchValue changes
 
+  // Close modal when debounced search value is cleared
+  useEffect(() => {
+    if (!debouncedSearchValue.trim()) {
+      setIsSearchDivOpen(false); // Close modal if debounced search input is cleared
+    }
+  }, [debouncedSearchValue]);
+
   // Fetch posts using the debounced search value
-  const { data, isLoading } = useGetPosts(
+  const { data, isLoading, isError, error } = useGetPosts(
     5,
     "default",
     "default",
-    debouncedSearchValue,
-    user?._id as string
+    user?._id as string,
+    debouncedSearchValue
   );
 
   // Handle clicks outside of the search box to close the modal
@@ -87,12 +92,19 @@ const GlobalSearch = () => {
       </div>
 
       {/* Show search modal if search div is open and searchValue is not empty */}
-      {isSearchDivOpen && debouncedSearchValue && (
+      {isSearchDivOpen && (
         <div className="absolute w-72 bg-white p-1 glassmorphisom rounded-b-md z-10">
           {/* Loading state */}
           {isLoading && (
             <div className="text-center p-2 text-sm text-gray-500">
               Loading...
+            </div>
+          )}
+
+          {/* Error state */}
+          {isError && (
+            <div className="text-center p-2 text-sm text-red-500">
+              Error loading posts: {error?.message || "Unknown error"}
             </div>
           )}
 

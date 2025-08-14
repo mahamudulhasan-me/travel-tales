@@ -64,10 +64,11 @@ const SignUpForm = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      navigate.push("/");
       toast.success(data?.message);
       setIsLoading(false);
       setUser(data?.data);
+      navigate.push("/");
+      window.location.href = "/";
     }
     if (isError) {
       toast.error(signUpError?.message);

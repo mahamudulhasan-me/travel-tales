@@ -15,10 +15,10 @@ const AnalyticsPage = () => {
       </div>
       <Analytics />
       <div className="grid grid-cols-12 mt-6 gap-x-4 items-stretch">
-        <aside className="col-span-8">
+        <aside className="md:col-span-8 col-span-12">
           <PaymentChart />
         </aside>
-        <aside className="col-span-4">
+        <aside className="md:col-span-4 col-span-12">
           <LatestPost />
         </aside>
       </div>

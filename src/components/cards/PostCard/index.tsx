@@ -90,12 +90,15 @@ const PostCard = ({ post }: { post: IPost }) => {
           <div>
             <aside className="flex items-center gap-x-1">
               {/* @ts-ignore */}
-              <h5 className="font-semibold flex items-center gap-1">
-                {author?.name}{" "}
-                {author?.status === "Premium" && (
-                  <PremiumUserToolTip iconSize={14} />
-                )}
-              </h5>
+              <Link href={`/profile/${author?._id}`}>
+                {" "}
+                <h5 className="font-semibold flex items-center gap-1">
+                  {author?.name}{" "}
+                  {author?.status === "Premium" && (
+                    <PremiumUserToolTip iconSize={14} />
+                  )}
+                </h5>
+              </Link>
               <Dot color="gray" />
               <p className="text-sm text-gray-700">
                 {moment(createdAt).startOf("minute").fromNow()}
