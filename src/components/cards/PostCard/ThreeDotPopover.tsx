@@ -19,9 +19,31 @@ import {
   Pencil,
   Trash2,
 } from "lucide-react";
+import { useState } from "react";
 
 export function ThreeDotPopover({ post }: { post: IPost }) {
   const { user } = useUser();
+  const [summary, setSummary] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const stripHtml = (html: string) => {
+    const div = document.createElement("div");
+    div.innerHTML = html;
+    return div.textContent || div.innerText || "";
+  };
+
+  const handleSummary = async () => {
+    setLoading(true);
+    const plainText = stripHtml(post.content);
+    const res = await fetch("/api/summary", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text: plainText }),
+    });
+    const data = await res.json();
+    setSummary(data.summary);
+    setLoading(false);
+  };
+  console.log(summary);
 
   // Filter list items based on whether the user is the author of the post
   const listItems = [
@@ -29,6 +51,12 @@ export function ThreeDotPopover({ post }: { post: IPost }) {
       id: 11,
       secure: false,
       title: "Save Post",
+      icon: <Bookmark size={18} />,
+    },
+    {
+      id: 1122,
+      secure: false,
+      title: <button onClick={handleSummary}> Summarize Post</button>,
       icon: <Bookmark size={18} />,
     },
     {
